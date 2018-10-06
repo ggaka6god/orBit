@@ -11,11 +11,11 @@
   </renderer>
 
   <window>
-    <resolution width="1024" height="768" scale="1"/>
+    <resolution width="1024" height="768" scale="4"/>
     <fullscreen value="false"/>
     <borderless value="false"/>
     <resizable value="false"/>
-    <fullscreen_window value="false"/>
+    <fullscreen_window value="true"/>
   </window>
 
   <file_system>
@@ -27,7 +27,7 @@
   </map>
 
   <scene>
-    <currentmap name="hello2.tmx"></currentmap>
+    <currentmap name="SUPERFINAL.tmx"></currentmap>
   </scene>
 
   <audio>

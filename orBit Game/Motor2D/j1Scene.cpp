@@ -42,7 +42,7 @@ bool j1Scene::Start()
 	//Loading map
 	ret = App->map->Load(map_name.GetString());
 
-	p2SString sadpiano("%s%s", App->audio->musicfolder.GetString(), "music_sadpiano.ogg");
+	p2SString sadpiano("%s%s", App->audio->musicfolder.GetString(), "stage1.ogg");
 
 	//Loading music sample
 	App->audio->PlayMusic(sadpiano.GetString());
