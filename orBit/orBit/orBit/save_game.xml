@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<game_state>
+	<input />
+	<window />
+	<textures />
+	<audio>
+		<VolumeChanger_music value="0.299999923" />
+		<VolumeChanger_fx value="1" />
+	</audio>
+	<map />
+	<scene />
+	<renderer>
+		<camera x="-760" y="0" />
+	</renderer>
+</game_state>
