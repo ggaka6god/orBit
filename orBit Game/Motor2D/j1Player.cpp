@@ -14,16 +14,22 @@ j1Player::j1Player()
 
 j1Player::~j1Player()
 {
+	if (playercollider != nullptr)
+		playercollider->to_delete = true;
+
+
+	App->tex->UnLoad(graphics);
 }
 
 bool j1Player::Start()
 {
+
 	LOG("Loading player");
 
 	playerpos.create(0, 0);
 
 	if (graphics == nullptr)
-		App->tex->Load("textures/jump outline.png");
+		graphics=App->tex->Load("textures/jump outline.png");
 
 	if (playercollider == nullptr)
 		playercollider = App->coll->AddCollider({ 0, 0, 19, 36 }, COLLIDER_PLAYER, this);
@@ -36,14 +42,23 @@ bool j1Player::Start()
 
 bool j1Player::Update()
 {
+
+	playercollider->SetPos(playerpos.x, playerpos.y);
 	return true;
 }
 
 bool j1Player::PostUpdate()
 {
-	App->render->Blit(graphics, playerpos.x, playerpos.y, &playercollider->rect);
+	bool ret = true;
 
-	return true;
+	ret=App->render->Blit(graphics, playerpos.x, playerpos.y, &playercollider->rect);
+	/*playercollider->SetPos(playerpos.x, playerpos.y);*/
+
+
+	if(ret==false)
+	LOG("Player is not blitted %s", ret);
+
+	return ret;
 }
 
 void j1Player::OnCollision(Collider * c1, Collider * c2)
