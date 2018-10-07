@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="200" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="1">
  <tileset firstgid="1" name="tileset forest - Copy" tilewidth="16" tileheight="16" tilecount="400" columns="25">
-  <image source="../Tilesets/Forest/tileset forest - Copy.png" width="400" height="256"/>
+  <image source="tileset forest - Copy.png" width="400" height="256"/>
  </tileset>
  <tileset firstgid="401" name="props - Copy" tilewidth="16" tileheight="16" tilecount="544" columns="34">
-  <image source="../Tilesets/Forest/props - Copy.png" width="544" height="256"/>
+  <image source="props - Copy.png" width="544" height="256"/>
  </tileset>
  <layer id="4" name="background" width="200" height="40" locked="1">
   <data>

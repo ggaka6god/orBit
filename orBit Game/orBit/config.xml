@@ -11,7 +11,7 @@
   </renderer>
 
   <window>
-    <resolution width="1024" height="768" scale="4"/>
+    <resolution width="1024" height="768" scale="1"/>
     <fullscreen value="false"/>
     <borderless value="false"/>
     <resizable value="false"/>
@@ -27,7 +27,7 @@
   </map>
 
   <scene>
-    <currentmap name="SUPERFINAL.tmx"></currentmap>
+    <currentmap name="stage2.tmx"></currentmap>
   </scene>
 
   <audio>
