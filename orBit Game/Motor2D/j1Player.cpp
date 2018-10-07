@@ -4,6 +4,8 @@
 #include "j1Textures.h"
 #include "j1Collision.h"
 #include "j1Render.h"
+#include "j1Input.h"
+#include "j1Map.h"
 
 
 j1Player::j1Player()
@@ -40,10 +42,23 @@ bool j1Player::Start()
 	return true;
 }
 
-bool j1Player::Update()
+bool j1Player::Update(float dt)
 {
 
-	playercollider->SetPos(playerpos.x, playerpos.y);
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
+	{
+		/*movingleft = true;*/
+		App->map->WorldToMap(playerpos.x -= 10, playerpos.y);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
+	{
+		/*movingright = true;*/
+		App->map->WorldToMap(playerpos.x+=10, playerpos.y);
+		
+	}
+
+
 	return true;
 }
 
@@ -51,8 +66,14 @@ bool j1Player::PostUpdate()
 {
 	bool ret = true;
 
-	ret=App->render->Blit(graphics, playerpos.x, playerpos.y, &playercollider->rect);
-	/*playercollider->SetPos(playerpos.x, playerpos.y);*/
+	/*float posx;
+	float posy;*/
+
+	App->map->WorldToMap(playerpos.x, playerpos.y);
+
+	App->render->Blit(graphics, playerpos.x, playerpos.y, &playercollider->rect);
+
+	playercollider->SetPos(playerpos.x, playerpos.y);
 
 
 	if(ret==false)

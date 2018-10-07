@@ -15,7 +15,7 @@ public:
 	~j1Player();
 
 	bool Start();
-	bool Update();
+	bool Update(float dt);
 	bool PostUpdate();
 
 	void OnCollision(Collider* c1, Collider* c2);
@@ -28,6 +28,9 @@ public:
 	SDL_Texture* graphics = nullptr;
 	Collider* playercollider = nullptr;
 	iPoint playerpos;
+
+	bool movingleft = false;
+	bool movingright = false;
 
 };
 

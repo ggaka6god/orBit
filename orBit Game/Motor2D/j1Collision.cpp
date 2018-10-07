@@ -74,9 +74,9 @@ bool j1Collision::PreUpdate()
 	return ret;
 }
 
-bool j1Collision::Update()
+bool j1Collision::Update(float dt)
 {
-	return false;
+	return true;
 }
 
 bool j1Collision::PostUpdate()

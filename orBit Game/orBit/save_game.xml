@@ -4,12 +4,14 @@
 	<window />
 	<textures />
 	<audio>
-		<VolumeChanger_music value="1" />
-		<VolumeChanger_fx value="1" />
+		<VolumeChanger_music value="0.099999927" />
+		<VolumeChanger_fx value="0.099999927" />
 	</audio>
 	<map />
 	<scene />
+	<collision />
+	<player />
 	<renderer>
-		<camera x="-134" y="-17" />
+		<camera x="0" y="0" />
 	</renderer>
 </game_state>
