@@ -31,6 +31,18 @@ public:
 
 	bool movingleft = false;
 	bool movingright = false;
+	bool jumping = false;
+
+	int jumptime = 3000;
+
+	int currentime = 0;
+	int lastTime = 0;
+	bool firstime = true;
+
+
+
+	fPoint gravity = (0.0f, -10f);
+	iPoint pos;
 
 };
 

@@ -20,7 +20,7 @@ j1Player::~j1Player()
 		playercollider->to_delete = true;
 
 
-	App->tex->UnLoad(graphics);
+	/*App->tex->UnLoad(graphics);*/
 }
 
 bool j1Player::Start()
@@ -30,8 +30,8 @@ bool j1Player::Start()
 
 	playerpos.create(0, 0);
 
-	if (graphics == nullptr)
-		graphics=App->tex->Load("textures/jump outline.png");
+	/*if (graphics == nullptr)
+		graphics=App->tex->Load("textures/jump outline.png");*/
 
 	if (playercollider == nullptr)
 		playercollider = App->coll->AddCollider({ 0, 0, 19, 36 }, COLLIDER_PLAYER, this);
@@ -45,17 +45,41 @@ bool j1Player::Start()
 bool j1Player::Update(float dt)
 {
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		/*movingleft = true;*/
-		App->map->WorldToMap(playerpos.x -= 10, playerpos.y);
+		pos.x -= 5;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
-		/*movingright = true;*/
-		App->map->WorldToMap(playerpos.x+=10, playerpos.y);
-		
+		pos.x += 5;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && jumping==false)
+	{
+		jumping = true;
+		firstime = true;
+	}
+
+	if (jumping == true)
+	{
+		currentime=SDL_GetTicks();
+		/*speed -= gravity;
+		pos.y -= speed;*/
+
+
+		if (firstime)
+		{
+			firstime = false;
+			lastTime = currentime;
+		}
+
+		if (currentime > lastTime + jumptime)
+		{
+			jumping = false;
+
+		}
+
 	}
 
 
@@ -66,14 +90,10 @@ bool j1Player::PostUpdate()
 {
 	bool ret = true;
 
-	/*float posx;
-	float posy;*/
 
-	App->map->WorldToMap(playerpos.x, playerpos.y);
+	App->render->DrawQuad(playercollider->rect, 255, 0, 0);
 
-	App->render->Blit(graphics, playerpos.x, playerpos.y, &playercollider->rect);
-
-	playercollider->SetPos(playerpos.x, playerpos.y);
+	playercollider->SetPos(pos.x, pos.y);
 
 
 	if(ret==false)
