@@ -366,11 +366,11 @@ bool j1App::SavegameNow() const
 
 	if(ret == true)
 	{
-		//std::stringstream stream;
+		/*std::stringstream stream;*/
 		//data.save(stream);
-
+		
 		//// we are done, so write data to disk
-  //	    Save(save_game.GetString(), stream.str().c_str(), stream.str().length());
+  	 /*  Save(save_game.GetString(), stream.str().c_str(), stream.str().length());*/
 
 		data.save_file(save_game.GetString());
 		LOG("... finished saving", save_game.GetString());

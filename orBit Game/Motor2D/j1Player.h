@@ -2,6 +2,7 @@
 #define __j1Player_H__
 
 #include "j1Module.h"
+#include "p2Point.h"
 
 struct SDL_Texture;
 struct Collider;
@@ -24,14 +25,10 @@ public:
 
 public:
 
+	SDL_Texture* graphics = nullptr;
+	Collider* playercollider = nullptr;
+	iPoint playerpos;
 
 };
-
-
-
-
-
-
-
 
 #endif // __j1Player_H__

@@ -4,6 +4,7 @@
 #include "j1Module.h"
 
 struct SDL_Texture;
+class Collider;
 
 class j1Scene : public j1Module
 {
@@ -34,6 +35,7 @@ public:
 
 private:
 	p2SString map_name;
+	Collider* colliderfloor;
 
 };
 

@@ -5,6 +5,7 @@
 
 #include "j1Module.h"
 #include "SDL/include/SDL_rect.h"
+#include "p2DynArray.h"
 
 enum COLLIDER_TYPE
 {
@@ -47,6 +48,7 @@ public:
 
 	bool PreUpdate();
 	bool Update();
+	bool PostUpdate();
 	bool CleanUp();
 
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback = nullptr);
@@ -54,6 +56,7 @@ public:
 
 private:
 
+	/*p2DynArray <Collider*> colliders;*/
 	Collider* colliders[MAX_COLLIDERS];
 	bool matrix[COLLIDER_MAX][COLLIDER_MAX];
 	bool debug = false;

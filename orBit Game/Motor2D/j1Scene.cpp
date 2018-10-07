@@ -9,6 +9,9 @@
 #include "j1Map.h"
 #include "j1Scene.h"
 
+#include "j1Collision.h"
+#include "j1App.h"
+
 j1Scene::j1Scene() : j1Module()
 {
 	name.create("scene");
@@ -30,7 +33,7 @@ bool j1Scene::Awake(pugi::xml_node& config)
 	{
 		ret = false;
 	}
-
+	
 	return ret;
 }
 
@@ -46,6 +49,11 @@ bool j1Scene::Start()
 
 	//Loading music sample
 	App->audio->PlayMusic(sadpiano.GetString());
+
+	if (colliderfloor == nullptr)
+		colliderfloor = App->coll->AddCollider({ 0, 300, 1024, 20 }, COLLIDER_FLOOR, this);
+	else
+		colliderfloor->SetPos(0, 0);
 
 	if (!ret)
 	{
