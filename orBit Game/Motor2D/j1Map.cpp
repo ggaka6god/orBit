@@ -30,6 +30,16 @@ void j1Map::Draw()
 {
 	if(map_loaded == false)
 		return;
+	
+	for (int x = 0; x < data.paralaxlist.count(); ++x)
+	{
+		App->render->Blit(data.paralaxlist[x]->texture,
+			0,
+			0,
+			&data.paralaxlist[x]->GetParalaxRect());
+	}
+	
+	
 
 	// TODO 5(old): Prepare the loop to draw all tilesets + Blit
 	//MapLayer* layer = data.layers.start->data; // for now we just use the first layer and tileset
@@ -125,6 +135,20 @@ SDL_Rect TileSet::GetTileRect(int id) const
 	return rect;
 }
 
+SDL_Rect ImageLayer::GetParalaxRect() const
+{
+	SDL_Rect rect ;
+
+	rect.w = width;
+	rect.h = height;
+
+	rect.x = 0;
+	rect.y =0;
+
+
+	return rect;
+}
+
 // Called before quitting
 bool j1Map::CleanUp()
 {
@@ -151,6 +175,18 @@ bool j1Map::CleanUp()
 		item2 = item2->next;
 	}
 	data.layers.clear();
+
+	// Remove all Pralax image
+	p2List_item<ImageLayer*>* item3;
+	item3 = data.paralaxlist.start;
+
+	while (item3 != NULL)
+	{
+		RELEASE(item3->data);
+		item3 = item3->next;
+	}
+	data.paralaxlist.clear();
+
 
 	// Clean up the pugui tree
 	map_file.reset();
@@ -209,6 +245,18 @@ bool j1Map::Load(const char* file_name)
 			data.layers.add(lay);
 	}
 
+	//Load Image info ----------------------------
+	pugi::xml_node paralaxNode;
+	for (paralaxNode = map_file.child("map").child("imagelayer"); paralaxNode && ret; paralaxNode = paralaxNode.next_sibling("imagelayer"))
+	{
+		ImageLayer* imageList = new ImageLayer();
+
+		ret = LoadParalax(paralaxNode,imageList);
+
+		if (ret == true)
+			data.paralaxlist.add(imageList);
+	}
+
 	if(ret == true)
 	{
 		LOG("Successfully parsed map XML file: %s", file_name);
@@ -234,6 +282,16 @@ bool j1Map::Load(const char* file_name)
 			LOG("name: %s", l->name.GetString());
 			LOG("tile width: %d tile height: %d", l->width, l->height);
 			item_layer = item_layer->next;
+		}
+
+		p2List_item<ImageLayer*>* item_imageParalax = data.paralaxlist.start;
+		while (item_imageParalax != NULL)
+		{
+			ImageLayer* i = item_imageParalax->data;
+			LOG("Paralax image ----");
+			LOG("name: %s", i->name.GetString());
+			LOG("tile width: %d tile height: %d", i->width, i->height);
+			item_imageParalax = item_imageParalax->next;
 		}
 	}
 
@@ -396,5 +454,19 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		}
 	}
 
+	return ret;
+}
+
+bool j1Map::LoadParalax(pugi::xml_node& node, ImageLayer* image)
+{
+	bool ret = true;
+
+	image->name = node.attribute("name").as_string();
+	image->width = node.child("image").attribute("width").as_int();
+	image->height = node.child("image").attribute("height").as_int();
+	image->texture = App->tex->Load(PATH(folder.GetString(), node.child("image").attribute("source").as_string()));
+	
+
+	
 	return ret;
 }

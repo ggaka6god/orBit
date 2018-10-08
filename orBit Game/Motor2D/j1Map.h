@@ -6,6 +6,20 @@
 #include "p2Point.h"
 #include "j1Module.h"
 
+struct ImageLayer
+{
+	SDL_Rect GetParalaxRect() const;
+
+	p2SString	name;
+	int			width;
+	int			height;
+	SDL_Texture* texture;
+
+	ImageLayer(){}
+
+	~ImageLayer(){}
+
+};
 // ----------------------------------------------------
 struct MapLayer
 {
@@ -25,7 +39,7 @@ struct MapLayer
 	// TODO 6 (old): Short function to get the value of x,y
 	inline uint Get(int x, int y) const
 	{
-		int a = width;
+		int a = width; //CHECK
 		return x + y * width;
 	}
 };
@@ -68,6 +82,7 @@ struct MapData
 	MapTypes			type;
 	p2List<TileSet*>	tilesets;
 	p2List<MapLayer*>	layers;
+	p2List<ImageLayer*> paralaxlist;
 };
 
 // ----------------------------------------------------
@@ -104,7 +119,7 @@ private:
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
-
+	bool LoadParalax(pugi::xml_node& node, ImageLayer* image);
 public:
 
 	MapData data;
@@ -114,6 +129,7 @@ private:
 	pugi::xml_document	map_file;
 	p2SString			folder;
 	bool				map_loaded;
+
 };
 
 #endif // __j1MAP_H__
