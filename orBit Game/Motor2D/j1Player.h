@@ -7,6 +7,15 @@
 struct SDL_Texture;
 struct Collider;
 
+enum player_state
+{
+	IDLE = 0,
+	RIGHT,
+	LEFT,
+	JUMPING,
+	FALLING
+};
+
 class j1Player :public j1Module
 {
 public:
@@ -27,22 +36,16 @@ public:
 
 	SDL_Texture* graphics = nullptr;
 	Collider* playercollider = nullptr;
-	iPoint playerpos;
 
-	bool movingleft = false;
-	bool movingright = false;
-	bool jumping = false;
+	fPoint pos;
+	fPoint Velocity;
+	
+	float gravity;
+	float jump_force;
 
-	int jumptime = 3000;
+	player_state stateplayer;
+	bool playercolliding;
 
-	int currentime = 0;
-	int lastTime = 0;
-	bool firstime = true;
-
-
-
-	fPoint gravity = (0.0f, -10f);
-	iPoint pos;
 
 };
 

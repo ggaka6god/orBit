@@ -51,9 +51,14 @@ bool j1Scene::Start()
 	App->audio->PlayMusic(sadpiano.GetString());
 
 	if (colliderfloor == nullptr)
-		colliderfloor = App->coll->AddCollider({ 0, 300, 1024, 20 }, COLLIDER_FLOOR, this);
+		colliderfloor = App->coll->AddCollider({ 0, 150, 1024, 100 }, COLLIDER_FLOOR, this);
 	else
 		colliderfloor->SetPos(0, 0);
+
+	if (colliderbox == nullptr)
+		colliderbox = App->coll->AddCollider({ 100, 120, 50, 30 }, COLLIDER_FLOOR, this);
+	else
+		colliderbox->SetPos(0, 0);
 
 	if (!ret)
 	{
@@ -117,6 +122,9 @@ bool j1Scene::Update(float dt)
 					map_coordinates.x, map_coordinates.y);
 
 	App->win->SetTitle(title.GetString());
+
+	App->render->DrawQuad(colliderfloor->rect, 0, 0, 255);
+	App->render->DrawQuad(colliderbox->rect, 0, 255, 0);
 	return true;
 }
 
@@ -135,6 +143,12 @@ bool j1Scene::PostUpdate()
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
+
+	if(colliderbox!=nullptr)
+	colliderbox = nullptr;
+
+	if(colliderfloor!=nullptr)
+	colliderfloor = nullptr;
 
 	return true;
 }

@@ -14,8 +14,10 @@ j1Collision::j1Collision()
 		colliders[i] = nullptr;
 
 	matrix[COLLIDER_FLOOR][COLLIDER_PLAYER] = false;
+	matrix[COLLIDER_FLOOR][COLLIDER_FLOOR] = false;
 
 	matrix[COLLIDER_PLAYER][COLLIDER_FLOOR] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER] = false;
 
 
 }
@@ -39,6 +41,15 @@ bool j1Collision::PreUpdate()
 		}
 	}
 
+
+	return ret;
+}
+
+bool j1Collision::Update(float dt)
+{
+
+	int playertouched = 0;
+
 	// Calculate collisions
 	Collider* c1;
 	Collider* c2;
@@ -51,6 +62,7 @@ bool j1Collision::PreUpdate()
 
 		c1 = colliders[i];
 
+
 		// avoid checking collisions already checked
 		for (uint k = i + 1; k < MAX_COLLIDERS; ++k)
 		{
@@ -62,6 +74,11 @@ bool j1Collision::PreUpdate()
 
 			if (c1->CheckCollision(c2->rect) == true)
 			{
+				if (c1->type == COLLIDER_PLAYER || c2->type == COLLIDER_PLAYER)
+				{
+					playertouched++;
+				}
+
 				if (matrix[c1->type][c2->type] && c1->callback)
 					c1->callback->OnCollision(c1, c2);
 
@@ -71,11 +88,13 @@ bool j1Collision::PreUpdate()
 		}
 	}
 
-	return ret;
-}
+	if (playertouched == 0 && App->player->stateplayer != JUMPING)
+	{
+		/*App->player->playercolliding = false;*/
+		App->player->stateplayer = FALLING;
+	}
 
-bool j1Collision::Update(float dt)
-{
+
 	return true;
 }
 
@@ -151,10 +170,13 @@ void j1Collision::DebugDraw()
 	}
 }
 
+
 bool Collider::CheckCollision(const SDL_Rect & r) const
 {
 	return (rect.x < r.x + r.w &&
 		rect.x + rect.w > r.x &&
 		rect.y < r.y + r.h &&
 		rect.h + rect.y > r.y);
+	
+	// between argument "r" and property "rect"
 }

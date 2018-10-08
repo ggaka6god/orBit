@@ -33,9 +33,12 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+public:
+	Collider* colliderfloor;
+	Collider* colliderbox;
+
 private:
 	p2SString map_name;
-	Collider* colliderfloor;
 
 };
 
