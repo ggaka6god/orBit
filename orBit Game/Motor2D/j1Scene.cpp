@@ -45,10 +45,18 @@ bool j1Scene::Start()
 	//Loading map
 	ret = App->map->Load(map_name.GetString());
 
-	p2SString sadpiano("%s%s", App->audio->musicfolder.GetString(), "stage1.ogg");
-
-	//Loading music sample
-	App->audio->PlayMusic(sadpiano.GetString());
+	if (map_name == "stage1_TiledV017.tmx")
+	{
+	
+		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), "stage1.ogg");
+		//Loading music sample
+		App->audio->PlayMusic(stageMusic.GetString());
+	}
+	else
+	{
+		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), "stage2.ogg");
+		App->audio->PlayMusic(stageMusic.GetString());
+	}
 
 	if (colliderfloor == nullptr)
 		colliderfloor = App->coll->AddCollider({ 0, 150, 1024, 100 }, COLLIDER_FLOOR, this);
