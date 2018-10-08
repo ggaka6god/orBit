@@ -40,14 +40,14 @@ bool j1Player::Start()
 		playercollider->SetPos(0, 0);
 
 	Velocity.x = 5.0f;
-	Velocity.y = 30.0f;
+	Velocity.y = 20.0f;
 	pos.x = 10;
 	pos.y = 100;
 
-	gravity = -9.8f;
+	gravity = -3;
 	playercolliding = false;
 
-	jump_force = 30.0f;
+	jump_force = 20.0f;
 	
 
 	return true;
@@ -90,12 +90,14 @@ bool j1Player::Update(float dt)
 	{
 		Velocity.y += gravity/2;
 		pos.y -= Velocity.y;
+	
 	}
 
 	if (stateplayer == FALLING )
 	{
 		Velocity.y += gravity/2;
 		pos.y -= Velocity.y;
+		
 	}
 
 	if (playercolliding==true)
