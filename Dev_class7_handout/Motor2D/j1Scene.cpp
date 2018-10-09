@@ -24,12 +24,19 @@ j1Scene::~j1Scene()
 bool j1Scene::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Scene");
+	bool ret = true;
 
-    bool ret = true;
+	for (pugi::xml_node stage = config.child("map_name"); stage; stage = stage.next_sibling("map_name"))
+	{
+		p2SString* StageName = new p2SString;
 
-	map_name = config.child("currentmap").attribute("name").as_string();
+		StageName->create(stage.attribute("name").as_string());
+		StageList.add(StageName);
+	}
 
-	if (map_name == NULL)
+	//map_name = config.child("map_name").attribute("name").as_string();
+
+	if (StageList.start->data->GetString() == NULL)
 	{
 		ret = false;
 	}
@@ -42,19 +49,21 @@ bool j1Scene::Start()
 {
 	bool ret = true;
 
-	//Loading map
-	ret = App->map->Load(map_name.GetString());
 
-	if (map_name == "stage1_TiledV017.tmx")
+	//Loading map
+	ret = App->map->Load(StageList.start->data->GetString());
+	FirstStage = StageList.start->data->GetString();
+
+
+	if (FirstStage == "stage1_TiledV017.tmx")
 	{
 
-		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), "stage1.ogg");
-		//Loading music sample
+		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());
 	}
 	else
 	{
-		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), "stage2.ogg");
+		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->next->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());
 	}
 
@@ -85,6 +94,12 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+		change_scene(StageList.start->data->GetString());
+
+
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+		change_scene(StageList.start->next->data->GetString());
 
 	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
 	{
@@ -158,5 +173,25 @@ bool j1Scene::CleanUp()
 	if (colliderfloor != nullptr)
 		colliderfloor = nullptr;*/
 
+	p2List_item<p2SString*>* item;
+	item = StageList.start;
+
+	while (item != NULL)
+	{
+		RELEASE(item->data);
+		item = item->next;
+	}
+	StageList.clear();
+
 	return true;
 }
+
+
+bool j1Scene::change_scene(const char* map_name) {
+	bool ret = true;
+	App->map->CleanUp();
+	App->map->Load(map_name);
+
+	return ret;
+}
+

@@ -44,6 +44,7 @@ public:
 
 	p2SString musicfolder;
 	p2SString fxfolder;
+	p2List<p2SString*>	SongNamesList;
 
 private:
 

@@ -33,9 +33,13 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	bool change_scene(const char* map_name);
+
 public:
 	Collider* colliderfloor;
 	Collider* colliderbox;
+	p2List<p2SString*> StageList;
+	p2SString FirstStage;
 
 private:
 	p2SString map_name;

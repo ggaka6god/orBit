@@ -11,6 +11,7 @@
 // to ask for the value of a custom property
 // ----------------------------------------------------
 
+
 struct Properties
 {
 	p2List <p2SString> name;
@@ -25,7 +26,7 @@ struct Properties
 
 };
 
-// ----------------------------------------------------
+//struct with the infornmation of the paralax layers
 struct ImageLayer
 {
 	SDL_Rect GetParalaxRect() const;
@@ -63,7 +64,7 @@ struct MapLayer
 	}
 };
 
-// ----------------------------------------------------
+// Tileset information ----------------------------------------------------
 struct TileSet
 {
 	SDL_Rect GetTileRect(int id) const;
