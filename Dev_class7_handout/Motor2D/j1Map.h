@@ -10,6 +10,7 @@
 // TODO 7: Our custom properties should have one method
 // to ask for the value of a custom property
 // ----------------------------------------------------
+
 struct Properties
 {
 	p2List <p2SString> name;
@@ -101,6 +102,7 @@ struct MapData
 	p2List<TileSet*>	tilesets;
 	p2List<MapLayer*>	layers;
 	p2List<ImageLayer*> paralaxlist;
+	Properties          properties;
 };
 
 // ----------------------------------------------------

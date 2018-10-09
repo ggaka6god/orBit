@@ -350,6 +350,9 @@ bool j1Map::LoadMap()
 	}
 	else
 	{
+		//Loading properties
+		data.properties.LoadProperties(map);
+
 		data.width = map.attribute("width").as_int();
 		data.height = map.attribute("height").as_int();
 		data.tile_width = map.attribute("tilewidth").as_int();
@@ -399,6 +402,8 @@ bool j1Map::LoadMap()
 			data.type = MAPTYPE_UNKNOWN;
 		}
 	}
+
+
 
 	return ret;
 }
