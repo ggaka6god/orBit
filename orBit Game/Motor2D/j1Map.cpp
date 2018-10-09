@@ -470,3 +470,4 @@ bool j1Map::LoadParalax(pugi::xml_node& node, ImageLayer* image)
 	
 	return ret;
 }
+

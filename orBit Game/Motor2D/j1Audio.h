@@ -44,11 +44,12 @@ public:
 
 	p2SString musicfolder;
 	p2SString fxfolder;
-
+	p2List<p2SString*>	SongNamesList;
 private:
 
 	_Mix_Music*			music = NULL;
 	p2List<Mix_Chunk*>	fx;
+	
 
 	float VolumeChanger_music;
 	float VolumeChanger_fx;

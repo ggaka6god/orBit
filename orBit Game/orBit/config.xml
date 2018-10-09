@@ -27,12 +27,15 @@
   </map>
 
   <scene>
-    <currentmap name="stage2_TiledV017.tmx"></currentmap>
+    <map_name name="stage2_TiledV017.tmx"/>
+    <map_name name="stage1_TiledV017.tmx"/>
   </scene>
 
   <audio>
     <music>
       <folder>audio/music/</folder>
+      <song name="stage1.ogg"/>
+      <song name="stage2.ogg"/> 
       <VolumeChanger_music value="1"/>
     </music>
     <fx>

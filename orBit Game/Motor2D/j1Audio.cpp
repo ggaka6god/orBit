@@ -58,6 +58,14 @@ bool j1Audio::Awake(pugi::xml_node& config)
 	VolumeChanger_music = config.child("music").child("VolumeChanger_music").attribute("value").as_float();
 	VolumeChanger_fx = config.child("fx").child("VolumeChanger_fx").attribute("value").as_float();
 
+	pugi::xml_node Music;
+	for (Music = config.child("music").child("song"); Music && ret; Music = Music.next_sibling("song"))
+	{
+		p2SString* SongName = new p2SString;
+
+		SongName->create(Music.attribute("name").as_string());
+		SongNamesList.add(SongName);
+	}
 
 
 	return ret;
@@ -79,6 +87,16 @@ bool j1Audio::CleanUp()
 	p2List_item<Mix_Chunk*>* item;
 	for(item = fx.start; item != NULL; item = item->next)
 		Mix_FreeChunk(item->data);
+	
+	p2List_item<p2SString*>* item2;
+	item2 = SongNamesList.start;
+
+	while (item2 != NULL)
+	{
+		RELEASE(item2->data);
+		item2 = item2->next;
+	}
+	SongNamesList.clear();
 
 	fx.clear();
 

@@ -6,6 +6,7 @@
 #include "p2Point.h"
 #include "j1Module.h"
 
+//struct with the infornmation of the paralax layers
 struct ImageLayer
 {
 	SDL_Rect GetParalaxRect() const;
@@ -20,6 +21,7 @@ struct ImageLayer
 	~ImageLayer(){}
 
 };
+
 // ----------------------------------------------------
 struct MapLayer
 {
@@ -44,7 +46,7 @@ struct MapLayer
 	}
 };
 
-// ----------------------------------------------------
+// Tileset information
 struct TileSet
 {
 	SDL_Rect GetTileRect(int id) const;
@@ -71,7 +73,7 @@ enum MapTypes
 	MAPTYPE_ISOMETRIC,
 	MAPTYPE_STAGGERED
 };
-// ----------------------------------------------------
+// ---------------------------------------------------
 struct MapData
 {
 	int					width;
@@ -111,6 +113,7 @@ public:
 	iPoint MapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;
 
+	
 
 
 private:
@@ -120,6 +123,7 @@ private:
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadParalax(pugi::xml_node& node, ImageLayer* image);
+
 public:
 
 	MapData data;
