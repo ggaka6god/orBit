@@ -60,6 +60,7 @@ void j1Map::Draw()
 				if (tile_id > 0)
 				{
 					TileSet* tileset = GetTilesetFromTileId(tile_id);
+
 					if (tileset != nullptr)
 					{
 						SDL_Rect r = tileset->GetTileRect(tile_id);
@@ -87,19 +88,32 @@ TileSet* j1Map::GetTilesetFromTileId(int id) const
 	{
 		tileset = data.tilesets.At(i)->data;
 
+		if (tileset == NULL)
+		{
+			LOG("Problem in tileset get");
+		}
+
 		if (id >= tileset->firstgid)
 		{
 			if (data.tilesets.At(i+1)!=NULL)
 			{
-				if (id <= -tileset->firstgid + data.tilesets.At(i + 1)->data->firstgid)
+				
+				if (id <=data.tilesets.At(i + 1)->data->firstgid)
+				{
+					if (tileset == NULL)
+					{
+						LOG("Problem in tileset get");
+					}
 					return tileset;
+				}
 				else
 					continue;
 			}
 			return tileset;
-		}	
+		}
 	}
 
+	LOG("No tileset matches tile_id");
 }
 
 iPoint j1Map::MapToWorld(int x, int y) const
@@ -153,6 +167,7 @@ iPoint j1Map::WorldToMap(int x, int y) const
 
 SDL_Rect TileSet::GetTileRect(int id) const
 {
+
 	int relative_id = id - firstgid; // problem
 
 	SDL_Rect rect;

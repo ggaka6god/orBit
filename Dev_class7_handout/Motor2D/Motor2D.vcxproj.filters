@@ -102,6 +102,9 @@
     <ClInclude Include="j1Player.h">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="MemLeaks.h">
+      <Filter>Desenvolupament  ========</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">

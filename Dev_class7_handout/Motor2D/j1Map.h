@@ -11,7 +11,6 @@
 // to ask for the value of a custom property
 // ----------------------------------------------------
 
-
 struct Properties
 {
 	p2List <p2SString> name;
@@ -23,6 +22,29 @@ struct Properties
 	int numproperties;
 
 	p2SString GetProperties(const char * request);
+
+	~Properties()
+	{
+		// Remove all items from lists
+		p2List_item<p2SString>* item;
+		item = name.start;
+
+		while (item != NULL)
+		{
+			RELEASE(item);
+			item = item->next;
+		}
+		name.clear();
+
+		item = value.start;
+
+		while (item != NULL)
+		{
+			RELEASE(item);
+			item = item->next;
+		}
+		value.clear();
+	}
 
 };
 
@@ -38,7 +60,10 @@ struct ImageLayer
 
 	ImageLayer() {}
 
-	~ImageLayer() {}
+	~ImageLayer() 
+	{
+		
+	}
 
 };
 
