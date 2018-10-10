@@ -2,7 +2,7 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Textures.h"
-//#include "j1Collision.h"
+#include "j1Collision.h"
 #include "j1Render.h"
 #include "j1Input.h"
 #include "j1Map.h"
@@ -17,8 +17,8 @@ j1Player::j1Player()
 
 j1Player::~j1Player()
 {
-	/*if (playercollider != nullptr)
-		playercollider->to_delete = true;*/
+	if (playercollider != nullptr)
+		playercollider->to_delete = true;  //think about this
 
 
 	/*App->tex->UnLoad(graphics);*/
@@ -34,10 +34,8 @@ bool j1Player::Start()
 	/*if (graphics == nullptr)
 	graphics=App->tex->Load("textures/jump outline.png");*/
 
-	//if (playercollider == nullptr)
-	//	playercollider = App->coll->AddCollider({ 0, 0, 19, 36 }, COLLIDER_PLAYER, this);
-	//else
-	//	playercollider->SetPos(0, 0);
+	if (playercollider == nullptr)
+		playercollider = App->coll->AddCollider({ 0, 0, 19, 36 }, COLLIDER_PLAYER, this);
 
 	Velocity.x = 5.0f;
 	Velocity.y = 20.0f;
@@ -50,13 +48,12 @@ bool j1Player::Start()
 	jump_force = 20.0f;
 
 
+
 	return true;
 }
 
 bool j1Player::Update(float dt)
 {
-
-
 	//Check if player is Falling or jumping
 
 	if (Velocity.y < 0 && stateplayer == JUMPING)
@@ -112,33 +109,33 @@ bool j1Player::PostUpdate()
 {
 	bool ret = true;
 
+	App->coll->Update(1.0f);
 
-	/*playercollider->SetPos(pos.x, pos.y - 3);
+	playercollider->SetPos(pos.x, pos.y);
 
-	App->render->DrawQuad(playercollider->rect, 255, 0, 0);*/
+	App->render->DrawQuad(playercollider->rect, 255, 0, 0);
 
 	return ret;
 }
 
-//void j1Player::OnCollision(Collider * c1, Collider * c2)
-//{
-//	if (c1->type == COLLIDER_FLOOR || c2->type == COLLIDER_FLOOR)
-//	{
-//
-//		if (playercolliding == false)
-//		{
-//			if (c1->type == COLLIDER_FLOOR)
-//				pos.y = c1->rect.y - playercollider->rect.h;
-//			else
-//				pos.y = c2->rect.y - playercollider->rect.h;
-//		}
-//
-//		Velocity.y = 0.0f;
-//		stateplayer = IDLE;
-//		playercolliding = true;
-//	}
-//
-//}
+void j1Player::OnCollision(Collider * c1, Collider * c2)
+{
+	if (c1->type == COLLIDER_FLOOR || c2->type == COLLIDER_FLOOR)
+	{
+
+		if (playercolliding == false)
+		{
+			if (c1->type == COLLIDER_FLOOR)
+				pos.y = c1->rect.y - playercollider->rect.h;
+			else
+				pos.y = c2->rect.y - playercollider->rect.h;
+		}
+
+		Velocity.y = 0.0f;
+		stateplayer = IDLE;
+		playercolliding = true;
+	}
+}
 
 bool j1Player::Load(pugi::xml_node &)
 {

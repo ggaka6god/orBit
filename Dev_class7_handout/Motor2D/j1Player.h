@@ -5,7 +5,7 @@
 #include "p2Point.h"
 
 struct SDL_Texture;
-//struct Collider;
+struct Collider;
 
 enum player_state
 {
@@ -27,7 +27,7 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 
-	/*void OnCollision(Collider* c1, Collider* c2);*/
+	void OnCollision(Collider* c1, Collider* c2);
 
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
@@ -35,7 +35,7 @@ public:
 public:
 
 	SDL_Texture* graphics = nullptr;
-	/*Collider* playercollider = nullptr;*/
+	Collider* playercollider = nullptr;
 
 	fPoint pos;
 	fPoint Velocity;

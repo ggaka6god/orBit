@@ -156,6 +156,8 @@ public:
 	iPoint MapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;
 
+
+
 private:
 
 	bool LoadMap();
@@ -170,11 +172,11 @@ private:
 public:
 
 	MapData data;
+	
 
 private:
-
+	p2SString folder;
 	pugi::xml_document	map_file;
-	p2SString			folder;
 	bool				map_loaded;
 };
 

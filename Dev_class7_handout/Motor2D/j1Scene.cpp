@@ -9,11 +9,13 @@
 #include "j1Map.h"
 #include "j1Scene.h"
 
-//#include "j1Collision.h"
+#include "j1Collision.h"
 
 j1Scene::j1Scene() : j1Module()
 {
 	name.create("scene");
+
+
 }
 
 // Destructor
@@ -28,17 +30,17 @@ bool j1Scene::Awake(pugi::xml_node& config)
 
 	for (pugi::xml_node stage = config.child("map_name"); stage; stage = stage.next_sibling("map_name"))
 	{
-		p2SString* StageName = new p2SString;
-
-		StageName->create(stage.attribute("name").as_string());
+		p2SString* StageName = new p2SString(stage.attribute("name").as_string());
+		/*StageName->create(stage.attribute("name").as_string());*/
 		StageList.add(StageName);
 	}
 
-	map_name = config.child("map_name").attribute("name").as_string();
+	/*map_name = config.child("map_name").attribute("name").as_string();*/
 
 	if (StageList.start->data->GetString() == NULL)
 	{
 		ret = false;
+		LOG("stagelist is null");
 	}
 
 	return ret;
@@ -49,6 +51,7 @@ bool j1Scene::Start()
 {
 	bool ret = true;
 
+	/*App->map->Load(map_name.GetString());*/
 
 	//Loading map
 	ret = App->map->Load(StageList.start->data->GetString());
@@ -67,20 +70,8 @@ bool j1Scene::Start()
 		App->audio->PlayMusic(stageMusic.GetString());
 	}
 
-	//if (colliderfloor == nullptr)
-	//	colliderfloor = App->coll->AddCollider({ 0, 150, 1024, 100 }, COLLIDER_FLOOR, this);
-	///*else
-	//	colliderfloor->SetPos(0, 0);*/
-
-	//if (colliderbox == nullptr)
-	//	colliderbox = App->coll->AddCollider({ 100, 120, 50, 30 }, COLLIDER_FLOOR, this);
-	////else
-	////	colliderbox->SetPos(0, 0);
-
-	if (!ret)
-	{
-		ret = false;
-	}
+		colliderfloor = App->coll->AddCollider({ 0, 150, 1024, 100 }, COLLIDER_FLOOR, this);
+		colliderbox = App->coll->AddCollider({ 100, 120, 50, 30 }, COLLIDER_FLOOR, this);
 
 	return ret;
 }
@@ -99,7 +90,7 @@ bool j1Scene::Update(float dt)
 			change_scene(StageList.start->data->GetString());
 			firstStage = true;
 			secondStage = false;
-		}
+	}
 
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && secondStage== false) //can only press during first stage. gos to second stage
 	{	
@@ -152,8 +143,6 @@ bool j1Scene::Update(float dt)
 
 	App->win->SetTitle(title.GetString());
 
-	/*App->render->DrawQuad(colliderfloor->rect, 0, 0, 255);
-	App->render->DrawQuad(colliderbox->rect, 0, 255, 0);*/
 	return true;
 }
 
@@ -172,12 +161,6 @@ bool j1Scene::PostUpdate()
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
-
-	/*if (colliderbox != nullptr)
-		colliderbox = nullptr;
-
-	if (colliderfloor != nullptr)
-		colliderfloor = nullptr;*/
 
 	p2List_item<p2SString*>* item;
 	item = StageList.start;
