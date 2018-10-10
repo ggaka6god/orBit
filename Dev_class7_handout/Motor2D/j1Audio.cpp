@@ -67,7 +67,7 @@ bool j1Audio::Awake(pugi::xml_node& config)
 		SongNamesList.add(SongName);
 	}
 
-	Mix_VolumeMusic(10);
+	/*Mix_VolumeMusic(10);*/
 
 
 	return ret;
@@ -110,7 +110,7 @@ bool j1Audio::CleanUp()
 }
 
 // Play a music file
-bool j1Audio::PlayMusic(const char* path, float fade_time)
+bool j1Audio::PlayMusic(const char* path, uint volume , float fade_time)
 {
 	bool ret = true;
 
@@ -151,6 +151,8 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 		}
 		else
 		{
+			Mix_VolumeMusic(volume*VolumeChanger_music);
+
 			if(Mix_PlayMusic(music, -1) < 0)
 			{
 				LOG("Cannot play in music %s. Mix_GetError(): %s", path, Mix_GetError());

@@ -24,7 +24,7 @@ public:
 	bool CleanUp();
 
 	// Play a music file
-	bool PlayMusic(const char* path, float fade_time = DEFAULT_MUSIC_FADE_TIME);
+	bool PlayMusic(const char* path, uint volume, float fade_time = DEFAULT_MUSIC_FADE_TIME);
 
 	// Load a WAV in memory
 	unsigned int LoadFx(const char* path);
@@ -46,13 +46,12 @@ public:
 	p2SString fxfolder;
 	p2List<p2SString*>	SongNamesList;
 
+	float VolumeChanger_music;
+	float VolumeChanger_fx;
 private:
 
 	_Mix_Music*			music = NULL;
 	p2List<Mix_Chunk*>	fx;
-
-	float VolumeChanger_music;
-	float VolumeChanger_fx;
 };
 
 #endif // __j1AUDIO_H__
