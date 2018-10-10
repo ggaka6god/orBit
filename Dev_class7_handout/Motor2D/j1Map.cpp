@@ -153,7 +153,7 @@ iPoint j1Map::WorldToMap(int x, int y) const
 
 SDL_Rect TileSet::GetTileRect(int id) const
 {
-	int relative_id = id - firstgid;
+	int relative_id = id - firstgid; // problem
 
 	SDL_Rect rect;
 

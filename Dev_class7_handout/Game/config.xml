@@ -27,8 +27,8 @@
   </map>
 
   <scene>
-    <map_name name="stage2_TiledV017.tmx"/>
     <map_name name="stage1_TiledV017.tmx"/>
+    <map_name name="stage2_TiledV017.tmx"/>
   </scene>
 
   <audio>

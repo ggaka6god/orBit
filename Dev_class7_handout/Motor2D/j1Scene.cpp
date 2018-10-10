@@ -34,7 +34,7 @@ bool j1Scene::Awake(pugi::xml_node& config)
 		StageList.add(StageName);
 	}
 
-	//map_name = config.child("map_name").attribute("name").as_string();
+	map_name = config.child("map_name").attribute("name").as_string();
 
 	if (StageList.start->data->GetString() == NULL)
 	{
@@ -94,13 +94,19 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-		change_scene(StageList.start->data->GetString());
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && firstStage == false) //can only press during second stage. gos to first stage
+	{	
+			change_scene(StageList.start->data->GetString());
+			firstStage = true;
+			secondStage = false;
+		}
 
-
-	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && secondStage== false) //can only press during first stage. gos to second stage
+	{	
 		change_scene(StageList.start->next->data->GetString());
-
+		firstStage = false;
+		secondStage = true;
+	}
 	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
 	{
 		App->audio->ChangeVolume_music(10);
@@ -191,6 +197,17 @@ bool j1Scene::change_scene(const char* map_name) {
 	bool ret = true;
 	App->map->CleanUp();
 	App->map->Load(map_name);
+	if (FirstStage == map_name)
+	{
+		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());//aqui deberia poder leer metadata
+		App->audio->PlayMusic(stageMusic.GetString());
+	}
+	else{
+		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->next->data->GetString());//aqui leer metadata de direccion
+		App->audio->PlayMusic(stageMusic.GetString());
+	}
+	
+	
 
 	return ret;
 }

@@ -40,6 +40,8 @@ public:
 	Collider* colliderbox;
 	p2List<p2SString*> StageList;
 	p2SString FirstStage;
+	bool firstStage = true;
+	bool secondStage = false;
 
 private:
 	p2SString map_name;

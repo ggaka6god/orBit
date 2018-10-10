@@ -16021,6 +16021,9 @@
   </data>
  </layer>
  <layer name="main layer" width="200" height="40">
+  <properties>
+   <property name="Music" value="audio/music/stage2.ogg"/>
+  </properties>
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
