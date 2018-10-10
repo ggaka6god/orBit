@@ -69,11 +69,6 @@ bool j1Collision::Update(float dt)
 
 			if (collider1->data->CheckCollision(collider2->data->rect) == true)
 			{
-				if (collider1->data->type == COLLIDER_PLAYER || collider2->data->type == COLLIDER_PLAYER)
-				{
-					playertouched++;
-				}
-
 				if (matrix[collider1->data->type][collider2->data->type] && collider1->data->callback)
 				{
 					collider1->data->callback->OnCollision(collider1->data, collider2->data);
@@ -89,12 +84,6 @@ bool j1Collision::Update(float dt)
 
 		collider1 = collider1->next;
 		collider2 = collider1->next;
-	}
-
-	if (playertouched == 0 && App->player->stateplayer != JUMPING)
-	{
-		App->player->playercolliding = false;
-		App->player->stateplayer = FALLING;
 	}
 
 	return ret;

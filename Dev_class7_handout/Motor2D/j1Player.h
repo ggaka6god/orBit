@@ -46,6 +46,8 @@ public:
 	player_state stateplayer;
 	bool playercolliding;
 
+	float relative_pos;
+
 
 };
 
