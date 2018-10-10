@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<game_state>
+	<input />
+	<window />
+	<textures />
+	<audio>
+		<VolumeChanger_music value="0" />
+		<VolumeChanger_fx value="0" />
+	</audio>
+	<map />
+	<scene />
+	<collision />
+	<player />
+	<renderer>
+		<camera x="0" y="0" />
+	</renderer>
+</game_state>

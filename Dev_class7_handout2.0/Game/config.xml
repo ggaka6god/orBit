@@ -1,0 +1,47 @@
+<!-- Config file for the game -->
+
+<config>
+  <app>
+    <title>Game Development Testbed</title>
+    <organization>UPC</organization>
+  </app>
+	
+  <renderer>
+    <vsync value="true"/>
+  </renderer>
+
+  <window>
+    <resolution width="1024" height="768" scale="3"/>
+    <fullscreen value="false"/>
+    <borderless value="false"/>
+    <resizable value="false"/>
+    <fullscreen_window value="false"/>
+  </window>
+
+  <file_system>
+    <path>data.zip</path>
+  </file_system>
+
+  <map>
+    <folder>maps/</folder>
+  </map>
+
+  <scene>
+    <map_name name="stage1_TiledV017.tmx"/>
+    <map_name name="stage2_TiledV017.tmx"/>
+  </scene>
+
+  <audio>
+    <music>
+      <folder>audio/music/</folder>
+      <song name="stage1.ogg"/>
+      <song name="stage2.ogg"/>
+      <VolumeChanger_music value="0"/>
+    </music>
+    <fx>
+      <folder>audio/fx/</folder>
+      <VolumeChanger_fx value="0"/>
+    </fx>
+  </audio>
+
+</config>
