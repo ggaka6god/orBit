@@ -61,12 +61,13 @@ bool j1Audio::Awake(pugi::xml_node& config)
 	pugi::xml_node Music;
 	for (Music = config.child("music").child("song"); Music && ret; Music = Music.next_sibling("song"))
 	{
-		p2SString* SongName = new p2SString;
+		p2SString* SongName = new p2SString();
 
 		SongName->create(Music.attribute("name").as_string());
 		SongNamesList.add(SongName);
 	}
 
+	Mix_VolumeMusic(10);
 
 
 	return ret;
