@@ -32,7 +32,7 @@ struct Properties
 		while (item != NULL)
 		{
 			RELEASE(item);
-			item = item->next;
+			item = item->next; //problem
 		}
 		name.clear();
 

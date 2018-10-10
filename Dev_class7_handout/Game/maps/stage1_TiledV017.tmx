@@ -8020,6 +8020,10 @@
   </data>
  </layer>
  <layer name="MAIN LAYER" width="200" height="40">
+  <properties>
+   <property name="Anumproperties" type="int" value="2"/>
+   <property name="Song" value="audio/music/stage1.ogg"/>
+  </properties>
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -32032,6 +32036,11 @@
   </data>
  </layer>
  <layer name="colisions" width="200" height="40">
+  <properties>
+   <property name="Anumproperties" type="int" value="3"/>
+   <property name="Collision" type="int" value="1"/>
+   <property name="Nodraw" type="int" value="1"/>
+  </properties>
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
