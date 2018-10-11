@@ -54,21 +54,24 @@ bool j1Scene::Start()
 	/*App->map->Load(map_name.GetString());*/
 
 	//Loading map
-	ret = App->map->Load(StageList.start->data->GetString());
-	FirstStage = StageList.start->data->GetString();
+	
+		ret = App->map->Load(StageList.start->data->GetString());
+		FirstStage = StageList.start->data->GetString();
+	
+	
 
 
-	//if (FirstStage == "stage1_TiledV017.tmx")
-	//{
+	if (FirstStage == "stage1_TiledV017.tmx" )
+	{
 
-	//	p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());
-	//	App->audio->PlayMusic(stageMusic.GetString(),App->audio->VolumeChanger_music*SDL_MIX_MAXVOLUME);
-	//}
-	//else
-	//{
-	//	p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->next->data->GetString());
-	//	App->audio->PlayMusic(stageMusic.GetString(), App->audio->VolumeChanger_music*SDL_MIX_MAXVOLUME);
-	//}
+		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());
+		App->audio->PlayMusic(stageMusic.GetString(),App->audio->VolumeChanger_music*SDL_MIX_MAXVOLUME);
+	}
+	else
+	{
+		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->next->data->GetString());
+		App->audio->PlayMusic(stageMusic.GetString(), App->audio->VolumeChanger_music*SDL_MIX_MAXVOLUME);
+	}
 
 		colliderfloor = App->coll->AddCollider({ 0, 150, 1024, 100 }, COLLIDER_FLOOR, this);
 		colliderbox = App->coll->AddCollider({ 100, 120, 50, 30 }, COLLIDER_FLOOR, this);

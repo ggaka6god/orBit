@@ -45,19 +45,19 @@ bool j1Player::Update(float dt)
 {
 	//Check if player is Falling or jumping
 
-	//if (Velocity.y < 0 && stateplayer == JUMPING)
-	//{
-	//	stateplayer = FALLING;
-	//}
+	if (Velocity.y < 0 && stateplayer == JUMPING)
+	{
+		stateplayer = FALLING;
+	}
 	////else if (playercolliding == false && stateplayer != JUMPING)
 	////{
 	////	stateplayer = FALLING;
 	////}
 
-	//if (playercolliding == false && stateplayer != JUMPING)
-	//{
-	//	stateplayer = FALLING;
-	//}
+	if (playercolliding == false && stateplayer != JUMPING)
+	{
+		stateplayer = FALLING;
+	}
 
 	//Horizontal Movement 
 

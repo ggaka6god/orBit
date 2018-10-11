@@ -50,8 +50,8 @@ void j1Map::Draw()
 	{
 		layer = data.layers.At(l)->data;
 
-		/*if (layer->properties.GetProperties("Nodraw").operator==("1"))
-			continue;*/
+		if (layer->properties.GetProperties("Nodraw").operator==("1"))
+			continue;
 
 		for (int y = 0; y < data.height; ++y)
 		{
@@ -221,8 +221,9 @@ bool j1Map::CleanUp()
 
 	while(item2 != NULL)
 	{
-	/*	while (itemproperties != NULL)
+		while (itemproperties != NULL)
 		{
+
 			RELEASE(itemproperties->data);
 			if (itemproperties == item2->data->properties.name.end)
 				break;
@@ -238,7 +239,7 @@ bool j1Map::CleanUp()
 			if (itemproperties == item2->data->properties.value.end)
 				break;
 			itemproperties = itemproperties->next;
-		}*/
+		}
 		item2->data->properties.value.clear();
 
 		RELEASE(item2->data);
@@ -353,11 +354,11 @@ bool j1Map::Load(const char* file_name)
 			LOG("name: %s", l->name.GetString());
 			LOG("tile width: %d tile height: %d", l->width, l->height);
 			LOG("layer has %i properties", l->properties.numproperties);
-			/*for (int i = 0; i < l->properties.numproperties; ++i)
+			for (int i = 0; i < l->properties.numproperties-1; ++i)
 			{
 				LOG("property name is %s", l->properties.name.At(i)->data->GetString());
 				LOG("property value is %s", l->properties.value.At(i)->data->GetString());
-			}*/
+			}
 			item_layer = item_layer->next;
 		}
 
@@ -555,15 +556,18 @@ bool Properties::LoadProperties(pugi::xml_node& node)
 
 	properties = properties.first_child().next_sibling();
 	
-	p2SString tmp;
-	p2SString tmp2;
+	
 
 	for (int i = 0; i < numproperties && properties; ++i)
+	
 	{
-		tmp.operator=(properties.attribute("name").as_string());
-		this->name.add(&tmp);
-		tmp2.operator=(properties.attribute("value").as_string());
-		this->value.add(&tmp2);
+			p2SString* tmp = new p2SString();
+			p2SString* tmp2 = new p2SString();
+
+		tmp->operator=(properties.attribute("name").as_string());
+		this->name.add(tmp);
+		tmp2->operator=(properties.attribute("value").as_string());
+		this->value.add(tmp2);
 
 		if(i!= numproperties-1)
 		properties = properties.next_sibling();
