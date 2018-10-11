@@ -46,7 +46,8 @@ public:
 	player_state stateplayer;
 	bool playercolliding;
 
-	float relative_pos;
+	float max_speed_y;
+
 
 
 };

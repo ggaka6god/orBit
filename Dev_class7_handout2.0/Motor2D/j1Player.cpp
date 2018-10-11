@@ -29,32 +29,30 @@ bool j1Player::Start()
 
 	Velocity.x = 3.0f;
 	Velocity.y = 10.0f;
-	pos.x = 10;
-	pos.y = 100;
+	pos.x = 10.0f;
+	pos.y = 100.0f;
 
-	gravity = -1;
+	gravity = -1.0f;
 	playercolliding = false;
 
 	jump_force = 10.0f;
-
+	max_speed_y = 10.0f;
+	stateplayer = IDLE;
 
 	return true;
 }
 
 bool j1Player::Update(float dt)
 {
+
 	//Check if player is Falling or jumping
 
 	if (Velocity.y < 0 && stateplayer == JUMPING)
 	{
 		stateplayer = FALLING;
 	}
-	////else if (playercolliding == false && stateplayer != JUMPING)
-	////{
-	////	stateplayer = FALLING;
-	////}
 
-	if (playercolliding == false && stateplayer != JUMPING)
+	if (playercolliding == false && stateplayer == IDLE)
 	{
 		stateplayer = FALLING;
 	}
@@ -81,8 +79,6 @@ bool j1Player::Update(float dt)
 		playercolliding = false;
 	}
 
-	playercolliding == false;
-
 	if (stateplayer == JUMPING)
 	{
 		Velocity.y += gravity / 2;
@@ -97,16 +93,16 @@ bool j1Player::Update(float dt)
 
 	}
 
-	/*if (playercolliding == true)
-	{
-		Velocity.y = 0.0f;
-	}*/
+	//Limit maximum y axis velocity
+	if (Velocity.y < -max_speed_y)
+		Velocity.y = -max_speed_y;
 
 	playercollider->SetPos(pos.x, pos.y);
 
 	App->coll->Update(1.0f);
 
 	playercollider->SetPos(pos.x, pos.y);
+
 
 	return true;
 }

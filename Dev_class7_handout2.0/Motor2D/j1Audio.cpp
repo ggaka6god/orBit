@@ -110,9 +110,11 @@ bool j1Audio::CleanUp()
 }
 
 // Play a music file
-bool j1Audio::PlayMusic(const char* path, uint volume , float fade_time)
+bool j1Audio::PlayMusic(const char* path, float fade_time)
 {
 	bool ret = true;
+
+	Mix_VolumeMusic(SDL_MIX_MAXVOLUME*VolumeChanger_music);
 
 	if(!active)
 		return false;
@@ -151,7 +153,6 @@ bool j1Audio::PlayMusic(const char* path, uint volume , float fade_time)
 		}
 		else
 		{
-			Mix_VolumeMusic(volume*VolumeChanger_music);
 
 			if(Mix_PlayMusic(music, -1) < 0)
 			{
@@ -189,7 +190,7 @@ unsigned int j1Audio::LoadFx(const char* path)
 }
 
 // Play WAV
-bool j1Audio::PlayFx(unsigned int id, int repeat, uint volume)
+bool j1Audio::PlayFx(unsigned int id, int repeat)
 {
 	bool ret = false;
 
@@ -198,7 +199,7 @@ bool j1Audio::PlayFx(unsigned int id, int repeat, uint volume)
 
 	if(id > 0 && id <= fx.count())
 	{
-		Mix_VolumeChunk(fx[id - 1], volume * VolumeChanger_fx);
+		Mix_VolumeChunk(fx[id - 1], SDL_MIX_MAXVOLUME * VolumeChanger_fx);
 		Mix_PlayChannel(-1, fx[id - 1], repeat);
 	}
 

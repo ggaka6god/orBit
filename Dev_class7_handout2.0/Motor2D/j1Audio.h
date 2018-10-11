@@ -24,13 +24,13 @@ public:
 	bool CleanUp();
 
 	// Play a music file
-	bool PlayMusic(const char* path, uint volume, float fade_time = DEFAULT_MUSIC_FADE_TIME);
+	bool PlayMusic(const char* path, float fade_time = DEFAULT_MUSIC_FADE_TIME);
 
 	// Load a WAV in memory
 	unsigned int LoadFx(const char* path);
 
 	// Play a previously loaded WAV
-	bool PlayFx(unsigned int fx, int repeat = 0, uint volume = 128);
+	bool PlayFx(unsigned int fx, int repeat = 0);
 
 	//Modify Volume
 

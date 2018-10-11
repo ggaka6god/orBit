@@ -65,12 +65,12 @@ bool j1Scene::Start()
 	{
 
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());
-		App->audio->PlayMusic(stageMusic.GetString(),App->audio->VolumeChanger_music*SDL_MIX_MAXVOLUME);
+		App->audio->PlayMusic(stageMusic.GetString());
 	}
 	else
 	{
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->next->data->GetString());
-		App->audio->PlayMusic(stageMusic.GetString(), App->audio->VolumeChanger_music*SDL_MIX_MAXVOLUME);
+		App->audio->PlayMusic(stageMusic.GetString());
 	}
 
 		colliderfloor = App->coll->AddCollider({ 0, 150, 1024, 100 }, COLLIDER_FLOOR, this);
@@ -187,11 +187,11 @@ bool j1Scene::change_scene(const char* map_name) {
 	if (FirstStage == map_name)
 	{
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());//aqui deberia poder leer metadata
-		App->audio->PlayMusic(stageMusic.GetString(), App->audio->VolumeChanger_music*SDL_MIX_MAXVOLUME);
+		App->audio->PlayMusic(stageMusic.GetString());
 	}
 	else{
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->next->data->GetString());//aqui leer metadata de direccion
-		App->audio->PlayMusic(stageMusic.GetString(), App->audio->VolumeChanger_music*SDL_MIX_MAXVOLUME);
+		App->audio->PlayMusic(stageMusic.GetString());
 	}
 	
 	
