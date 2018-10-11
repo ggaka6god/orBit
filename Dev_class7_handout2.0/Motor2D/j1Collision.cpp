@@ -52,6 +52,8 @@ bool j1Collision::Update(float dt)
 
 	playertouched = 0;
 
+	bool skipcolliders = false; //skip colliders that are not in camera
+
 	// Calculate collisions
 
 	p2List_item <Collider*> *collider1;
@@ -64,7 +66,13 @@ bool j1Collision::Update(float dt)
 
 	while(collider1!=NULL && collider2!=NULL && collider1!=collider2)
 	{
-		while (collider2 != NULL)
+		if (collider1->data->rect.x > App->render->camera.x + App->render->camera.w &&
+			collider2->data->rect.x > App->render->camera.x + App->render->camera.w)
+		{
+			skipcolliders = true;
+		}
+
+		while (collider2 != NULL && skipcolliders==true)
 		{
 			if (collider1->data->CheckCollision(collider2->data->rect) == true)
 			{
@@ -86,6 +94,7 @@ bool j1Collision::Update(float dt)
 			collider2 = collider2->next;
 		}
 
+		skipcolliders = false;
 		collider1 = collider1->next;
 		collider2 = collider1->next;
 	}
