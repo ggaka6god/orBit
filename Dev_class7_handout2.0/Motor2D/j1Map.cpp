@@ -6,6 +6,8 @@
 #include "j1Map.h"
 #include <math.h>
 #include "j1Collision.h"
+#include "j1Window.h"
+
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -96,7 +98,7 @@ void j1Map::Draw()
 
 
 	// TODO 4: Make sure we draw all the layers and not just the first one
-	MapLayer* layer /*this->data.layers.start->data*/;
+	MapLayer* layer;
 
 
 	for (uint l = 0; l < data.layers.count(); l++)
@@ -118,9 +120,15 @@ void j1Map::Draw()
 					if (tileset != nullptr)
 					{
 						SDL_Rect r = tileset->GetTileRect(tile_id);
+
 						iPoint pos = MapToWorld(x, y);
 
-						App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+				
+						if ((pos.x + data.tile_width)*App->win->GetScale() >= -App->render->camera.x && pos.x <= -App->render->camera.x + App->render->camera.w
+							&& (pos.y+data.tile_height)*App->win->GetScale() >= -App->render->camera.y && pos.y <= -App->render->camera.y + App->render->camera.h)
+						{
+							App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+						}
 					}
 				}
 			}
@@ -231,6 +239,8 @@ SDL_Rect TileSet::GetTileRect(int id) const
 
 	rect.x = margin + ((rect.w + spacing) * (relative_id % num_tiles_width));
 	rect.y = margin + ((rect.h + spacing) * (relative_id / num_tiles_width));
+
+
 	return rect;
 }
 

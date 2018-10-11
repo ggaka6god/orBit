@@ -4,6 +4,7 @@
 #include "j1Render.h"
 #include "j1Player.h"
 #include "p2Log.h"
+#include "j1Window.h"
 
 
 j1Collision::j1Collision()
@@ -51,6 +52,83 @@ bool j1Collision::Update(float dt)
 {
 
 	bool ret = true;
+
+
+	playertouched = 0;
+
+	bool skipcolliders = true; //skip colliders that are not in camera
+
+	// Calculate collisions
+
+	p2List_item <Collider*> *collider1;
+	p2List_item <Collider*> *collider2;
+
+	collider2 = collider1 = colliders.start;
+	
+	if(collider1->next!=NULL)
+	collider2 = collider1->next;
+
+	while(collider1!=NULL && collider2!=NULL && collider1!=collider2)
+	{
+
+		if ((collider1->data->rect.x + collider1->data->rect.w >= -App->render->camera.x 
+			&& collider1->data->rect.x*App->win->GetScale() <=-App->render->camera.x + App->render->camera.w)
+			&& (collider2->data->rect.x + collider2->data->rect.w >= -App->render->camera.x 
+			&& collider2->data->rect.x*App->win->GetScale() <= -App->render->camera.x + App->render->camera.w))
+		{
+			skipcolliders = false;
+		}
+
+		while (collider2 != NULL && skipcolliders==false)
+		{
+			//We skip colliders that are not in camera
+			skipcolliders = true;
+
+			if (collider2->data->rect.x + collider2->data->rect.w >= -App->render->camera.x 
+				&& collider2->data->rect.x*App->win->GetScale() <= -App->render->camera.x + App->render->camera.w)
+			{
+				skipcolliders = false;
+			}
+
+			if (collider1->data->CheckCollision(collider2->data->rect) == true && skipcolliders==false)
+			{
+				/*if (collider1->data->type == COLLIDER_PLAYER || collider2->data->type == COLLIDER_PLAYER)
+				{
+					playertouched++;
+				}
+                */
+				if (matrix[collider1->data->type][collider2->data->type] && collider1->data->callback)
+				{
+					collider1->data->callback->OnCollision(collider1->data, collider2->data);
+				}
+
+				if (matrix[collider2->data->type][collider1->data->type] && collider2->data->callback)
+				{
+					collider2->data->callback->OnCollision(collider2->data, collider1->data);
+				}
+			}
+			collider2 = collider2->next;
+			skipcolliders = false;
+		}
+
+		if (skipcolliders == true)
+		{
+			collider2 = collider2->next;
+			continue;
+		}
+		skipcolliders = true;
+		collider1 = collider1->next;
+		collider2 = collider1->next;
+	}
+	//if (playertouched == 0) 
+	//{
+	//	LOG("playertouched is %i", playertouched);
+	//	//App->player->playercolliding = false;
+
+	//	if(App->player->stateplayer==IDLE)
+	//	App->player->stateplayer = FALLING;
+	//
+	//}
 
 	return ret;
 }
