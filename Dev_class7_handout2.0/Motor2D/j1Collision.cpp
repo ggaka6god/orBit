@@ -16,6 +16,8 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_PLAYER][COLLIDER_FLOOR] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER] = false;
 
+	matrix[COLLIDER_PLAYER][COLLIDER_SPIKES] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_PLATFORM] = true;
 
 }
 
@@ -50,63 +52,6 @@ bool j1Collision::Update(float dt)
 
 	bool ret = true;
 
-	playertouched = 0;
-
-	bool skipcolliders = false; //skip colliders that are not in camera
-
-	// Calculate collisions
-
-	p2List_item <Collider*> *collider1;
-	p2List_item <Collider*> *collider2;
-
-	collider2 = collider1 = colliders.start;
-	
-	if(collider1->next!=NULL)
-	collider2 = collider1->next;
-
-	while(collider1!=NULL && collider2!=NULL && collider1!=collider2)
-	{
-		if (collider1->data->rect.x > App->render->camera.x + App->render->camera.w &&
-			collider2->data->rect.x > App->render->camera.x + App->render->camera.w)
-		{
-			skipcolliders = true;
-		}
-
-		while (collider2 != NULL && skipcolliders==true)
-		{
-			if (collider1->data->CheckCollision(collider2->data->rect) == true)
-			{
-				/*if (collider1->data->type == COLLIDER_PLAYER || collider2->data->type == COLLIDER_PLAYER)
-				{
-					playertouched++;
-				}
-*/
-				if (matrix[collider1->data->type][collider2->data->type] && collider1->data->callback)
-				{
-					collider1->data->callback->OnCollision(collider1->data, collider2->data);
-				}
-
-				if (matrix[collider2->data->type][collider1->data->type] && collider2->data->callback)
-				{
-					collider2->data->callback->OnCollision(collider2->data, collider1->data);
-				}
-			}
-			collider2 = collider2->next;
-		}
-
-		skipcolliders = false;
-		collider1 = collider1->next;
-		collider2 = collider1->next;
-	}
-	//if (playertouched == 0) 
-	//{
-	//	LOG("playertouched is %i", playertouched);
-	//	//App->player->playercolliding = false;
-
-	//	if(App->player->stateplayer==IDLE)
-	//	App->player->stateplayer = FALLING;
-	//
-	//}
 	return ret;
 }
 
@@ -168,12 +113,19 @@ void j1Collision::DebugDraw()
 		case COLLIDER_NONE: // white
 			App->render->DrawQuad(item->data->rect, 255, 255, 255, alpha);
 			break;
-		case COLLIDER_FLOOR: // blue
-			App->render->DrawQuad(item->data->rect, 0, 0, 255, alpha);
+		case COLLIDER_FLOOR: // red
+			App->render->DrawQuad(item->data->rect, 255, 0, 0, alpha);
 			break;
 		case COLLIDER_PLAYER: // green
 			App->render->DrawQuad(item->data->rect, 0, 255, 0, alpha);
 			break;
+		case COLLIDER_SPIKES: // yellow
+			App->render->DrawQuad(item->data->rect, 255, 255, 0, alpha);
+			break;
+		case COLLIDER_PLATFORM: // green
+			App->render->DrawQuad(item->data->rect, 255, 0, 255, alpha);
+			break;
+			
 
 		}
 		item = item->next;

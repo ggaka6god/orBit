@@ -11,6 +11,7 @@
 // to ask for the value of a custom property
 // ----------------------------------------------------
 
+
 struct Properties
 {
 	p2List <p2SString*> name;
@@ -88,6 +89,7 @@ struct TileSet
 	int					num_tiles_height;
 	int					offset_x;
 	int					offset_y;
+	
 };
 
 enum MapTypes
@@ -137,7 +139,7 @@ public:
 	iPoint MapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;
 
-
+	bool ColliderDrawer();
 
 private:
 
@@ -152,13 +154,16 @@ private:
 public:
 
 	MapData data;
-
+	
 	
 
 private:
 	p2SString folder;
 	pugi::xml_document	map_file;
 	bool				map_loaded;
+	int					redCollision;
+	int					yellowCollision;
+	int					magentaCollision;
 };
 
 #endif // __j1MAP_H__

@@ -111,7 +111,7 @@ bool j1Player::PostUpdate()
 {
 	bool ret = true;
 
-	App->render->DrawQuad(playercollider->rect, 255, 0, 0);
+	App->render->DrawQuad(playercollider->rect, 0, 255, 0);
 
 	return ret;
 }

@@ -5,6 +5,7 @@
 #include "j1Textures.h"
 #include "j1Map.h"
 #include <math.h>
+#include "j1Collision.h"
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -22,7 +23,59 @@ bool j1Map::Awake(pugi::xml_node& config)
 	bool ret = true;
 
 	folder.create(config.child("folder").child_value());
+	redCollision = config.child("collision").attribute("red").as_int();
+	yellowCollision = config.child("collision").attribute("yellow").as_int();
+	magentaCollision = config.child("collision").attribute("magenta").as_int();
 
+	
+
+	return ret;
+}
+
+bool j1Map::ColliderDrawer()
+{
+	bool ret = true;
+
+	MapLayer* layer;
+
+	for (uint l = 0; l < data.layers.count(); l++)
+	{
+		layer = data.layers.At(l)->data;
+
+		if (layer->properties.GetProperties("Nodraw").operator==("1"))
+		{
+		
+			for (int y = 0; y < data.height; ++y)
+			{
+				for (int x = 0; x < data.width; ++x)
+				{
+					int tile_id = layer->Get(x, y);
+					
+					if (tile_id > 0)
+					{
+						TileSet* tileset = GetTilesetFromTileId(tile_id);
+
+						if (tile_id > tileset->firstgid)
+						{
+
+							iPoint pos = MapToWorld(x, y);
+							
+							if(tile_id==redCollision)
+								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_FLOOR);
+								
+							if (tile_id==yellowCollision)
+								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_SPIKES);
+								
+							if (tile_id==magentaCollision)
+								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_PLATFORM);
+							
+
+						}
+					}
+				}
+			}
+		}
+	}
 
 	return ret;
 }
@@ -458,6 +511,7 @@ bool j1Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 	set->tile_height = tileset_node.attribute("tileheight").as_int();
 	set->margin = tileset_node.attribute("margin").as_int();
 	set->spacing = tileset_node.attribute("spacing").as_int();
+	//set->redCollision=tileset_node.attribute("")
 	pugi::xml_node offset = tileset_node.child("tileoffset");
 
 	if(offset != NULL)

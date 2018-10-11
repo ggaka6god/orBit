@@ -73,8 +73,11 @@ bool j1Scene::Start()
 		App->audio->PlayMusic(stageMusic.GetString());
 	}
 
-		colliderfloor = App->coll->AddCollider({ 0, 150, 1024, 100 }, COLLIDER_FLOOR, this);
-		colliderbox = App->coll->AddCollider({ 100, 120, 50, 30 }, COLLIDER_FLOOR, this);
+	
+		//colliderfloor = App->coll->AddCollider({ 0, 150, 1024, 100 }, COLLIDER_FLOOR, this);
+		//colliderbox = App->coll->AddCollider({ 100, 120, 50, 30 }, COLLIDER_FLOOR, this);
+
+		App->map->ColliderDrawer();
 
 	return ret;
 }
@@ -122,16 +125,16 @@ bool j1Scene::Update(float dt)
 		App->SaveGame("save_game.xml");
 
 	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		App->render->camera.y += 1;
+		App->render->camera.y += 15;
 
 	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		App->render->camera.y -= 1;
+		App->render->camera.y -= 15;
 
 	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		App->render->camera.x += 1;
+		App->render->camera.x += 15;
 
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		App->render->camera.x -= 1;
+		App->render->camera.x -= 15;
 
 	App->map->Draw();
 
@@ -156,6 +159,7 @@ bool j1Scene::PostUpdate()
 
 	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
+
 
 	return ret;
 }
@@ -182,7 +186,10 @@ bool j1Scene::CleanUp()
 bool j1Scene::change_scene(const char* map_name) {
 	bool ret = true;
 	App->map->CleanUp();
+	App->coll->CleanUp();
 	App->map->Load(map_name);
+	App->map->ColliderDrawer();
+
 
 	if (FirstStage == map_name)
 	{

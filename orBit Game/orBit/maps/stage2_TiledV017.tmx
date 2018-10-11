@@ -56043,7 +56043,14 @@
    <tile gid="0"/>
   </data>
  </layer>
- <layer name="coliders" width="200" height="40">
+ <layer name="colliders" width="200" height="40">
+  <properties>
+   <property name="Anumproperties" type="int" value="2"/>
+   <property name="Nodraw" type="int" value="1"/>
+   <property name="magenta" type="int" value="582"/>
+   <property name="red" type="int" value="583"/>
+   <property name="yellow" type="int" value="582"/>
+  </properties>
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
