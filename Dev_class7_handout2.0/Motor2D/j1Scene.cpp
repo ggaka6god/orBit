@@ -103,12 +103,12 @@ bool j1Scene::Update(float dt)
 			secondStage = false;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && secondStage== false) //can only press during first stage. gos to second stage
-	{	
-		change_scene(StageList.start->next->data->GetString());
-		firstStage = false;
-		secondStage = true;
-	}
+	//if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && secondStage== false) //can only press during first stage. gos to second stage
+	//{	
+	//	change_scene(StageList.start->next->data->GetString());
+	//	firstStage = false;
+	//	secondStage = true;
+	//}
 	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
 	{
 		App->audio->ChangeVolume_music(10);
@@ -192,7 +192,9 @@ bool j1Scene::change_scene(const char* map_name) {
 	bool ret = true;
 	App->map->CleanUp();
 	App->coll->CleanUp();
+	
 	App->map->Load(map_name);
+
 	App->map->ColliderDrawer();
 
 
