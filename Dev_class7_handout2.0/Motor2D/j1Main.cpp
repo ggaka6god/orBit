@@ -13,7 +13,7 @@
 #pragma comment( lib, "SDL/libx86/SDL2main.lib" )
 
 enum MainState
-{
+{                                                                                         
 	CREATE = 1,
 	AWAKE,
 	START,

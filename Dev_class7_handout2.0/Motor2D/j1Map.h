@@ -25,25 +25,6 @@ struct Properties
 
 	~Properties()
 	{
-		//// Remove all items from lists
-		//p2List_item<p2SString>* item;
-		//item = name.start;
-
-		//while (item != NULL)
-		//{
-		//	RELEASE(item);
-		//	item = item->next; //problem
-		//}
-		//name.clear();
-
-		//item = value.start;
-
-		//while (item != NULL)
-		//{
-		//	RELEASE(item);
-		//	item = item->next;
-		//}
-		//value.clear();
 	}
 
 };
@@ -171,6 +152,7 @@ private:
 public:
 
 	MapData data;
+
 	
 
 private:
