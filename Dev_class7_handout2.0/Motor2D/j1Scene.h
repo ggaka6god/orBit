@@ -36,8 +36,9 @@ public:
 	bool change_scene(const char* map_name);
 
 public:
-	Collider* colliderfloor;
-	Collider* colliderbox;
+	Collider* colliderfloor = nullptr;
+	Collider* colliderbox = nullptr;
+	Collider* test = nullptr;
 	p2List<p2SString*> StageList;
 	p2SString FirstStage;
 	bool firstStage = true;

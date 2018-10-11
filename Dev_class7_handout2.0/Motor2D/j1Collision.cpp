@@ -4,6 +4,7 @@
 #include "j1Render.h"
 #include "j1Player.h"
 #include "p2Log.h"
+#include "j1Window.h"
 
 
 j1Collision::j1Collision()
@@ -52,7 +53,7 @@ bool j1Collision::Update(float dt)
 
 	playertouched = 0;
 
-	bool skipcolliders = false; //skip colliders that are not in camera
+	bool skipcolliders = true; //skip colliders that are not in camera
 
 	// Calculate collisions
 
@@ -66,21 +67,33 @@ bool j1Collision::Update(float dt)
 
 	while(collider1!=NULL && collider2!=NULL && collider1!=collider2)
 	{
-		if (collider1->data->rect.x > App->render->camera.x + App->render->camera.w &&
-			collider2->data->rect.x > App->render->camera.x + App->render->camera.w)
+
+		if ((collider1->data->rect.x + collider1->data->rect.w >= -App->render->camera.x 
+			&& collider1->data->rect.x*App->win->GetScale() <=-App->render->camera.x + App->render->camera.w)
+			&& (collider2->data->rect.x + collider2->data->rect.w >= -App->render->camera.x 
+			&& collider2->data->rect.x*App->win->GetScale() <= -App->render->camera.x + App->render->camera.w))
 		{
-			skipcolliders = true;
+			skipcolliders = false;
 		}
 
-		while (collider2 != NULL && skipcolliders==true)
+		while (collider2 != NULL && skipcolliders==false)
 		{
-			if (collider1->data->CheckCollision(collider2->data->rect) == true)
+			//We skip colliders that are not in camera
+			skipcolliders = true;
+
+			if (collider2->data->rect.x + collider2->data->rect.w >= -App->render->camera.x 
+				&& collider2->data->rect.x*App->win->GetScale() <= -App->render->camera.x + App->render->camera.w)
+			{
+				skipcolliders = false;
+			}
+
+			if (collider1->data->CheckCollision(collider2->data->rect) == true && skipcolliders==false)
 			{
 				/*if (collider1->data->type == COLLIDER_PLAYER || collider2->data->type == COLLIDER_PLAYER)
 				{
 					playertouched++;
 				}
-*/
+                */
 				if (matrix[collider1->data->type][collider2->data->type] && collider1->data->callback)
 				{
 					collider1->data->callback->OnCollision(collider1->data, collider2->data);
@@ -92,9 +105,15 @@ bool j1Collision::Update(float dt)
 				}
 			}
 			collider2 = collider2->next;
+			skipcolliders = false;
 		}
 
-		skipcolliders = false;
+		if (skipcolliders == true)
+		{
+			collider2 = collider2->next;
+			continue;
+		}
+		skipcolliders = true;
 		collider1 = collider1->next;
 		collider2 = collider1->next;
 	}
