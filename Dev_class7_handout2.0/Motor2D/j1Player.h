@@ -47,11 +47,13 @@ public:
 	bool playercolliding;
 
 	float max_speed_y;
+
 	bool double_jump;
 	bool must_fall;
 
 	bool going_right;
 	bool going_left;
+
 
 };
 

@@ -25,9 +25,12 @@ bool j1Map::Awake(pugi::xml_node& config)
 	bool ret = true;
 
 	folder.create(config.child("folder").child_value());
-	redCollision = config.child("collision").attribute("red").as_int();
-	yellowCollision = config.child("collision").attribute("yellow").as_int();
-	magentaCollision = config.child("collision").attribute("magenta").as_int();
+	redCollision = config.child("collision1").attribute("red").as_int();
+	yellowCollision = config.child("collision1").attribute("yellow").as_int();
+	magentaCollision = config.child("collision1").attribute("magenta").as_int();
+	redCollision2 = config.child("collision2").attribute("red").as_int();
+	yellowCollision2 = config.child("collision2").attribute("yellow").as_int();
+	magentaCollision2 = config.child("collision2").attribute("magenta").as_int();
 
 	
 
@@ -37,69 +40,75 @@ bool j1Map::Awake(pugi::xml_node& config)
 // Called before quitting
 bool j1Map::CleanUp()
 {
-	LOG("Unloading map");
-
-	// Remove all tilesets
-	p2List_item<TileSet*>* item;
-	item = data.tilesets.start;
-
-	while(item != NULL)
+	MapData* MapataItem = &data;
+	for(int i=0;i < numberStages; ++i)
 	{
-		RELEASE(item->data);
-		item = item->next;
-	}
-	data.tilesets.clear();
+		LOG("Unloading map");
 
-	//// Remove all items from lists
+		// Remove all tilesets
+		p2List_item<TileSet*>* item;
+		item = MapataItem->tilesets.start;
 
-	p2List_item<MapLayer*>* item2;
-	item2 = data.layers.start;
-
-	p2List_item<p2SString*>* itemproperties;
-	itemproperties = item2->data->properties.name.start;
-
-	while(item2 != NULL)
-	{
-		while (itemproperties != NULL)
+		while (item != NULL)
 		{
-
-			RELEASE(itemproperties->data);
-			if (itemproperties == item2->data->properties.name.end)
-				break;
-			itemproperties = itemproperties->next;
+			RELEASE(item->data);
+			item = item->next;
 		}
-		item2->data->properties.name.clear();
+		MapataItem->tilesets.clear();
 
-		itemproperties = item2->data->properties.value.start;
+		//// Remove all items from lists
 
-		while (itemproperties != NULL)
+		p2List_item<MapLayer*>* item2;
+		item2 = MapataItem->layers.start;
+
+		p2List_item<p2SString*>* itemproperties;
+		itemproperties = item2->data->properties.name.start;
+
+		while (item2 != NULL)
 		{
-			RELEASE(itemproperties->data);
-			if (itemproperties == item2->data->properties.value.end)
-				break;
-			itemproperties = itemproperties->next;
+			while (itemproperties != NULL)
+			{
+
+				RELEASE(itemproperties->data);
+				if (itemproperties == item2->data->properties.name.end)
+					break;
+				itemproperties = itemproperties->next;
+			}
+			item2->data->properties.name.clear();
+
+			itemproperties = item2->data->properties.value.start;
+
+			while (itemproperties != NULL)
+			{
+				RELEASE(itemproperties->data);
+				if (itemproperties == item2->data->properties.value.end)
+					break;
+				itemproperties = itemproperties->next;
+			}
+			item2->data->properties.value.clear();
+
+			RELEASE(item2->data);
+			item2 = item2->next;
 		}
-		item2->data->properties.value.clear();
+		MapataItem->layers.clear();
 
-		RELEASE(item2->data);
-		item2 = item2->next;
+		// Remove all Pralax image
+		p2List_item<ImageLayer*>* item3;
+		item3 = MapataItem->paralaxlist.start;
+
+		while (item3 != NULL)
+		{
+			RELEASE(item3->data);
+			item3 = item3->next;
+		}
+		MapataItem->paralaxlist.clear();
+
+
+		// Clean up the pugui tree
+		map_file.reset();
+
+		MapataItem = &data2;
 	}
-	data.layers.clear();
-
-	// Remove all Pralax image
-	p2List_item<ImageLayer*>* item3;
-	item3 = data.paralaxlist.start;
-
-	while (item3 != NULL)
-	{
-		RELEASE(item3->data);
-		item3 = item3->next;
-	}
-	data.paralaxlist.clear();
-
-
-	// Clean up the pugui tree
-	map_file.reset();
 
 	return true;
 }
@@ -460,13 +469,13 @@ bool j1Map::ColliderDrawer(MapData& data)
 
 							iPoint pos = MapToWorld(x, y, data);
 
-							if (tile_id == redCollision)
+							if (tile_id == redCollision || tile_id== redCollision2)
 								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_FLOOR);
 
-							if (tile_id == yellowCollision)
+							else if (tile_id == yellowCollision || tile_id == yellowCollision2)
 								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_SPIKES);
 
-							if (tile_id == magentaCollision)
+							else if (tile_id == magentaCollision || tile_id == magentaCollision2)
 								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_PLATFORM);
 
 
