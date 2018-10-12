@@ -92,11 +92,11 @@ bool j1Collision::Update(float dt)
 
 			if (collider1->data->CheckCollision(collider2->data->rect) == true && skipcolliders==false)
 			{
-				/*if (collider1->data->type == COLLIDER_PLAYER || collider2->data->type == COLLIDER_PLAYER)
+				if (collider1->data->type == COLLIDER_PLAYER || collider2->data->type == COLLIDER_PLAYER)
 				{
 					playertouched++;
 				}
-                */
+                
 				if (matrix[collider1->data->type][collider2->data->type] && collider1->data->callback)
 				{
 					collider1->data->callback->OnCollision(collider1->data, collider2->data);
@@ -120,15 +120,16 @@ bool j1Collision::Update(float dt)
 		collider1 = collider1->next;
 		collider2 = collider1->next;
 	}
-	//if (playertouched == 0) 
-	//{
-	//	LOG("playertouched is %i", playertouched);
-	//	//App->player->playercolliding = false;
-
-	//	if(App->player->stateplayer==IDLE)
-	//	App->player->stateplayer = FALLING;
-	//
-	//}
+	if (App->player->stateplayer!=JUMPING && App->player->stateplayer!=FALLING && playertouched == 0) 
+	{
+		LOG("playertouched is %i", playertouched);
+		App->player->must_fall = true;
+	
+	}
+	if (playertouched > 0)
+	{
+		App->player->must_fall = false;
+	}
 
 	return ret;
 }

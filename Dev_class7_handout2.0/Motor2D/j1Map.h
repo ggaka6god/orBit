@@ -115,6 +115,7 @@ struct MapData
 };
 
 // ----------------------------------------------------
+
 class j1Map : public j1Module
 {
 public:

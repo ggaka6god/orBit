@@ -477,6 +477,8 @@ bool j1Map::ColliderDrawer(MapData& data)
 		}
 	}
 
+
+
 	return ret;
 }
 

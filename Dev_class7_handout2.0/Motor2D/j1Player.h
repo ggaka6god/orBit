@@ -48,8 +48,6 @@ public:
 
 	float max_speed_y;
 
-
-
 };
 
 #endif // __j1Player_H__
