@@ -134,6 +134,7 @@ bool j1Scene::Update(float dt)
 {
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && firstStage == false) //can only press during second stage. gos to first stage
 	{	
+		//make function to reset default camera value from level start, player postion and play respective music
 			//change_scene(StageList.start->data->GetString());
 			firstStage = true;
 			secondStage = false;
