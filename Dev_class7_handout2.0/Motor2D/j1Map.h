@@ -156,7 +156,8 @@ public:
 
 	MapData data;
 	MapData data2;
-	
+
+	int numberStages = 0;
 
 private:
 	p2SString folder;
@@ -165,6 +166,9 @@ private:
 	int					redCollision;
 	int					yellowCollision;
 	int					magentaCollision;
+	int					redCollision2;
+	int					yellowCollision2;
+	int					magentaCollision2;
 };
 
 #endif // __j1MAP_H__

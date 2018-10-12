@@ -47,6 +47,7 @@ public:
 	bool playercolliding;
 
 	float max_speed_y;
+	bool must_fall;
 
 };
 

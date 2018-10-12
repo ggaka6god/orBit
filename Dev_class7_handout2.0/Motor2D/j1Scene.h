@@ -46,6 +46,7 @@ public:
 	bool firstStage = true;
 	bool secondStage = false;
 
+	
 private:
 	p2SString map_name;
 };

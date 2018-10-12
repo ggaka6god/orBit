@@ -9,6 +9,7 @@
 #include "j1Map.h"
 #include "j1Scene.h"
 #include "j1Collision.h"
+#include "j1Player.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -32,6 +33,7 @@ bool j1Scene::Awake(pugi::xml_node& config)
 		p2SString* StageName = new p2SString(stage.attribute("name").as_string());
 		/*StageName->create(stage.attribute("name").as_string());*/
 		StageList.add(StageName);
+			App->map->numberStages++;
 	}
 
 	/*map_name = config.child("map_name").attribute("name").as_string();*/
@@ -113,7 +115,7 @@ bool j1Scene::Start()
 		//colliderfloor = App->coll->AddCollider({ 0, 150, 1024, 100 }, COLLIDER_FLOOR, this);
 		//colliderbox = App->coll->AddCollider({ 100, 120, 50, 30 }, COLLIDER_FLOOR, this);
 
-		//App->map->ColliderDrawer(App->map->data);
+		App->map->ColliderDrawer(App->map->data);
 
 		colliderfloor = App->coll->AddCollider({ 0, 150, 1024, 100 }, COLLIDER_FLOOR, this);
 		colliderbox = App->coll->AddCollider({ 100, 120, 50, 30 }, COLLIDER_FLOOR, this);
@@ -135,14 +137,14 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && firstStage == false) //can only press during second stage. gos to first stage
 	{	
 		//make function to reset default camera value from level start, player postion and play respective music
-			//change_scene(StageList.start->data->GetString());
+			change_scene(StageList.start->data->GetString());
 			firstStage = true;
 			secondStage = false;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && secondStage== false) //can only press during first stage. gos to second stage
 	{	
-		//change_scene(StageList.start->next->data->GetString());
+		change_scene(StageList.start->next->data->GetString());
 		firstStage = false;
 		secondStage = true;
 	}
@@ -184,7 +186,7 @@ bool j1Scene::Update(float dt)
 	if (firstStage == true)
 	{
 		App->map->Draw(App->map->data);
-
+		
 		
 		iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y, App->map->data);
 		p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d",
@@ -247,26 +249,27 @@ bool j1Scene::CleanUp()
 bool j1Scene::change_scene(const char* map_name) {
 	
 	bool ret = true;
-	//App->map->CleanUp();
-	//App->coll->CleanUp();
-	//
-	//App->map->Load(map_name);
 
-	//App->map->ColliderDrawer();
+	//App->player->playercollider->SetPos(5, 15);
 
+	//camera postion reste
+	//player pos reset
+	//music reste
+	App->coll->CleanUp();
+	
+	if (FirstStage == map_name)
+	{	
+		App->map->ColliderDrawer(App->map->data);
+		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());//aqui deberia poder leer metadata
+		App->audio->PlayMusic(stageMusic.GetString());
+	}
+	else{
 
-	//if (FirstStage == map_name)
-	//{	
-
-	//	p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());//aqui deberia poder leer metadata
-	//	App->audio->PlayMusic(stageMusic.GetString());
-	//}
-	//else{
-
-	//	p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->next->data->GetString());//aqui leer metadata de direccion
-	//	App->audio->PlayMusic(stageMusic.GetString());
-	//}
-	//
+		App->map->ColliderDrawer(App->map->data2);
+		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->next->data->GetString());//aqui leer metadata de direccion
+		App->audio->PlayMusic(stageMusic.GetString());
+	}
+	
 	
 
 	return ret;
