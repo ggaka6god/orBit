@@ -68,10 +68,10 @@ bool j1Collision::Update(float dt)
 	while(collider1!=NULL && collider2!=NULL && collider1!=collider2)
 	{
 
-		if ((collider1->data->rect.x + collider1->data->rect.w >= -App->render->camera.x 
-			&& collider1->data->rect.x*App->win->GetScale() <=-App->render->camera.x + App->render->camera.w)
-			&& (collider2->data->rect.x + collider2->data->rect.w >= -App->render->camera.x 
-			&& collider2->data->rect.x*App->win->GetScale() <= -App->render->camera.x + App->render->camera.w))
+		if ((collider1->data->rect.x + collider1->data->rect.w)*App->win->GetScale() >= -App->render->camera.x 
+			&& collider1->data->rect.x <=-App->render->camera.x + App->render->camera.w
+			&& (collider2->data->rect.x + collider2->data->rect.w)*App->win->GetScale() >= -App->render->camera.x 
+			&& collider2->data->rect.x <= -App->render->camera.x + App->render->camera.w)
 		{
 			skipcolliders = false;
 		}
@@ -81,7 +81,7 @@ bool j1Collision::Update(float dt)
 			//We skip colliders that are not in camera
 			skipcolliders = true;
 
-			if (collider2->data->rect.x + collider2->data->rect.w >= -App->render->camera.x 
+			if ((collider2->data->rect.x + collider2->data->rect.w)*App->win->GetScale() >= -App->render->camera.x 
 				&& collider2->data->rect.x*App->win->GetScale() <= -App->render->camera.x + App->render->camera.w)
 			{
 				skipcolliders = false;
