@@ -120,15 +120,11 @@ bool j1Collision::Update(float dt)
 		collider1 = collider1->next;
 		collider2 = collider1->next;
 	}
+
+
 	if (App->player->stateplayer!=JUMPING && App->player->stateplayer!=FALLING && playertouched == 0) 
 	{
-		LOG("playertouched is %i", playertouched);
 		App->player->must_fall = true;
-	
-	}
-	if (playertouched > 0)
-	{
-		App->player->must_fall = false;
 	}
 
 	return ret;
@@ -215,10 +211,10 @@ void j1Collision::DebugDraw()
 
 bool Collider::CheckCollision(const SDL_Rect & r) const
 {
-	return (rect.x < r.x + r.w &&
-		rect.x + rect.w > r.x &&
-		rect.y < r.y + r.h &&
-		rect.h + rect.y > r.y);
+	return (rect.x <= r.x + r.w &&
+		rect.x + rect.w >= r.x &&
+		rect.y <= r.y + r.h &&
+		rect.h + rect.y >= r.y);
 
 	// between argument "r" and property "rect"
 }
