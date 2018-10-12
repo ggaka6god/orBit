@@ -24,13 +24,15 @@
 
   <map>
     <folder>maps/</folder>
-   <collision red="583" magenta="582" yellow="581"/>
-    
+   <collision1 red="583" magenta="582" yellow="581"/>
+   <collision2 red="583" magenta="582" yellow="581"/>
   </map>
 
   <scene>
     <map_name name="stage1_TiledV017.tmx"/>
     <map_name name="stage2_TiledV017.tmx"/>
+    
+   
   </scene>
 
   <audio>

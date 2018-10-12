@@ -34,230 +34,6 @@ bool j1Map::Awake(pugi::xml_node& config)
 	return ret;
 }
 
-bool j1Map::ColliderDrawer()
-{
-	bool ret = true;
-
-	MapLayer* layer;
-
-	for (uint l = 0; l < data.layers.count(); l++)
-	{
-		layer = data.layers.At(l)->data;
-
-		if (layer->properties.GetProperties("Nodraw").operator==("1"))
-		{
-		
-			for (int y = 0; y < data.height; ++y)
-			{
-				for (int x = 0; x < data.width; ++x)
-				{
-					int tile_id = layer->Get(x, y);
-					
-					if (tile_id > 0)
-					{
-						TileSet* tileset = GetTilesetFromTileId(tile_id);
-
-						if (tile_id > tileset->firstgid)
-						{
-
-							iPoint pos = MapToWorld(x, y);
-							
-							if(tile_id==redCollision)
-								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_FLOOR);
-								
-							if (tile_id==yellowCollision)
-								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_SPIKES);
-								
-							if (tile_id==magentaCollision)
-								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_PLATFORM);
-							
-
-						}
-					}
-				}
-			}
-		}
-	}
-
-	return ret;
-}
-
-void j1Map::Draw()
-{
-	if(map_loaded == false)
-		return;
-
-
-	for (int x = 0; x < data.paralaxlist.count(); ++x)
-	{
-		App->render->Blit(data.paralaxlist[x]->texture,
-			0,
-			0,
-			&data.paralaxlist[x]->GetParalaxRect());
-	}
-
-
-	// TODO 4: Make sure we draw all the layers and not just the first one
-	MapLayer* layer;
-
-
-	for (uint l = 0; l < data.layers.count(); l++)
-	{
-		layer = data.layers.At(l)->data;
-
-		if (layer->properties.GetProperties("Nodraw").operator==("1"))
-			continue;
-
-		for (int y = 0; y < data.height; ++y)
-		{
-			for (int x = 0; x < data.width; ++x)
-			{
-				int tile_id = layer->Get(x, y);
-				if (tile_id > 0)
-				{
-					TileSet* tileset = GetTilesetFromTileId(tile_id);
-
-					if (tileset != nullptr)
-					{
-						SDL_Rect r = tileset->GetTileRect(tile_id);
-
-						iPoint pos = MapToWorld(x, y);
-
-				
-						if ((pos.x + data.tile_width)*App->win->GetScale() >= -App->render->camera.x && pos.x <= -App->render->camera.x + App->render->camera.w
-							&& (pos.y+data.tile_height)*App->win->GetScale() >= -App->render->camera.y && pos.y <= -App->render->camera.y + App->render->camera.h)
-						{
-							App->render->Blit(tileset->texture, pos.x, pos.y, &r);
-						}
-					}
-				}
-			}
-		}
-	}
-
-}
-
-TileSet* j1Map::GetTilesetFromTileId(int id) const
-{
-	// TODO 3: Complete this method so we pick the right
-	// Tileset based on a tile id
-
-	TileSet* tileset;
-
-	int j = data.tilesets.count();
-
-	for (int i = 0; i < j ; ++i)
-	{
-		tileset = data.tilesets.At(i)->data;
-
-		if (tileset == NULL)
-		{
-			LOG("Problem in tileset get");
-		}
-
-		if (id >= tileset->firstgid)
-		{
-			if (data.tilesets.At(i+1)!=NULL)
-			{
-				
-				if (id <=data.tilesets.At(i + 1)->data->firstgid)
-				{
-					if (tileset == NULL)
-					{
-						LOG("Problem in tileset get");
-					}
-					return tileset;
-				}
-				else
-					continue;
-			}
-			return tileset;
-		}
-	}
-
-	LOG("No tileset matches tile_id");
-}
-
-iPoint j1Map::MapToWorld(int x, int y) const
-{
-	iPoint ret;
-
-	if(data.type == MAPTYPE_ORTHOGONAL)
-	{
-		ret.x = x * data.tile_width;
-		ret.y = y * data.tile_height;
-	}
-	else if(data.type == MAPTYPE_ISOMETRIC)
-	{
-		ret.x = (x - y) * (data.tile_width * 0.5f);
-		ret.y = (x + y) * (data.tile_height * 0.5f);
-	}
-	else
-	{
-		LOG("Unknown map type");
-		ret.x = x; ret.y = y;
-	}
-
-	return ret;
-}
-
-iPoint j1Map::WorldToMap(int x, int y) const
-{
-	iPoint ret(0,0);
-
-	if(data.type == MAPTYPE_ORTHOGONAL)
-	{
-		ret.x = x / data.tile_width;
-		ret.y = y / data.tile_height;
-	}
-	else if(data.type == MAPTYPE_ISOMETRIC)
-	{
-		
-		float half_width = data.tile_width * 0.5f;
-		float half_height = data.tile_height * 0.5f;
-		ret.x = int( (x / half_width + y / half_height) / 2);
-		ret.y = int( (y / half_height - (x / half_width)) / 2);
-	}
-	else
-	{
-		LOG("Unknown map type");
-		ret.x = x; ret.y = y;
-	}
-
-	return ret;
-}
-
-SDL_Rect TileSet::GetTileRect(int id) const
-{
-
-	int relative_id = id - firstgid; // problem
-
-	SDL_Rect rect;
-
-	rect.w = tile_width;
-	rect.h = tile_height;
-
-	rect.x = margin + ((rect.w + spacing) * (relative_id % num_tiles_width));
-	rect.y = margin + ((rect.h + spacing) * (relative_id / num_tiles_width));
-
-
-	return rect;
-}
-
-SDL_Rect ImageLayer::GetParalaxRect() const
-{
-	SDL_Rect rect;
-
-	rect.w = width;
-	rect.h = height;
-
-	rect.x = 0;
-	rect.y = 0;
-
-
-	return rect;
-}
-
 // Called before quitting
 bool j1Map::CleanUp()
 {
@@ -329,7 +105,7 @@ bool j1Map::CleanUp()
 }
 
 // Load new map
-bool j1Map::Load(const char* file_name)
+bool j1Map::Load(const char* file_name, MapData& dataRef)
 {
 	bool ret = true;
 	p2SString tmp("%s%s", folder.GetString(), file_name);
@@ -345,7 +121,8 @@ bool j1Map::Load(const char* file_name)
 	// Load general info ----------------------------------------------
 	if(ret == true)
 	{
-		ret = LoadMap();
+
+		ret = LoadMap(dataRef);
 	}
 
 	// Load all tilesets info ----------------------------------------------
@@ -364,7 +141,7 @@ bool j1Map::Load(const char* file_name)
 			ret = LoadTilesetImage(tileset, set);
 		}
 
-		data.tilesets.add(set);
+		dataRef.tilesets.add(set);
 	}
 
 	// Load layer info ----------------------------------------------
@@ -376,7 +153,7 @@ bool j1Map::Load(const char* file_name)
 		ret = LoadLayer(layer, lay);
 
 		if(ret == true)
-			data.layers.add(lay);
+			dataRef.layers.add(lay);
 	}
 
 	//Load Image info ----------------------------
@@ -388,17 +165,17 @@ bool j1Map::Load(const char* file_name)
 		ret = LoadParalax(paralaxNode, imageList);
 
 		if (ret == true)
-			data.paralaxlist.add(imageList);
+			dataRef.paralaxlist.add(imageList);
 	}
 
 
 	if(ret == true)
 	{
 		LOG("Successfully parsed map XML file: %s", file_name);
-		LOG("width: %d height: %d", data.width, data.height);
-		LOG("tile_width: %d tile_height: %d", data.tile_width, data.tile_height);
+		LOG("width: %d height: %d", dataRef.width, dataRef.height);
+		LOG("tile_width: %d tile_height: %d", dataRef.tile_width, dataRef.tile_height);
 
-		p2List_item<TileSet*>* item = data.tilesets.start;
+		p2List_item<TileSet*>* item = dataRef.tilesets.start;
 		while(item != NULL)
 		{
 			TileSet* s = item->data;
@@ -409,7 +186,7 @@ bool j1Map::Load(const char* file_name)
 			item = item->next;
 		}
 
-		p2List_item<MapLayer*>* item_layer = data.layers.start;
+		p2List_item<MapLayer*>* item_layer = dataRef.layers.start;
 		while(item_layer != NULL)
 		{
 			MapLayer* l = item_layer->data;
@@ -425,7 +202,7 @@ bool j1Map::Load(const char* file_name)
 			item_layer = item_layer->next;
 		}
 
-		p2List_item<ImageLayer*>* item_imageParalax = data.paralaxlist.start;
+		p2List_item<ImageLayer*>* item_imageParalax = dataRef.paralaxlist.start;
 		while (item_imageParalax != NULL)
 		{
 			ImageLayer* i = item_imageParalax->data;
@@ -442,7 +219,7 @@ bool j1Map::Load(const char* file_name)
 }
 
 // Load map general properties
-bool j1Map::LoadMap()
+bool j1Map::LoadMap(MapData& data)
 {
 	bool ret = true;
 	pugi::xml_node map = map_file.child("map");
@@ -593,6 +370,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	}
 	else
 	{
+		
 		layer->data = new uint[layer->width*layer->height];
 		memset(layer->data, 0, layer->width*layer->height);
 
@@ -642,6 +420,243 @@ bool Properties::LoadProperties(pugi::xml_node& node)
 	return ret;
 }
 
+bool j1Map::LoadParalax(pugi::xml_node& node, ImageLayer* image)
+{
+	bool ret = true;
+
+	image->name = node.attribute("name").as_string();
+	image->width = node.child("image").attribute("width").as_int();
+	image->height = node.child("image").attribute("height").as_int();
+	image->texture = App->tex->Load(PATH(folder.GetString(), node.child("image").attribute("source").as_string()));
+
+	return ret;
+}
+
+bool j1Map::ColliderDrawer(MapData& data)
+{
+	bool ret = true;
+
+	MapLayer* layer;
+
+	for (uint l = 0; l < data.layers.count(); l++)
+	{
+		layer = data.layers.At(l)->data;
+
+		if (layer->properties.GetProperties("Nodraw").operator==("1"))
+		{
+
+			for (int y = 0; y < data.height; ++y)
+			{
+				for (int x = 0; x < data.width; ++x)
+				{
+					int tile_id = layer->Get(x, y);
+
+					if (tile_id > 0)
+					{
+						TileSet* tileset = GetTilesetFromTileId(tile_id, data);
+
+						if (tile_id > tileset->firstgid)
+						{
+
+							iPoint pos = MapToWorld(x, y, data);
+
+							if (tile_id == redCollision)
+								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_FLOOR);
+
+							if (tile_id == yellowCollision)
+								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_SPIKES);
+
+							if (tile_id == magentaCollision)
+								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_PLATFORM);
+
+
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return ret;
+}
+
+void j1Map::Draw(MapData &data)
+{
+	if (map_loaded == false)
+		return;
+
+
+	for (int x = 0; x < data.paralaxlist.count(); ++x)
+	{
+		App->render->Blit(data.paralaxlist[x]->texture,
+			0,
+			0,
+			&data.paralaxlist[x]->GetParalaxRect());
+	}
+
+
+	// TODO 4: Make sure we draw all the layers and not just the first one
+	MapLayer* layer;
+
+
+	for (uint l = 0; l < data.layers.count(); l++)
+	{
+		layer = data.layers.At(l)->data;
+
+		if (layer->properties.GetProperties("Nodraw").operator==("1"))
+			continue;
+
+		for (int y = 0; y < data.height; ++y)
+		{
+			for (int x = 0; x < data.width; ++x)
+			{
+				int tile_id = layer->Get(x, y);
+				if (tile_id > 0)
+				{
+					TileSet* tileset = GetTilesetFromTileId(tile_id,data);
+
+					if (tileset != nullptr)
+					{
+						SDL_Rect r = tileset->GetTileRect(tile_id);
+
+						iPoint pos = MapToWorld(x, y, data);
+
+
+						if ((pos.x + data.tile_width)*App->win->GetScale() >= -App->render->camera.x && pos.x <= -App->render->camera.x + App->render->camera.w
+							&& (pos.y + data.tile_height)*App->win->GetScale() >= -App->render->camera.y && pos.y <= -App->render->camera.y + App->render->camera.h)
+						{
+							App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+						}
+					}
+				}
+			}
+		}
+	}
+
+}
+
+iPoint j1Map::MapToWorld(int x, int y ,MapData& Data) const
+{
+	iPoint ret;
+
+	if (data.type == MAPTYPE_ORTHOGONAL)
+	{
+		ret.x = x * data.tile_width;
+		ret.y = y * data.tile_height;
+	}
+	else if (data.type == MAPTYPE_ISOMETRIC)
+	{
+		ret.x = (x - y) * (data.tile_width * 0.5f);
+		ret.y = (x + y) * (data.tile_height * 0.5f);
+	}
+	else
+	{
+		LOG("Unknown map type");
+		ret.x = x; ret.y = y;
+	}
+
+	return ret;
+}
+
+iPoint j1Map::WorldToMap(int x, int y, MapData& Data) const
+{
+	iPoint ret(0, 0);
+
+	if (data.type == MAPTYPE_ORTHOGONAL)
+	{
+		ret.x = x / data.tile_width;
+		ret.y = y / data.tile_height;
+	}
+	else if (data.type == MAPTYPE_ISOMETRIC)
+	{
+
+		float half_width = data.tile_width * 0.5f;
+		float half_height = data.tile_height * 0.5f;
+		ret.x = int((x / half_width + y / half_height) / 2);
+		ret.y = int((y / half_height - (x / half_width)) / 2);
+	}
+	else
+	{
+		LOG("Unknown map type");
+		ret.x = x; ret.y = y;
+	}
+
+	return ret;
+}
+
+
+TileSet* j1Map::GetTilesetFromTileId(int id,MapData& data) const
+{
+	// TODO 3: Complete this method so we pick the right
+	// Tileset based on a tile id
+
+	TileSet* tileset;
+
+	int j = data.tilesets.count();
+
+	for (int i = 0; i < j; ++i)
+	{
+		tileset = data.tilesets.At(i)->data;
+
+		if (tileset == NULL)
+		{
+			LOG("Problem in tileset get");
+		}
+
+		if (id >= tileset->firstgid)
+		{
+			if (data.tilesets.At(i + 1) != NULL)
+			{
+
+				if (id <= data.tilesets.At(i + 1)->data->firstgid)
+				{
+					if (tileset == NULL)
+					{
+						LOG("Problem in tileset get");
+					}
+					return tileset;
+				}
+				else
+					continue;
+			}
+			return tileset;
+		}
+	}
+
+	LOG("No tileset matches tile_id");
+}
+
+SDL_Rect TileSet::GetTileRect(int id) const
+{
+
+	int relative_id = id - firstgid; // problem
+
+	SDL_Rect rect;
+
+	rect.w = tile_width;
+	rect.h = tile_height;
+
+	rect.x = margin + ((rect.w + spacing) * (relative_id % num_tiles_width));
+	rect.y = margin + ((rect.h + spacing) * (relative_id / num_tiles_width));
+
+
+	return rect;
+}
+
+SDL_Rect ImageLayer::GetParalaxRect() const
+{
+	SDL_Rect rect;
+
+	rect.w = width;
+	rect.h = height;
+
+	rect.x = 0;
+	rect.y = 0;
+
+
+	return rect;
+}
+
 p2SString Properties::GetProperties(const char * request)
 {
 	p2SString tmp;
@@ -668,16 +683,3 @@ p2SString Properties::GetProperties(const char * request)
 	return tmp;
 }
 
-
-
-bool j1Map::LoadParalax(pugi::xml_node& node, ImageLayer* image)
-{
-	bool ret = true;
-
-	image->name = node.attribute("name").as_string();
-	image->width = node.child("image").attribute("width").as_int();
-	image->height = node.child("image").attribute("height").as_int();
-	image->texture = App->tex->Load(PATH(folder.GetString(), node.child("image").attribute("source").as_string()));
-
-	return ret;
-}
