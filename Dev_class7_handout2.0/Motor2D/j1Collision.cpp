@@ -17,6 +17,8 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_PLAYER][COLLIDER_FLOOR] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER] = false;
 
+	matrix[COLLIDER_PLAYER][COLLIDER_SPIKES] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_PLATFORM] = true;
 
 }
 
@@ -50,6 +52,7 @@ bool j1Collision::Update(float dt)
 {
 
 	bool ret = true;
+
 
 	playertouched = 0;
 
@@ -126,6 +129,7 @@ bool j1Collision::Update(float dt)
 	//	App->player->stateplayer = FALLING;
 	//
 	//}
+
 	return ret;
 }
 
@@ -187,12 +191,19 @@ void j1Collision::DebugDraw()
 		case COLLIDER_NONE: // white
 			App->render->DrawQuad(item->data->rect, 255, 255, 255, alpha);
 			break;
-		case COLLIDER_FLOOR: // blue
-			App->render->DrawQuad(item->data->rect, 0, 0, 255, alpha);
+		case COLLIDER_FLOOR: // red
+			App->render->DrawQuad(item->data->rect, 255, 0, 0, alpha);
 			break;
 		case COLLIDER_PLAYER: // green
 			App->render->DrawQuad(item->data->rect, 0, 255, 0, alpha);
 			break;
+		case COLLIDER_SPIKES: // yellow
+			App->render->DrawQuad(item->data->rect, 255, 255, 0, alpha);
+			break;
+		case COLLIDER_PLATFORM: // green
+			App->render->DrawQuad(item->data->rect, 255, 0, 255, alpha);
+			break;
+			
 
 		}
 		item = item->next;

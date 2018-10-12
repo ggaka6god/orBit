@@ -39,8 +39,10 @@ public:
 	Collider* colliderfloor = nullptr;
 	Collider* colliderbox = nullptr;
 	Collider* test = nullptr;
+
 	p2List<p2SString*> StageList;
 	p2SString FirstStage;
+	
 	bool firstStage = true;
 	bool secondStage = false;
 

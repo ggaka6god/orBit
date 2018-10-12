@@ -11,6 +11,7 @@
 // to ask for the value of a custom property
 // ----------------------------------------------------
 
+
 struct Properties
 {
 	p2List <p2SString*> name;
@@ -88,6 +89,7 @@ struct TileSet
 	int					num_tiles_height;
 	int					offset_x;
 	int					offset_y;
+	
 };
 
 enum MapTypes
@@ -126,39 +128,42 @@ public:
 	bool Awake(pugi::xml_node& conf);
 
 	// Called each loop iteration
-	void Draw();
+	void Draw(MapData& data);
 
 	// Called before quitting
 	bool CleanUp();
 
 	// Load new map
-	bool Load(const char* path);
+	bool Load(const char* path, MapData& Data);
 
-	iPoint MapToWorld(int x, int y) const;
-	iPoint WorldToMap(int x, int y) const;
+	iPoint MapToWorld(int x, int y, MapData& Data) const;
+	iPoint WorldToMap(int x, int y, MapData& Data) const;
 
-
+	bool ColliderDrawer(MapData& data);
 
 private:
 
-	bool LoadMap();
+	bool LoadMap(MapData& data);
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadParalax(pugi::xml_node& node, ImageLayer* image);
 
-	TileSet* GetTilesetFromTileId(int id) const;
+	TileSet* GetTilesetFromTileId(int id,MapData& mapdata) const;
 
 public:
 
 	MapData data;
-
+	MapData data2;
 	
 
 private:
 	p2SString folder;
 	pugi::xml_document	map_file;
 	bool				map_loaded;
+	int					redCollision;
+	int					yellowCollision;
+	int					magentaCollision;
 };
 
 #endif // __j1MAP_H__
