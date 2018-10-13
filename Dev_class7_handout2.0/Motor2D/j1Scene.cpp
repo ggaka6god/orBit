@@ -115,13 +115,12 @@ bool j1Scene::Start()
 		//colliderfloor = App->coll->AddCollider({ 0, 150, 1024, 100 }, COLLIDER_FLOOR, this);
 		//colliderbox = App->coll->AddCollider({ 100, 120, 50, 30 }, COLLIDER_FLOOR, this);
 
-		/*App->map->ColliderDrawer(App->map->data);*/
+		App->map->ColliderDrawer(App->map->data);
 
 		colliderfloor = App->coll->AddCollider({ 0, 150, 1024, 100 }, COLLIDER_FLOOR, this);
 		colliderbox = App->coll->AddCollider({ 100, 120, 50, 30 }, COLLIDER_FLOOR, this);
-	/*	test = App->coll->AddCollider({ 400,50,20,20 }, COLLIDER_FLOOR, this);*/
-		test2 = App->coll->AddCollider({ 151,120,50,30 }, COLLIDER_FLOOR, this);
-
+		colliderbox = App->coll->AddCollider({ 151, 120, 50, 30 }, COLLIDER_FLOOR, this);
+		test = App->coll->AddCollider({ 400,50,20,20 }, COLLIDER_FLOOR, this);
 
 	return ret;
 }
@@ -170,16 +169,23 @@ bool j1Scene::Update(float dt)
 		App->SaveGame("save_game.xml");
 
 	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		App->render->camera.y += 15;
+		App->render->camera.y += 5;
 
 	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		App->render->camera.y -= 15;
+		App->render->camera.y -= 5;
 
-	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		App->render->camera.x += 15;
-
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	{
+		App->render->camera.x += 5;
+		App->map->paralaxRef[0] += App->map->speed[0];
+		App->map->paralaxRef[1] += App->map->speed[1];
+	}
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		App->render->camera.x -= 15;
+	{
+		App->render->camera.x -= 5;
+		App->map->paralaxRef[0] -= App->map->speed[0];
+		App->map->paralaxRef[1] -= App->map->speed[1];
+	}	
 
 	int x, y;
 	App->input->GetMousePosition(x, y);
@@ -251,28 +257,25 @@ bool j1Scene::change_scene(const char* map_name) {
 	
 	bool ret = true;
 
-	//App->player->playercollider->SetPos(5, 15);
-
-	//camera postion reste
-	//player pos reset
-	//music reste
-	App->coll->CleanUp();
 	
+	App->coll->CleanUp();
+	App->player-> playercollider= App->coll->AddCollider({ 0, 0, 19, 36 }, COLLIDER_PLAYER, App->player);
+	App->render->camera.x = 0;	
+	App->render->camera.y = 0;
 	if (FirstStage == map_name)
 	{	
 		App->map->ColliderDrawer(App->map->data);
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());//aqui deberia poder leer metadata
 		App->audio->PlayMusic(stageMusic.GetString());
 	}
-	else{
+	else
+	{
 
 		App->map->ColliderDrawer(App->map->data2);
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->next->data->GetString());//aqui leer metadata de direccion
 		App->audio->PlayMusic(stageMusic.GetString());
 	}
 	
-	
-
 	return ret;
 }
 

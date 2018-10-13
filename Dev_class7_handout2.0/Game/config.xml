@@ -11,7 +11,8 @@
   </renderer>
 
   <window>
-    <resolution width="1024" height="768" scale="5"/>
+    <resolution width="1024" height="768" scale="2"/>
+    <resolution width="1024" height="768" scale="3"/>
     <fullscreen value="false"/>
     <borderless value="false"/>
     <resizable value="false"/>
@@ -26,6 +27,7 @@
     <folder>maps/</folder>
     <collision1 red="583" magenta="582" yellow="581"/>
     <collision2 red="949" magenta="947" yellow="948"/>
+    <paralax speed="0.5" speed2="1.5"/>
   </map>
 
   <scene>

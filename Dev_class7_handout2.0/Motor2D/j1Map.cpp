@@ -12,6 +12,8 @@
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
 	name.create("map");
+	paralaxRef[0]=0;
+	paralaxRef[1]= 0;
 }
 
 // Destructor
@@ -31,6 +33,8 @@ bool j1Map::Awake(pugi::xml_node& config)
 	redCollision2 = config.child("collision2").attribute("red").as_int();
 	yellowCollision2 = config.child("collision2").attribute("yellow").as_int();
 	magentaCollision2 = config.child("collision2").attribute("magenta").as_int();
+	speed[0] = config.child("paralax").attribute("speed").as_float();
+	speed[1] = config.child("paralax").attribute("speed2").as_float();
 
 	
 
@@ -501,7 +505,7 @@ void j1Map::Draw(MapData &data)
 	for (int x = 0; x < data.paralaxlist.count(); ++x)
 	{
 		App->render->Blit(data.paralaxlist[x]->texture,
-			0,
+			paralaxRef[x],
 			0,
 			&data.paralaxlist[x]->GetParalaxRect());
 	}

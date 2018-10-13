@@ -10,10 +10,10 @@
   <image source="collisions.png" width="128" height="16"/>
  </tileset>
  <imagelayer name="sky">
-  <image source="sky.png" width="3200" height="416"/>
+  <image source="sky.png" width="7028" height="416"/>
  </imagelayer>
  <imagelayer name="palms">
-  <image source="palms.png" width="3208" height="640"/>
+  <image source="palms.png" width="5982" height="640"/>
  </imagelayer>
  <layer name="Background" width="200" height="40">
   <data>
