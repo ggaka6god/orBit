@@ -53,8 +53,6 @@ public:
 
 	bool going_right;
 	bool going_left;
-
-
 };
 
 #endif // __j1Player_H__

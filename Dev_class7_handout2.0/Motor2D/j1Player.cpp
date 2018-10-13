@@ -27,7 +27,7 @@ bool j1Player::Start()
 
 	playercollider = App->coll->AddCollider({ 0, 0, 19, 36 }, COLLIDER_PLAYER, this);
 
-	Velocity.x = 3.0f;
+	Velocity.x = 2.0f;
 	Velocity.y = 0.0f;
 	pos.x = 180;
 	pos.y = 0.0f;
@@ -35,7 +35,7 @@ bool j1Player::Start()
 	gravity = -1.0f;
 	playercolliding = false;
 
-	jump_force = 10.0f;
+	jump_force = 7.5f;
 	max_speed_y = 10.0f;
 	stateplayer = IDLE;
 	must_fall = false;
@@ -47,6 +47,11 @@ bool j1Player::Start()
 bool j1Player::Update(float dt)
 {
 	//Check if player is Falling or jumping
+
+	/*if (must_fall)
+	{
+		playercolliding = false;
+	}*/
 
 	if (Velocity.y < 0 && stateplayer == JUMPING)
 	{
@@ -62,7 +67,7 @@ bool j1Player::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		Velocity.x = 3.0f;
+		Velocity.x = 2.0f;
 		pos.x = pos.x - Velocity.x;
 		going_left = true;
 		going_right = false;
@@ -70,7 +75,7 @@ bool j1Player::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
-		Velocity.x = 3.0f;
+		Velocity.x = 2.0f;
 		pos.x = pos.x + Velocity.x;
 		going_right = true;
 		going_left = false;
@@ -136,7 +141,7 @@ bool j1Player::Update(float dt)
 	//If no ground, free fall
 	if (must_fall)
 	{
-		pos.y -= gravity*2.0f;
+		pos.y -= gravity*3.0f;
 	}
 
 	return true;
@@ -160,10 +165,11 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 		lateralcollision = false;
 	}
 
+	float aux = c1->rect.y; //pos.y
+
 		if (c1->type == COLLIDER_FLOOR || c2->type == COLLIDER_FLOOR)
 		{
-			float aux = c1->rect.y; //pos.y
-
+		
 			if (stateplayer != JUMPING && stateplayer != FALLING)
 			{
 				Velocity.y = 0.0f;
@@ -174,12 +180,13 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 				if (stateplayer != JUMPING)
 					c1->rect.y = c2->rect.y - c1->rect.h;
 
+
 				if (going_right)
 				{
-					//stopping player if lateral collision
+					//stopping player if lateral col0lision
 					if (lateralcollision)
 					{
-						if (c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x + c1->rect.w <= c2->rect.x + 3)
+						if (c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x + c1->rect.w <= c2->rect.x + 3 )
 						{
 							Velocity.x = 0.0f;
 							if (stateplayer != JUMPING)
@@ -187,27 +194,31 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 							c1->rect.x = c2->rect.x - c1->rect.w;
 						}
 					}	
+					else if (!lateralcollision && must_fall == false)
+						stateplayer = IDLE;
 				}
 				//going left
-				if(going_left)
+				if (going_left)
 				{
 					if (lateralcollision)
 					{
-						if (c1->rect.x >= c2->rect.x + c2->rect.w-3 && c1->rect.x <= c2->rect.x + c2->rect.w) //c1->rect.x <= c2->rect.x + c2->rect.w && c1->rect.x >= c2->rect.x + c2->rect.w - 3
-						{                                                                                       //c2->rect.x + c2->rect.w <= c1->rect.x && c2->rect.x + c2->rect.w <= c1->rect.x - 3
-							Velocity.x = 0.0f;                                                               //c2->rect.x + c2->rect.w - 3 <= c1->rect.x && c2->rect.x + c2->rect.w >= c1->rect.x
+						if (c1->rect.x >= c2->rect.x + c2->rect.w - 3 && c1->rect.x <= c2->rect.x + c2->rect.w) //c1->rect.x <= c2->rect.x + c2->rect.w && c1->rect.x >= c2->rect.x + c2->rect.w - 3
+						{                                                                                                    //c2->rect.x + c2->rect.w <= c1->rect.x && c2->rect.x + c2->rect.w <= c1->rect.x - 3
+							Velocity.x = 0.0f;                                                                               //c2->rect.x + c2->rect.w - 3 <= c1->rect.x && c2->rect.x + c2->rect.w >= c1->rect.x
 							if (stateplayer != JUMPING)
 								c1->rect.y = aux;
 							c1->rect.x = c2->rect.x + c2->rect.w;
 						}
-					}	
+					}
+					else if (!lateralcollision && must_fall == false)
+						stateplayer = IDLE;
 				}
-		}
+		  }
+
 
 		pos.x = c1->rect.x;
 		pos.y = c1->rect.y;
 	
-	App->coll->playertouched = 0;
 	playercolliding = true;
 	double_jump = true;
 	must_fall = false;
