@@ -8,6 +8,32 @@
 #include "j1Map.h"
 #include "j1Scene.h"
 
+bool j1Player::Awake(pugi::xml_node& config) {
+
+	LOG("Loading Player Parser");
+	bool ret = true;
+
+	folder.create(config.child("folder").child_value());
+	Texture.create(config.child("texture").child_value());
+
+	idleRight = LoadAnimation(folder.GetString(), "idle right");
+	idleLeft = LoadAnimation(folder.GetString(), "idle left");
+	runRight = LoadAnimation(folder.GetString(), "run right");
+	runLeft = LoadAnimation(folder.GetString(), "run left");
+	jumpingRight = LoadAnimation(folder.GetString(), "jump right");
+	jumpingLeft = LoadAnimation(folder.GetString(), "jump left");
+	fallingRight = LoadAnimation(folder.GetString(), "air right");
+	fallingLeft = LoadAnimation(folder.GetString(), "air left");
+	deathRight = LoadAnimation(folder.GetString(), "dead right");
+	deathLeft = LoadAnimation(folder.GetString(), "dead left");
+	airRight = LoadAnimation(folder.GetString(), "air right");
+	airLeft = LoadAnimation(folder.GetString(), "air left");
+
+
+
+	return ret;
+}
+
 
 j1Player::j1Player()
 {
@@ -18,6 +44,14 @@ j1Player::j1Player()
 j1Player::~j1Player()
 {
 
+}
+
+bool j1Player::CleanUp() 
+{
+	bool ret = true;
+	App->tex->UnLoad(spritesheet);
+
+	return ret;
 }
 
 bool j1Player::Start()
@@ -41,7 +75,10 @@ bool j1Player::Start()
 	must_fall = false;
 	double_jump = true;
 
+	if (spritesheet == nullptr)
+		spritesheet = App->tex->Load(Texture.GetString());
 	return true;
+
 }
 
 bool j1Player::Update(float dt)
@@ -152,6 +189,7 @@ bool j1Player::Update(float dt)
 		pos.y -= gravity*3.0f;
 	}
 
+	GetCurrentAnimation();
 	return true;
 }
 
@@ -159,7 +197,7 @@ bool j1Player::PostUpdate()
 {
 	bool ret = true;
 
-	App->render->DrawQuad(playercollider->rect, 0, 255, 0);
+	App->render->Blit(spritesheet, pos.x, pos.y, &CurrectAnimation->GetCurrentFrame());
 
 	return ret;
 }
@@ -249,4 +287,108 @@ bool j1Player::Load(pugi::xml_node &)
 bool j1Player::Save(pugi::xml_node &) const
 {
 	return true;
+}
+
+Animation* j1Player::LoadAnimation(const char* animationPath, const char* animationName) {
+
+	Animation* animation = new Animation();
+
+	bool anim = false;
+
+	pugi::xml_document animationDocument;
+	pugi::xml_parse_result result = animationDocument.load_file(animationPath);
+
+
+	if (result == NULL)
+	{
+		LOG("Issue loading animation");
+	}
+
+	pugi::xml_node objgroup;
+	for (objgroup = animationDocument.child("map").child("objectgroup"); objgroup; objgroup = objgroup.next_sibling("objectgroup"))
+	{
+		p2SString name = objgroup.attribute("name").as_string();
+		if (name == animationName)
+		{
+			anim = true;
+			int x, y, h, w;
+
+			for (pugi::xml_node sprite = objgroup.child("object"); sprite; sprite = sprite.next_sibling("object"))
+			{
+				x = sprite.attribute("x").as_int();
+				y = sprite.attribute("y").as_int();
+				w = sprite.attribute("width").as_int();
+				h = sprite.attribute("height").as_int();
+
+				animation->PushBack({ x, y, w, h });
+			}
+
+		}
+	}
+	if (anim = true)
+		return animation;
+	else 
+		return nullptr ;
+
+}
+
+void j1Player::GetCurrentAnimation()
+{
+	CurrectAnimation = idleRight;
+	if (going_left == true)
+	{
+		if (dead == true)
+		{
+			CurrectAnimation = deathLeft;
+		}
+		else if (stateplayer == IDLE)
+		{
+			CurrectAnimation = idleLeft;
+		}
+		else if (stateplayer==JUMPING)
+		{
+			CurrectAnimation = jumpingLeft;
+		}
+		else if (stateplayer == FALLING)
+		{
+			CurrectAnimation = fallingLeft ;
+		}
+		else if (double_jump == true)
+		{
+			CurrectAnimation = airLeft;
+		}
+		else
+		{
+			CurrectAnimation = runLeft;
+		}
+	}
+	else if (going_right == true)
+	{
+		if (dead == true)
+		{
+			CurrectAnimation = deathRight;
+		}
+		else if (stateplayer == IDLE)
+		{
+			CurrectAnimation = idleRight;
+		}
+		else if (stateplayer == JUMPING)
+		{
+			CurrectAnimation = jumpingRight;
+		}
+		else if (stateplayer == FALLING)
+		{
+			CurrectAnimation = fallingRight;
+		}
+		else if (double_jump == true)
+		{
+			CurrectAnimation = airRight;
+		}
+		else
+		{
+			CurrectAnimation = runRight;
+		}
+	}
+
+
 }

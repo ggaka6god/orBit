@@ -3,6 +3,7 @@
 
 #include "j1Module.h"
 #include "p2Point.h"
+#include "Animation.h"
 
 struct SDL_Texture;
 struct Collider;
@@ -23,14 +24,20 @@ public:
 	j1Player();
 	~j1Player();
 
+	bool Awake(pugi::xml_node &config);
 	bool Start();
 	bool Update(float dt);
 	bool PostUpdate();
+	bool CleanUp();
 
 	void OnCollision(Collider* c1, Collider* c2);
 
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
+
+	Animation* LoadAnimation(const char* animationPath, const char* animationName);
+	
+	void GetCurrentAnimation();
 
 public:
 
@@ -53,6 +60,30 @@ public:
 
 	bool going_right;
 	bool going_left;
+
+	bool dead = false;
+
+
+	Animation* CurrectAnimation = nullptr;	
+	Animation* idleRight = nullptr;
+	Animation* idleLeft = nullptr;			
+	Animation* runRight = nullptr;	
+	Animation* runLeft = nullptr;	
+	Animation* jumpingRight = nullptr;
+	Animation* jumpingLeft = nullptr;
+	Animation* fallingRight = nullptr;	
+	Animation* fallingLeft = nullptr;	
+	Animation* deathRight = nullptr;
+	Animation* deathLeft = nullptr;
+	Animation* airRight = nullptr;
+	Animation* airLeft = nullptr;
+
+	SDL_Texture* spritesheet = nullptr;
+
+private:
+
+	p2SString folder;
+	p2SString Texture;
 };
 
 #endif // __j1Player_H__
