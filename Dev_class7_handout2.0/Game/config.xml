@@ -33,8 +33,6 @@
   <scene>
     <map_name name="stage1_TiledV017.tmx"/>
     <map_name name="stage2_TiledV017.tmx"/>
-    
-   
   </scene>
 
   <audio>
@@ -49,5 +47,11 @@
       <VolumeChanger_fx value="0"/>
     </fx>
   </audio>
+
+  <player>
+    <atributes>speed="2" jump_force="6"  </atributes>
+    <folder>animation/player.tmx</folder>
+    <texture>textures/sprite_sheet_character.png</texture>
+  </player>
 
 </config>
