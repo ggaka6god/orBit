@@ -117,10 +117,10 @@ bool j1Scene::Start()
 
 		App->map->ColliderDrawer(App->map->data);
 
-		colliderfloor = App->coll->AddCollider({ 0, 150, 1024, 100 }, COLLIDER_FLOOR, this);
-		colliderbox = App->coll->AddCollider({ 100, 120, 50, 30 }, COLLIDER_FLOOR, this);
-		colliderbox = App->coll->AddCollider({ 151, 120, 50, 30 }, COLLIDER_FLOOR, this);
-		test = App->coll->AddCollider({ 400,50,20,20 }, COLLIDER_FLOOR, this);
+		//colliderfloor = App->coll->AddCollider({ 0, 150, 1024, 100 }, COLLIDER_FLOOR, this);
+		//colliderbox = App->coll->AddCollider({ 100, 120, 50, 30 }, COLLIDER_FLOOR, this);
+		//colliderbox = App->coll->AddCollider({ 151, 120, 50, 30 }, COLLIDER_FLOOR, this);
+		//test = App->coll->AddCollider({ 400,50,20,20 }, COLLIDER_FLOOR, this);
 
 	return ret;
 }

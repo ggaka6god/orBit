@@ -7,11 +7,11 @@
 		<VolumeChanger_music value="0" />
 		<VolumeChanger_fx value="0" />
 	</audio>
+	<player />
 	<collision />
 	<map />
-	<player />
 	<scene />
 	<renderer>
-		<camera x="-5055" y="-1170" />
+		<camera x="0" y="0" />
 	</renderer>
 </game_state>
