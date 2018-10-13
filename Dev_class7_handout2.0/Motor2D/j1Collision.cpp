@@ -53,7 +53,6 @@ bool j1Collision::Update(float dt)
 
 	bool ret = true;
 
-
 	playertouched = 0;
 
 	bool skipcolliders = true; //skip colliders that are not in camera

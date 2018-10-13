@@ -55,6 +55,7 @@ public:
 
 	p2List<Collider*> colliders;
 	int playertouched;
+
 private:
 
 	bool matrix[COLLIDER_MAX][COLLIDER_MAX];

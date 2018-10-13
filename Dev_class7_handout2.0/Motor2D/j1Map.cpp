@@ -470,15 +470,16 @@ bool j1Map::ColliderDrawer(MapData& data)
 							iPoint pos = MapToWorld(x, y, data);
 
 							if (tile_id == redCollision || tile_id== redCollision2)
-								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_FLOOR);
+								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_FLOOR,this);
 
 							else if (tile_id == yellowCollision || tile_id == yellowCollision2)
-								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_SPIKES);
+								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_SPIKES,this);
 
 							else if (tile_id == magentaCollision || tile_id == magentaCollision2)
-								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_PLATFORM);
+								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_PLATFORM,this);
 
 
+							/*colliderfloor = App->coll->AddCollider({ 0, 150, 1024, 100 }, COLLIDER_FLOOR, this);*/
 						}
 					}
 				}

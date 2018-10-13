@@ -29,8 +29,8 @@ bool j1Player::Start()
 
 	Velocity.x = 3.0f;
 	Velocity.y = 0.0f;
-	pos.x = 10.0f;
-	pos.y = 150.0f;
+	pos.x = 180;
+	pos.y = 0.0f;
 
 	gravity = -1.0f;
 	playercolliding = false;
@@ -153,85 +153,106 @@ bool j1Player::PostUpdate()
 
 void j1Player::OnCollision(Collider * c1, Collider * c2)
 {
-	if (c1->type == COLLIDER_FLOOR || c2->type == COLLIDER_FLOOR)
+	bool lateralcollision = true;
+
+	if (c1->rect.y + c1->rect.h == c2->rect.y)
 	{
-		float aux = pos.y;
-		float auxvel = Velocity.y;
-
-		if (stateplayer != JUMPING && stateplayer != FALLING)
-		{
-			Velocity.y = 0.0f;
-			stateplayer = IDLE;
-		}
-
-		if (c1->type == COLLIDER_FLOOR)
-		{
-			if (stateplayer != JUMPING)
-			pos.y = c1->rect.y - c2->rect.h;
-
-			if (going_right)
-			{
-				//stopping player if lateral collision
-
-				if (c2->rect.x + c2->rect.w >= c1->rect.x && c2->rect.x + c2->rect.w <= c1->rect.x + 3)
-				{
-					Velocity.x = 0.0f;
-					if (stateplayer != JUMPING)
-						pos.y = aux;
-					pos.x = c1->rect.x - c2->rect.w;
-				}
-			}
-
-			else  //going left
-			{
-				if (c2->rect.x <= c1->rect.x + c1->rect.w && c2->rect.x >= c1->rect.x + c1->rect.w - 3)
-				{
-					Velocity.x = 0.0f;
-					if (stateplayer != JUMPING)
-						pos.y = aux;
-					pos.x = c1->rect.x + c1->rect.w;
-				}
-			}
-		}
-
-		// c2 ==COLLIDER_FLOOR 
-		else 
-		{
-			if (stateplayer != JUMPING)
-			pos.y = c2->rect.y - c1->rect.h;
-
-			if (going_right)
-			{
-				//stopping player if lateral collision
-
-				if (c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x + c1->rect.w <= c2->rect.x + 3)
-				{
-					Velocity.x = 0.0f;
-					if (stateplayer != JUMPING)
-						pos.y = aux;
-					pos.x = c2->rect.x - c1->rect.w;
-				}
-			}
-
-			//going left
-			else 
-			{
-
-				if (c1->rect.x <= c2->rect.x + c2->rect.w && c1->rect.x >= c2->rect.x + c2->rect.w - 3)
-				{
-					Velocity.x = 0.0f;
-					if (stateplayer != JUMPING)
-						pos.y = aux;
-					pos.x = c2->rect.x + c2->rect.w;
-				}
-			}
-			
-		}
-
-		playercolliding = true;
-		double_jump = true;
-		must_fall = false;
+		lateralcollision = false;
 	}
+
+
+		if (c1->type == COLLIDER_FLOOR || c2->type == COLLIDER_FLOOR)
+		{
+			float aux = pos.y;
+
+			if (stateplayer != JUMPING && stateplayer != FALLING)
+			{
+				Velocity.y = 0.0f;
+				stateplayer = IDLE;
+			}
+
+			if (c1->type == COLLIDER_FLOOR)
+			{
+				//if (stateplayer != JUMPING) 
+				//	pos.y = c1->rect.y - c2->rect.h;
+
+				//if (going_right)
+				//{
+				//	//stopping player if lateral collision
+
+				//	
+				//		if (c2->rect.x + c2->rect.w >= c1->rect.x && c2->rect.x + c2->rect.w <= c1->rect.x + 3)
+				//		{
+				//			Velocity.x = 0.0f;
+				//			if (stateplayer != JUMPING)
+				//				pos.y = aux;
+				//			pos.x = c1->rect.x - c2->rect.w;
+				//		}
+				//	
+
+				//}
+
+				//else  //going left
+				//{
+
+				//	
+				//	if (c2->rect.x <= c1->rect.x + c1->rect.w && c2->rect.x >= c1->rect.x + c1->rect.w-3)
+				//	{
+				//		Velocity.x = 0.0f;
+				//		if (stateplayer != JUMPING)
+				//			pos.y = aux;
+				//		pos.x = c1->rect.x + c1->rect.w;
+				//	}
+				//	
+
+				//}
+			}
+
+			// c2 ==COLLIDER_FLOOR 
+			else
+			{
+				if (stateplayer != JUMPING)
+					pos.y = c2->rect.y - c1->rect.h;
+
+				if (going_right)
+				{
+					//stopping player if lateral collision
+					if (lateralcollision)
+					{
+						if (c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x + c1->rect.w <= c2->rect.x + 3)
+						{
+							Velocity.x = 0.0f;
+							if (stateplayer != JUMPING)
+								pos.y = aux;
+							pos.x = c2->rect.x - c1->rect.w;
+						}
+					}
+					
+				}
+
+				//going left
+				else
+				{
+					if (lateralcollision)
+					{
+						if (c1->rect.x <= c2->rect.x + c2->rect.w && c1->rect.x >= c2->rect.x + c2->rect.w - 3)
+						{
+							Velocity.x = 0.0f;
+							if (stateplayer != JUMPING)
+								pos.y = aux;
+							pos.x = c2->rect.x + c2->rect.w;
+						}
+					}
+					
+				}
+			}
+
+		}
+	
+	App->coll->playertouched = 0;
+	playercolliding = true;
+	double_jump = true;
+	must_fall = false;
 }
 
 bool j1Player::Load(pugi::xml_node &)
