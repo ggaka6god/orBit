@@ -65,6 +65,8 @@ bool j1Player::Update(float dt)
 
 	//Horizontal Movement 
 
+	
+
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
 		Velocity.x = 2.0f;
@@ -81,6 +83,12 @@ bool j1Player::Update(float dt)
 		going_left = false;
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	{
+		Velocity.x = 0.0f;
+		going_left = true;
+		going_right = true;
+	}
 
 	//Vertical Movement
 
@@ -177,8 +185,17 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 			}
 			// c2 ==COLLIDER_FLOOR 
 			
-				if (stateplayer != JUMPING)
+			if (stateplayer != JUMPING)
+			{
+				if (going_right == true && going_left == true)
+				{
+					c1->rect.y = aux;
+				}
+				else
+				{
 					c1->rect.y = c2->rect.y - c1->rect.h;
+				}
+			}
 
 
 				if (going_right)
