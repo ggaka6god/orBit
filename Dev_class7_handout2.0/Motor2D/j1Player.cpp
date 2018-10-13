@@ -155,11 +155,6 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 {
 	bool lateralcollision = true;
 
-	/*if (c1->rect.y == 84)
-	{
-		LOG("hello");
-	}*/
-
 	if (c1->rect.y + c1->rect.h == c2->rect.y)
 	{
 		lateralcollision = false;
@@ -174,47 +169,8 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 				Velocity.y = 0.0f;
 				stateplayer = IDLE;
 			}
-
-			if (c1->type == COLLIDER_FLOOR)
-			{
-				//if (stateplayer != JUMPING) 
-				//	pos.y = c1->rect.y - c2->rect.h;
-
-				//if (going_right)
-				//{
-				//	//stopping player if lateral collision
-
-				//	
-				//		if (c2->rect.x + c2->rect.w >= c1->rect.x && c2->rect.x + c2->rect.w <= c1->rect.x + 3)
-				//		{
-				//			Velocity.x = 0.0f;
-				//			if (stateplayer != JUMPING)
-				//				pos.y = aux;
-				//			pos.x = c1->rect.x - c2->rect.w;
-				//		}
-				//	
-
-				//}
-
-				//else  //going left
-				//{
-
-				//	
-				//	if (c2->rect.x <= c1->rect.x + c1->rect.w && c2->rect.x >= c1->rect.x + c1->rect.w-3)
-				//	{
-				//		Velocity.x = 0.0f;
-				//		if (stateplayer != JUMPING)
-				//			pos.y = aux;
-				//		pos.x = c1->rect.x + c1->rect.w;
-				//	}
-				//	
-
-				//}
-			}
-
 			// c2 ==COLLIDER_FLOOR 
-			else
-			{
+			
 				if (stateplayer != JUMPING)
 					c1->rect.y = c2->rect.y - c1->rect.h;
 
@@ -230,27 +186,22 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 								c1->rect.y = aux;
 							c1->rect.x = c2->rect.x - c1->rect.w;
 						}
-					}
-					
+					}	
 				}
-
 				//going left
-				else
+				if(going_left)
 				{
 					if (lateralcollision)
 					{
-						if (c1->rect.x >= c2->rect.x + c2->rect.w && c1->rect.x <= c2->rect.x + c2->rect.w - 3) //c1->rect.x <= c2->rect.x + c2->rect.w && c1->rect.x >= c2->rect.x + c2->rect.w - 3
+						if (c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x + c1->rect.w <= c2->rect.x + 3) //c1->rect.x <= c2->rect.x + c2->rect.w && c1->rect.x >= c2->rect.x + c2->rect.w - 3
 						{                                                                                       //c2->rect.x + c2->rect.w <= c1->rect.x && c2->rect.x + c2->rect.w <= c1->rect.x - 3
 							Velocity.x = 0.0f;                                                               //c2->rect.x + c2->rect.w - 3 <= c1->rect.x && c2->rect.x + c2->rect.w >= c1->rect.x
 							if (stateplayer != JUMPING)
 								c1->rect.y = aux;
 							c1->rect.x = c2->rect.x + c2->rect.w;
 						}
-					}
-					
+					}	
 				}
-			}
-
 		}
 
 		pos.x = c1->rect.x;
