@@ -155,15 +155,19 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 {
 	bool lateralcollision = true;
 
+	/*if (c1->rect.y == 84)
+	{
+		LOG("hello");
+	}*/
+
 	if (c1->rect.y + c1->rect.h == c2->rect.y)
 	{
 		lateralcollision = false;
 	}
 
-
 		if (c1->type == COLLIDER_FLOOR || c2->type == COLLIDER_FLOOR)
 		{
-			float aux = pos.y;
+			float aux = c1->rect.y; //pos.y
 
 			if (stateplayer != JUMPING && stateplayer != FALLING)
 			{
@@ -212,7 +216,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 			else
 			{
 				if (stateplayer != JUMPING)
-					pos.y = c2->rect.y - c1->rect.h;
+					c1->rect.y = c2->rect.y - c1->rect.h;
 
 				if (going_right)
 				{
@@ -223,8 +227,8 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 						{
 							Velocity.x = 0.0f;
 							if (stateplayer != JUMPING)
-								pos.y = aux;
-							pos.x = c2->rect.x - c1->rect.w;
+								c1->rect.y = aux;
+							c1->rect.x = c2->rect.x - c1->rect.w;
 						}
 					}
 					
@@ -235,12 +239,12 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 				{
 					if (lateralcollision)
 					{
-						if (c1->rect.x <= c2->rect.x + c2->rect.w && c1->rect.x >= c2->rect.x + c2->rect.w - 3)
-						{
-							Velocity.x = 0.0f;
+						if (c1->rect.x >= c2->rect.x + c2->rect.w && c1->rect.x <= c2->rect.x + c2->rect.w - 3) //c1->rect.x <= c2->rect.x + c2->rect.w && c1->rect.x >= c2->rect.x + c2->rect.w - 3
+						{                                                                                       //c2->rect.x + c2->rect.w <= c1->rect.x && c2->rect.x + c2->rect.w <= c1->rect.x - 3
+							Velocity.x = 0.0f;                                                               //c2->rect.x + c2->rect.w - 3 <= c1->rect.x && c2->rect.x + c2->rect.w >= c1->rect.x
 							if (stateplayer != JUMPING)
-								pos.y = aux;
-							pos.x = c2->rect.x + c2->rect.w;
+								c1->rect.y = aux;
+							c1->rect.x = c2->rect.x + c2->rect.w;
 						}
 					}
 					
@@ -248,6 +252,9 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 			}
 
 		}
+
+		pos.x = c1->rect.x;
+		pos.y = c1->rect.y;
 	
 	App->coll->playertouched = 0;
 	playercolliding = true;
