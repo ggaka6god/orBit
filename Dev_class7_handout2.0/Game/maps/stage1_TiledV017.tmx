@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="200" height="40" tilewidth="16" tileheight="16" nextobjectid="6">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="200" height="40" tilewidth="16" tileheight="16" nextobjectid="10">
  <tileset firstgid="1" name="tileset order" tilewidth="16" tileheight="16" tilecount="378" columns="18">
   <image source="tileset order.png" width="288" height="336"/>
  </tileset>
@@ -40048,6 +40048,6 @@
   <object id="2" x="544" y="176" width="32" height="48"/>
  </objectgroup>
  <objectgroup name="finalpos">
-  <object id="5" x="3136" y="176" width="32" height="112"/>
+  <object id="9" x="3152" y="240" width="16" height="64"/>
  </objectgroup>
 </map>

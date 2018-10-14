@@ -22,7 +22,7 @@ bool j1Player::Awake(pugi::xml_node& config) {
 	runLeft = LoadAnimation(folder.GetString(), "run left");
 	jumpingRight = LoadAnimation(folder.GetString(), "jump right");
 	jumpingLeft = LoadAnimation(folder.GetString(), "jump left");
-	fallingRight = LoadAnimation(folder.GetString(), "air righr");
+	fallingRight = LoadAnimation(folder.GetString(), "air right");
 	fallingLeft = LoadAnimation(folder.GetString(), "air left");
 	deathRight = LoadAnimation(folder.GetString(), "dead right");
 	deathLeft = LoadAnimation(folder.GetString(), "dead left");

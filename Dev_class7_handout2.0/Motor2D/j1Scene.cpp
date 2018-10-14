@@ -139,6 +139,20 @@ bool j1Scene::Start()
 // Called each loop iteration
 bool j1Scene::PreUpdate()
 {
+	//win condition
+	if (firstStage && (App->player->pos.x >= App->map->data.finalpos.x) && (App->player->pos.y <= App->map->data.finalpos.y))
+	{
+ 		change_scene(StageList.start->next->data->GetString());
+		firstStage = true;
+		secondStage = false;
+	}
+
+	else if (secondStage && (App->player->pos.x >= App->map->data2.finalpos.x) && (App->player->pos.y <= App->map->data2.finalpos.y))
+	{
+		change_scene(StageList.start->data->GetString());
+		firstStage = true;
+		secondStage = false;
+	}
 	return true;
 }
 
@@ -256,6 +270,9 @@ bool j1Scene::Update(float dt)
 
 		App->win->SetTitle(title.GetString());
 	}
+
+	
+
 
 	return true;
 }

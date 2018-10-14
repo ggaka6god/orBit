@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="200" height="40" tilewidth="16" tileheight="16" nextobjectid="3">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="200" height="40" tilewidth="16" tileheight="16" nextobjectid="6">
  <tileset firstgid="1" name="tileset forest - Copy" tilewidth="16" tileheight="16" tilecount="400" columns="25">
   <image source="tileset forest - Copy.png" width="400" height="256"/>
  </tileset>
@@ -64055,6 +64055,6 @@
   <object id="1" x="64" y="176" width="32" height="48"/>
  </objectgroup>
  <objectgroup name="finalpos">
-  <object id="2" x="3088" y="96" width="64" height="96"/>
+  <object id="5" x="3136" y="160" width="16" height="32"/>
  </objectgroup>
 </map>

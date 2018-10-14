@@ -268,8 +268,8 @@ bool j1Map::LoadMap(MapData& data)
 		p2SString tmp2(map.child("objectgroup").next_sibling("objectgroup").first_attribute().as_string());
 		if (tmp2 == "finalpos")
 		{
-			data.finalpos.x = map.child("objectgroup").child("object").attribute("x").as_int();
-			data.finalpos.y = map.child("objectgroup").child("object").attribute("y").as_int()+ map.child("objectgroup").child("object").attribute("height").as_int();
+			data.finalpos.x = map.child("objectgroup").next_sibling("objectgroup").child("object").attribute("x").as_int();
+			data.finalpos.y = map.child("objectgroup").next_sibling("objectgroup").child("object").attribute("y").as_int()+ map.child("objectgroup").child("object").attribute("height").as_int();
 		}
 
 
