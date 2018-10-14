@@ -37,7 +37,6 @@ public:
 
 	Animation* LoadAnimation(const char* animationPath, const char* animationName);
 
-	void GetCurrentAnimation();
 
 public:
 
@@ -52,6 +51,7 @@ public:
 
 	player_state stateplayer;
 	bool playercolliding;
+	bool colliding_roof;
 
 	float max_speed_y;
 
@@ -65,7 +65,7 @@ public:
 	bool dead = false;
 
 
-	Animation* CurrectAnimation = nullptr;
+	Animation* CurrentAnimation = nullptr;
 	Animation* idleRight = nullptr;
 	Animation* idleLeft = nullptr;
 	Animation* runRight = nullptr;

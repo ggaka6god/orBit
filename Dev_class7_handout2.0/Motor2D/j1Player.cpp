@@ -22,7 +22,7 @@ bool j1Player::Awake(pugi::xml_node& config) {
 	runLeft = LoadAnimation(folder.GetString(), "run left");
 	jumpingRight = LoadAnimation(folder.GetString(), "jump right");
 	jumpingLeft = LoadAnimation(folder.GetString(), "jump left");
-	fallingRight = LoadAnimation(folder.GetString(), "air right");
+	fallingRight = LoadAnimation(folder.GetString(), "air righr");
 	fallingLeft = LoadAnimation(folder.GetString(), "air left");
 	deathRight = LoadAnimation(folder.GetString(), "dead right");
 	deathLeft = LoadAnimation(folder.GetString(), "dead left");
@@ -38,6 +38,11 @@ bool j1Player::Awake(pugi::xml_node& config) {
 	initpos1.y = config.child("stg1InitPos").attribute("y").as_int();
 	initpos2.x = config.child("stg2InitPos").attribute("x").as_int();
 	initpos2.y = config.child("stg2InitPos").attribute("y").as_int()*/;
+
+	runRight->speed = 0.15f;
+	runLeft->speed = 0.15f;
+
+	/*CurrentAnimation = airRight;*/
 
 	return ret;
 }
@@ -82,9 +87,9 @@ bool j1Player::Start()
 bool j1Player::Update(float dt)
 {
 	if (wasRight==true)
-		CurrectAnimation = idleRight;
+		CurrentAnimation = idleRight;
 	else if (wasRight==false)
-		CurrectAnimation = idleLeft;
+		CurrentAnimation = idleLeft;
 
 	//Check if player is Falling or jumping
 
@@ -113,7 +118,7 @@ bool j1Player::Update(float dt)
 		pos.x = pos.x - Velocity.x;
 		going_left = true;
 		going_right = false;
-		CurrectAnimation = runLeft;
+		CurrentAnimation = runLeft;
 		wasRight = false;
 	}
 
@@ -123,7 +128,7 @@ bool j1Player::Update(float dt)
 		pos.x = pos.x + Velocity.x;
 		going_right = true;
 		going_left = false;
-		CurrectAnimation = runRight;
+		CurrentAnimation = runRight;
 		wasRight = true;
 	}
 
@@ -150,6 +155,13 @@ bool j1Player::Update(float dt)
 
 	if (stateplayer == JUMPING)
 	{
+		if (going_right)
+		{
+			CurrentAnimation = jumpingRight;
+		}
+		else
+			CurrentAnimation = jumpingLeft;
+
 		must_fall = false;
 		if (double_jump == true && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && Velocity.y!=jump_force)
 		{
@@ -163,9 +175,18 @@ bool j1Player::Update(float dt)
 
 	}
 
-	if (stateplayer == FALLING)
+	if (stateplayer == FALLING && !colliding_roof)
 	{
 		must_fall = false;
+
+		if (going_right)
+		{
+			CurrentAnimation = fallingRight;
+		}
+		else
+		{
+			CurrentAnimation = fallingLeft;
+		}
 
 		if (double_jump == true && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && Velocity.y != jump_force)
 		{
@@ -196,9 +217,11 @@ bool j1Player::Update(float dt)
 	if (must_fall)
 	{
 		pos.y -= gravity*4.0f;
+	/*	if(going_right)
+		CurrentAnimation = airRight;
+		if(going_left)
+		CurrentAnimation = airLeft;*/
 	}
-	
-	//GetCurrentAnimation();
 
 	return true;
 }
@@ -207,7 +230,7 @@ bool j1Player::PostUpdate()
 {
 	bool ret = true;
 
-	App->render->Blit(spritesheet, pos.x, pos.y, &CurrectAnimation->GetCurrentFrame());
+	App->render->Blit(spritesheet, pos.x, pos.y, &CurrentAnimation->GetCurrentFrame());
 
 	return ret;
 }
@@ -228,6 +251,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 
 	if (c2->type == COLLIDER_FLOOR)
 	{
+		colliding_roof = false;
 	
 			if ((going_left || going_right) && must_fall)
 			{
@@ -346,12 +370,25 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 
 		else if (c2->type == COLLIDER_SPIKES)
 		{
-			Velocity.y = 0;
+			colliding_roof = false;
+			/*Velocity.y = 0;*/
+			must_fall = false;
+			double_jump = false;
+
+		/*	if (going_right)
+			{
+				CurrectAnimation = deathRight;
+			}
+			else
+			{
+				CurrectAnimation = deathRight;
+			}*/
+
 		}
 
 		else if (c2->type == COLLIDER_PLATFORM)
 		{
-
+			colliding_roof = false;
 
 			if ((going_left || going_right) && must_fall)
 			{
@@ -401,6 +438,39 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 
 			}
 			
+		}
+		
+		else if (c2->type == COLLIDER_ROOF)
+		{
+			colliding_roof = true;
+
+			if (c1->rect.y<= c2->rect.y+c2->rect.h && c1->rect.y >= c2->rect.y+c2->rect.h-3)
+			{
+				c1->rect.y = c2->rect.y + c2->rect.h + 1;
+				Velocity.y = 0.0f;
+				stateplayer = FALLING;
+				double_jump = false;
+				must_fall = true;
+			}
+			else
+			{
+
+			  if ((stateplayer == JUMPING || stateplayer == FALLING) && going_right || going_left)
+			  {
+				  double_jump = false;
+				  must_fall = true;
+
+			  }
+				if (going_right)
+				{
+					c1->rect.x = c2->rect.x - c1->rect.w-1;
+					
+				}
+				else
+				{
+					c1->rect.x = c2->rect.x + c2->rect.w+1;
+				}
+			}
 		}
 
 
@@ -470,51 +540,6 @@ Animation* j1Player::LoadAnimation(const char* animationPath, const char* animat
 		return animation;
 	else
 		return nullptr;
-
-}
-
-void j1Player::GetCurrentAnimation()
-{
-
-	if (dead == true && wasRight == false)
-	{
-		CurrectAnimation = deathLeft;
-	}
-
-	/*if (stateplayer == JUMPING && wasRight == false)
-	{
-		CurrectAnimation = jumpingLeft;
-	}
-	if (stateplayer == FALLING && wasRight == false)
-	{
-		CurrectAnimation = fallingLeft;
-	}*/
-	if (double_jump == false && wasRight == false)
-	{
-		CurrectAnimation = airLeft;
-	}
-
-
-
-	if (dead == true && wasRight == true)
-	{
-		CurrectAnimation = deathRight;
-	}
-
-	/*else if (stateplayer == JUMPING && wasRight == true)
-	{
-		CurrectAnimation = jumpingRight;
-	}
-	else if (stateplayer == FALLING && wasRight == true)
-	{
-		CurrectAnimation = fallingRight;
-	}*/
-	else if (double_jump == false && wasRight == true)
-	{
-		CurrectAnimation = airRight;
-	}
-
-
 
 }
 
