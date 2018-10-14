@@ -199,20 +199,49 @@ bool j1Scene::Update(float dt)
 	
 	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)//load
 	{	
-		App->LoadGame("save_game.xml");
+
 		if (firstStage)
 		{
-			change_scene(StageList.start->data->GetString());
-			firstStage = true;
-			secondStage = false;
+			App->LoadGame("save_game.xml");
+
+			if (secondStage)
+			{
+				change_scene(StageList.start->next->data->GetString());
+				secondStage = true;
+				firstStage = false;
+			}
+
+			else
+			{
+				change_scene(StageList.start->data->GetString());
+				firstStage = true;
+				secondStage = false;
+
+			}
+
 		}
+
 		else if (secondStage)
 		{
-			change_scene(StageList.start->next->data->GetString());
-			firstStage = false;
-			secondStage = true;
+			App->LoadGame("save_game.xml");
+
+
+
+			if (firstStage)
+			{
+				change_scene(StageList.start->data->GetString());
+				firstStage = true;
+				secondStage = false;
+
+			}
+
+			else
+			{
+				change_scene(StageList.start->next->data->GetString());
+				firstStage = false;
+				secondStage = true;
+			}
 		}
-		
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) //save

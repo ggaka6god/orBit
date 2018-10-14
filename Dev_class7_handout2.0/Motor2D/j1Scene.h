@@ -34,7 +34,7 @@ public:
 	bool CleanUp();
 
 	//call to save stage info
-	bool Save(pugi::xml_node&) const;
+	bool Save(pugi::xml_node&config) const;
 
 	//call to load file
 	bool Load(pugi::xml_node&config);
