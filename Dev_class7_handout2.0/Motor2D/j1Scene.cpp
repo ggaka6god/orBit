@@ -31,12 +31,10 @@ bool j1Scene::Awake(pugi::xml_node& config)
 	for (pugi::xml_node stage = config.child("map_name"); stage; stage = stage.next_sibling("map_name"))
 	{
 		p2SString* StageName = new p2SString(stage.attribute("name").as_string());
-		/*StageName->create(stage.attribute("name").as_string());*/
 		StageList.add(StageName);
 			App->map->numberStages++;
 	}
 
-	/*map_name = config.child("map_name").attribute("name").as_string();*/
 
 	if (StageList.start->data->GetString() == NULL)
 	{
@@ -54,8 +52,6 @@ bool j1Scene::Awake(pugi::xml_node& config)
 bool j1Scene::Start()
 {
 	bool ret = true;
-
-	/*App->map->Load(map_name.GetString());*/
 
 	//Loading map both maps
 
@@ -81,9 +77,7 @@ bool j1Scene::Start()
 	}
 
 
-	//ret = App->map->Load(StageList.start->data->GetString());
-	
-	//loading music&positions depending in the order
+	//loading music & positions depending in the order
 
 	FirstStage = StageList.start->data->GetString();
 
@@ -106,31 +100,7 @@ bool j1Scene::Start()
 		App->audio->PlayMusic(stageMusic.GetString());
 	}
 
-	// DO NOT ERASE
-	/*MapLayer* layer;
-	for (uint l = 0; l < App->map->data.layers.count(); l++)
-	{
-		layer = App->map->data.layers.At(l)->data;
-		
-		if (layer->name.)
-		{
-			p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), layer->properties.GetProperties("Song").GetString());
-			App->audio->PlayMusic(stageMusic.GetString());
-			
-		}
-	}
-*/
-
-	
-		//colliderfloor = App->coll->AddCollider({ 0, 150, 1024, 100 }, COLLIDER_FLOOR, this);
-		//colliderbox = App->coll->AddCollider({ 100, 120, 50, 30 }, COLLIDER_FLOOR, this);
-
 		App->map->ColliderDrawer(App->map->data);
-
-		//colliderfloor = App->coll->AddCollider({ 0, 150, 1024, 100 }, COLLIDER_FLOOR, this);
-		//colliderbox = App->coll->AddCollider({ 100, 120, 50, 30 }, COLLIDER_FLOOR, this);
-		//colliderbox = App->coll->AddCollider({ 151, 120, 50, 30 }, COLLIDER_FLOOR, this);
-		//test = App->coll->AddCollider({ 400,50,20,20 }, COLLIDER_FLOOR, this);
 
 		
 	return ret;
@@ -199,7 +169,7 @@ bool j1Scene::Update(float dt)
 			}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN) //audio dwon
+	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN) //audio down
 	{
 		App->audio->ChangeVolume_music(10);
 		App->audio->ChangeVolume_fx(10);
