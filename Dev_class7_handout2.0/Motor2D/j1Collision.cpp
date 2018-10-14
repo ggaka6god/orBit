@@ -99,7 +99,7 @@ bool j1Collision::Update(float dt)
                 
 				if (matrix[collider1->data->type][collider2->data->type] && collider1->data->callback)
 				{
-					collider1->data->callback->OnCollision(collider1->data, collider2->data);
+					collider1->data->callback->OnCollision(collider1->data, collider2->data); //entra aqui
 				}
 
 				if (matrix[collider2->data->type][collider1->data->type] && collider2->data->callback)
@@ -169,7 +169,7 @@ Collider * j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module 
 void j1Collision::DebugDraw()
 {
 
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) //collider draw
 		debug = !debug;
 
 	if (debug == false)

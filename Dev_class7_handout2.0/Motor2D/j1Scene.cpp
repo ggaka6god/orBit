@@ -159,7 +159,7 @@ bool j1Scene::Update(float dt)
 		secondStage = true;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) //reload stage1
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) //reload stage1
 	{
 		
 		change_scene(StageList.start->data->GetString());
@@ -197,8 +197,23 @@ bool j1Scene::Update(float dt)
 		LOG("volume down");
 	}
 	
-	if(App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) //load
+	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)//load
+	{	
 		App->LoadGame("save_game.xml");
+		if (firstStage)
+		{
+			change_scene(StageList.start->data->GetString());
+			firstStage = true;
+			secondStage = false;
+		}
+		else if (secondStage)
+		{
+			change_scene(StageList.start->next->data->GetString());
+			firstStage = false;
+			secondStage = true;
+		}
+		
+	}
 
 	if(App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) //save
 		App->SaveGame("save_game.xml");
@@ -308,6 +323,7 @@ bool j1Scene::change_scene(const char* map_name) {
 		App->map->ColliderDrawer(App->map->data);
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());//aqui deberia poder leer metadata
 		App->audio->PlayMusic(stageMusic.GetString());
+		App->player->stateplayer = FALLING;
 	}
 	else
 	{
@@ -320,6 +336,7 @@ bool j1Scene::change_scene(const char* map_name) {
 		App->map->ColliderDrawer(App->map->data2);
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->next->data->GetString());//aqui leer metadata de direccion
 		App->audio->PlayMusic(stageMusic.GetString());
+		App->player->stateplayer = FALLING;
 	}
 	
 	return ret;
