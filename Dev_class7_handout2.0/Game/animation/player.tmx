@@ -30,7 +30,7 @@
  <objectgroup name="jump right">
   <object id="48" x="0" y="74" width="23" height="37"/>
  </objectgroup>
- <objectgroup name="air righr">
+ <objectgroup name="air right">
   <object id="50" x="23" y="74" width="23" height="37"/>
  </objectgroup>
  <objectgroup name="landing right">

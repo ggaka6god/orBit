@@ -82,8 +82,6 @@ public:
 
 	SDL_Rect playercol;
 
-	/*iPoint initpos1;
-	iPoint initpos2;*/
 private:
 
 	p2SString folder;

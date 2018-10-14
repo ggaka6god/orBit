@@ -12,8 +12,8 @@
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
 	name.create("map");
-	paralaxRef[0]=0;
-	paralaxRef[1]= 0;
+	paralaxRef[0]= offset;
+	paralaxRef[1]= offset;
 }
 
 // Destructor
@@ -39,7 +39,7 @@ bool j1Map::Awake(pugi::xml_node& config)
 	checkpoint2= config.child("collision2").attribute("checkpoint").as_int();
 	speed[0] = config.child("paralax").attribute("speed").as_float();
 	speed[1] = config.child("paralax").attribute("speed2").as_float();
-
+	offset= config.child("offset").attribute("offset").as_int();
 	
 
 	return ret;
@@ -268,8 +268,8 @@ bool j1Map::LoadMap(MapData& data)
 		p2SString tmp2(map.child("objectgroup").next_sibling("objectgroup").first_attribute().as_string());
 		if (tmp2 == "finalpos")
 		{
-			data.finalpos.x = map.child("objectgroup").child("object").attribute("x").as_int();
-			data.finalpos.y = map.child("objectgroup").child("object").attribute("y").as_int()+ map.child("objectgroup").child("object").attribute("height").as_int();
+			data.finalpos.x = map.child("objectgroup").next_sibling("objectgroup").child("object").attribute("x").as_int();
+			data.finalpos.y = map.child("objectgroup").next_sibling("objectgroup").child("object").attribute("y").as_int()+ map.child("objectgroup").child("object").attribute("height").as_int();
 		}
 
 

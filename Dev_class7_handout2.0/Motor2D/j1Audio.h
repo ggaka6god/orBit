@@ -50,6 +50,9 @@ public:
 	float VolumeChanger_fx;
 
 	bool testbool = false;
+	p2SString fxDeath;
+	p2SString fxJump;
+	p2SString fxdoubleJump;
 private:
 
 	_Mix_Music*			music = NULL;
