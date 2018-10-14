@@ -26,7 +26,6 @@ public:
 
 	bool Awake(pugi::xml_node &config);
 	bool Start();
-	bool PreUpdate();
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
@@ -46,15 +45,18 @@ public:
 
 	fPoint pos;
 	fPoint Velocity;
+	iPoint initpos1;
+	iPoint initpos2;
 
 	float gravity;
 	float jump_force;
+	float initialVx;
+	float max_speed_y;
+	float colliding_offset;
 
 	player_state stateplayer;
 	bool playercolliding;
 	bool colliding_roof;
-
-	float max_speed_y;
 
 	bool double_jump;
 	bool must_fall;
@@ -64,9 +66,9 @@ public:
 
 	bool wasRight = true;
 	bool dead = false;
-	bool lateralcollision;
-	bool moving = false;
-	int posxRef;
+
+	bool initialmoment;
+	bool first_move;
 
 	Animation* CurrentAnimation = nullptr;
 	Animation* idleRight = nullptr;
@@ -85,10 +87,6 @@ public:
 	SDL_Texture* spritesheet = nullptr;
 
 	SDL_Rect playercol;
-
-	iPoint initpos1;
-	iPoint initpos2;
-
 
 private:
 
