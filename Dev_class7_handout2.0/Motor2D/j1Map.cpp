@@ -256,6 +256,7 @@ bool j1Map::LoadMap(MapData& data)
 		data.tile_width = map.attribute("tilewidth").as_int();
 		data.tile_height = map.attribute("tileheight").as_int();
 		p2SString bg_color(map.attribute("backgroundcolor").as_string());
+		
 		//load init pos
 		p2SString tmp(map.child("objectgroup").first_attribute().as_string());
 		if (tmp == "initpos")
@@ -263,6 +264,15 @@ bool j1Map::LoadMap(MapData& data)
 			data.initpos.x =  map.child("objectgroup").child("object").attribute("x").as_int();
 			data.initpos.y = map.child("objectgroup").child("object").attribute("y").as_int();
 		}
+		//load final pos
+		p2SString tmp2(map.child("objectgroup").next_sibling("objectgroup").first_attribute().as_string());
+		if (tmp2 == "finalpos")
+		{
+			data.finalpos.x = map.child("objectgroup").child("object").attribute("x").as_int();
+			data.finalpos.y = map.child("objectgroup").child("object").attribute("y").as_int()+ map.child("objectgroup").child("object").attribute("height").as_int();
+		}
+
+
 		
 		data.background_color.r = 0;
 		data.background_color.g = 0;
