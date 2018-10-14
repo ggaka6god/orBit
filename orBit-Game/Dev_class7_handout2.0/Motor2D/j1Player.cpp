@@ -529,7 +529,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 		{
 			colliding_roof = true;
 
-			if (c1->rect.y<= c2->rect.y+c2->rect.h && c1->rect.y >= c2->rect.y+c2->rect.h-initialVx)
+			if (c1->rect.y<= c2->rect.y+c2->rect.h && c1->rect.y >= c2->rect.y+c2->rect.h-initialVx+1)
 			{
 				c1->rect.y = c2->rect.y + c2->rect.h + colliding_offset;
 				Velocity.y = 0.0f;
