@@ -32,11 +32,11 @@ github: https://github.com/TheArzhel
 - Aitor Simona
 github:https://github.com/AitorSimona
 
-## Proyect Github
+## Project Github
 	
 	https://github.com/TheArzhel/orBit
 
-## Proyect Trello
+## Project Trello
 
 	https://trello.com/b/M2TV7zXz/development
 
@@ -73,5 +73,7 @@ Licensed under the [MIT License](LICENSE.txt)
 
 - Animations on Tiled: all animations are in Tiled. Inside folder Game/animation. player animation is a xml file we read to interpret data
 
-- Camera: camera limits Blits to nearby area of tileset and collider
+- Camera: Only tiles inside the camera are printed 
+
+-Colliders: Only colliders that are in camera are checked in module collisions Update
 
