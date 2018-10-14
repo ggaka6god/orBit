@@ -33,6 +33,12 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	//call to save stage info
+	bool Save(pugi::xml_node&) const;
+
+	//call to load file
+	bool Load(pugi::xml_node&config);
+
 	bool change_scene(const char* map_name);
 
 public:

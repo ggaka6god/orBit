@@ -147,7 +147,6 @@ bool j1Scene::Update(float dt)
 {
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && firstStage == false) //can only press during second stage. gos to first stage
 	{	
-		//make function to reset default camera value from level start, player postion and play respective music
 			change_scene(StageList.start->data->GetString());
 			firstStage = true;
 			secondStage = false;
@@ -159,24 +158,49 @@ bool j1Scene::Update(float dt)
 		firstStage = false;
 		secondStage = true;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
+
+	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) //reload stage1
+	{
+		
+		change_scene(StageList.start->data->GetString());
+		firstStage = true;
+		secondStage = false;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) // beginning of current level
+	{
+		if (firstStage)
+			{
+				change_scene(StageList.start->data->GetString());
+				firstStage = true;
+				secondStage = false;
+			}
+		else if (secondStage)
+			{
+				change_scene(StageList.start->next->data->GetString());
+				firstStage = false;
+				secondStage = true;
+			}
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN) //audio dwon
 	{
 		App->audio->ChangeVolume_music(10);
 		App->audio->ChangeVolume_fx(10);
 		LOG("volume up");
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN) //audio up
 	{
 		App->audio->ChangeVolume_music(-10);
 		App->audio->ChangeVolume_fx(-10);
 		LOG("volume down");
 	}
 	
-	if(App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	if(App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) //load
 		App->LoadGame("save_game.xml");
 
-	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
+	if(App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) //save
 		App->SaveGame("save_game.xml");
 
 	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
@@ -301,3 +325,24 @@ bool j1Scene::change_scene(const char* map_name) {
 	return ret;
 }
 
+
+bool j1Scene::Save(pugi::xml_node &config) const
+{
+	bool ret = true;
+
+	config.append_child("firstStage").append_attribute("value") = firstStage;
+	config.append_child("secondStage").append_attribute("value") = secondStage;
+
+	return ret;
+}
+
+bool j1Scene::Load(pugi::xml_node &config)
+{
+
+	bool ret = true;
+
+	firstStage= config.child("firstStage").attribute("value").as_bool();
+	secondStage= config.child("secondStage").attribute("value").as_bool();
+
+	return ret;
+}

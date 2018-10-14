@@ -39,8 +39,8 @@ public:
 
 	//Load & Save audio data
 
-	bool Save(pugi::xml_node&) const;
-	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&config) const;
+	bool Load(pugi::xml_node&config);
 
 	p2SString musicfolder;
 	p2SString fxfolder;

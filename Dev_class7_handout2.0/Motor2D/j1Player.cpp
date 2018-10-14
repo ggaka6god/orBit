@@ -411,13 +411,22 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 	playercolliding = true;
 }
 
-bool j1Player::Load(pugi::xml_node &)
+bool j1Player::Load(pugi::xml_node &config)
 {
-	return true;
+
+	bool ret = true;
+
+	pos.x= config.child("Playerx").attribute("value").as_float();
+	pos.y = config.child("Playery").attribute("value").as_float();
+
+	return ret;
 }
 
-bool j1Player::Save(pugi::xml_node &) const
+bool j1Player::Save(pugi::xml_node &config) const
 {
+	config.append_child("Playerx").append_attribute("value")= pos.x;
+	config.append_child("Playery").append_attribute("value")= pos.y;
+
 	return true;
 }
 
