@@ -452,8 +452,7 @@ bool Properties::LoadProperties(pugi::xml_node& node)
 		if(i!= numproperties-1)
 		properties = properties.next_sibling();
 	}
-	// TODO 6: Fill in the method to fill the custom properties from 
-	// an xml_node
+	// fill the custom properties from an xml_node
 
 	return ret;
 }
@@ -539,7 +538,7 @@ void j1Map::Draw(MapData &data)
 	}
 
 
-	//Make sure we draw all the layers and not just the first one
+	//draw all the layers and not just the first one
 	MapLayer* layer;
 
 
@@ -631,8 +630,7 @@ iPoint j1Map::WorldToMap(int x, int y, MapData& Data) const
 
 TileSet* j1Map::GetTilesetFromTileId(int id,MapData& data) const
 {
-	// Complete this method so we pick the right
-	// Tileset based on a tile id
+	//method so we pick the right Tileset based on a tile id
 
 	TileSet* tileset;
 
