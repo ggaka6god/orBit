@@ -198,19 +198,6 @@ bool j1Scene::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		App->render->camera.y -= 2;
 
-	//if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->player->lateralcollision==false)
-	//{
-	//	//App->render->camera.x += 5;
-	//	App->map->paralaxRef[0] += App->map->speed[0];
-	//	App->map->paralaxRef[1] += App->map->speed[1];
-	//}
-	//if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->player->lateralcollision == false)
-	//{
-	//	//App->render->camera.x -= 5;
-	//	App->map->paralaxRef[0] -= App->map->speed[0];
-	//	App->map->paralaxRef[1] -= App->map->speed[1];
-	//}
-
 	int x, y;
 	App->input->GetMousePosition(x, y);
 
@@ -251,36 +238,9 @@ bool j1Scene::Update(float dt)
 bool j1Scene::PostUpdate()
 {
 	bool ret = true;
-	//int posxRef = App->player->pos.x;
 
 	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
-	//if (App->scene->firstStage && App->player->moving == true)
-	//{
-	//	if (posxRef < App->player->pos.x + 5 && App->player->pos.x >posxRef &&App->player->pos.x > App->player->initpos1.x)
-	//	{
-	//		App->map->paralaxRef[0] -= App->map->speed[0];
-	//		App->map->paralaxRef[1] -= App->map->speed[1];
-	//	}
-	//	/*else if (App->player->moving==true)
-	//	{
-	//		App->map->paralaxRef[0] += App->map->speed[0];
-	//		App->map->paralaxRef[1] += App->map->speed[1];
-	//	}*/
-	//}
-	//else if (App->scene->secondStage && App->player->moving == true)
-	//{
-	//	if (App->player->pos.x > App->player->initpos2.x)
-	//	{
-	//		App->map->paralaxRef[0] -= App->map->speed[0];
-	//		App->map->paralaxRef[1] -= App->map->speed[1];
-	//	}
-	//	else if (App->player->moving == true)
-	//	{
-	//		App->map->paralaxRef[0] += App->map->speed[0];
-	//		App->map->paralaxRef[1] += App->map->speed[1];
-	//	}
-	//}
 
 
 	return ret;
