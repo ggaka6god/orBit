@@ -266,6 +266,8 @@ bool j1Audio::Load(pugi::xml_node &config)
 
 	VolumeChanger_fx = config.child("VolumeChanger_fx").attribute("value").as_float();
 
+	if (testbool == true)
+		LOG("nice");
 
 	ret = Mix_VolumeMusic(128 * VolumeChanger_music);
 

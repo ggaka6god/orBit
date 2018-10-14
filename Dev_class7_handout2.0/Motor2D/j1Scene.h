@@ -55,7 +55,9 @@ public:
 	iPoint camera1;
 	iPoint camera2;
 
-	
+	bool afterLoadingStage1 = false;
+	bool afterLoadingStage2 = false;
+
 private:
 	p2SString map_name;
 };

@@ -48,6 +48,8 @@ public:
 
 	float VolumeChanger_music;
 	float VolumeChanger_fx;
+
+	bool testbool = false;
 private:
 
 	_Mix_Music*			music = NULL;

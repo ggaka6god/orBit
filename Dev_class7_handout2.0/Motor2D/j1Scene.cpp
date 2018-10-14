@@ -200,48 +200,7 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)//load
 	{	
 
-		if (firstStage)
-		{
-			App->LoadGame("save_game.xml");
-
-			if (secondStage)
-			{
-				change_scene(StageList.start->next->data->GetString());
-				secondStage = true;
-				firstStage = false;
-			}
-
-			else
-			{
-				change_scene(StageList.start->data->GetString());
-				firstStage = true;
-				secondStage = false;
-
-			}
-
-		}
-
-		else if (secondStage)
-		{
-			App->LoadGame("save_game.xml");
-
-
-
-			if (firstStage)
-			{
-				change_scene(StageList.start->data->GetString());
-				firstStage = true;
-				secondStage = false;
-
-			}
-
-			else
-			{
-				change_scene(StageList.start->next->data->GetString());
-				firstStage = false;
-				secondStage = true;
-			}
-		}
+		bool ret = App->LoadGame("save_game.xml");
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) //save
@@ -387,8 +346,48 @@ bool j1Scene::Load(pugi::xml_node &config)
 
 	bool ret = true;
 
-	firstStage= config.child("firstStage").attribute("value").as_bool();
-	secondStage= config.child("secondStage").attribute("value").as_bool();
+	afterLoadingStage1 = config.child("firstStage").attribute("value").as_bool();
+	afterLoadingStage2 = config.child("secondStage").attribute("value").as_bool();
 
+	if (firstStage)
+	{
+
+
+		if (afterLoadingStage2)
+		{
+			change_scene(StageList.start->next->data->GetString());
+			secondStage = true;
+			firstStage = false;
+		}
+
+		else
+		{
+			change_scene(StageList.start->data->GetString());
+			firstStage = true;
+			secondStage = false;
+
+		}
+
+	}
+
+	else if (secondStage)
+	{
+
+		if (afterLoadingStage1)
+		{
+			change_scene(StageList.start->data->GetString());
+			firstStage = true;
+			secondStage = false;
+
+		}
+
+		else
+		{
+			change_scene(StageList.start->next->data->GetString());
+			firstStage = false;
+			secondStage = true;
+		}
+	}
+	
 	return ret;
 }
