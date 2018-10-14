@@ -91,8 +91,8 @@ bool j1Scene::Start()
 	{
 		App->render->camera.x = camera1.x;
 		App->render->camera.y = camera1.y;
-		App->player->pos.x = App->player->initpos1.x;
-		App->player->pos.y = App->player->initpos1.y;
+		App->player->pos.x = App->map->data.initpos.x;//App->player->initpos1.x;
+		App->player->pos.y = App->map->data.initpos.y;//App->player->initpos1.y;
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());
 	}
@@ -100,8 +100,8 @@ bool j1Scene::Start()
 	{
 		App->render->camera.x = camera2.x;
 		App->render->camera.y = camera2.y;
-		App->player->pos.x = App->player->initpos2.x;
-		App->player->pos.y = App->player->initpos2.y;
+		App->player->pos.x = App->map->data2.initpos.x;//App->player->initpos1.x;
+		App->player->pos.y = App->map->data2.initpos.y;//App->player->initpos1.y;
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->next->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());
 	}
@@ -277,8 +277,8 @@ bool j1Scene::change_scene(const char* map_name) {
 	{	
 		App->render->camera.x = camera1.x;
 		App->render->camera.y = camera1.y;
-		App->player->pos.x = App->player->initpos1.x;
-		App->player->pos.y = App->player->initpos1.y;
+		App->player->pos.x = App->map->data.initpos.x;//App->player->initpos1.x;
+		App->player->pos.y = App->map->data.initpos.y;//App->player->initpos1.y;
 		App->map->ColliderDrawer(App->map->data);
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());//aqui deberia poder leer metadata
 		App->audio->PlayMusic(stageMusic.GetString());
@@ -287,8 +287,8 @@ bool j1Scene::change_scene(const char* map_name) {
 	{
 		App->render->camera.x = camera2.x;
 		App->render->camera.y = camera2.y;
-		App->player->pos.x = App->player->initpos2.x;
-		App->player->pos.y = App->player->initpos2.y;
+		App->player->pos.x = App->map->data2.initpos.x;//App->player->initpos2.x;
+		App->player->pos.y = App->map->data2.initpos.y;// App->player->initpos2.y;
 		App->map->ColliderDrawer(App->map->data2);
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->next->data->GetString());//aqui leer metadata de direccion
 		App->audio->PlayMusic(stageMusic.GetString());

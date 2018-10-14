@@ -55,8 +55,7 @@
     <folder>animation/player.tmx</folder>
     <texture>textures/sprite_sheet_character.png</texture>
     <colider x="0" y="4" width="21" height="35"/>
-    <stg1InitPos x="560" y="180"/>
-    <stg2InitPos x="46" y="180"/>
+  
   </player>
 
 </config>
