@@ -261,7 +261,7 @@ bool j1Map::LoadMap(MapData& data)
 		p2SString tmp(map.child("objectgroup").first_attribute().as_string());
 		if (tmp == "initpos")
 		{
-			data.initpos.x =  map.child("objectgroup").child("object").attribute("x").as_int();
+			data.initpos.x = map.child("objectgroup").child("object").attribute("x").as_int();
 			data.initpos.y = map.child("objectgroup").child("object").attribute("y").as_int();
 		}
 		//load final pos

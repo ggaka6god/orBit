@@ -62,8 +62,7 @@ bool j1Player::Start()
 
 	Velocity.x = 2.0f;
 	Velocity.y = 0.0f;
-	pos.x = 0;//initpos1.x;;
-	pos.y = 0; // initpos1.y;
+	
 
 	gravity = -1.0f;
 	playercolliding = false;
@@ -82,6 +81,11 @@ bool j1Player::Start()
 
 bool j1Player::Update(float dt)
 {
+	if (wasRight==true)
+		CurrectAnimation = idleRight;
+	else if (wasRight==false)
+		CurrectAnimation = idleLeft;
+
 	//Check if player is Falling or jumping
 
 	/*if (must_fall)
@@ -109,6 +113,8 @@ bool j1Player::Update(float dt)
 		pos.x = pos.x - Velocity.x;
 		going_left = true;
 		going_right = false;
+		CurrectAnimation = runLeft;
+		wasRight = false;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
@@ -117,6 +123,8 @@ bool j1Player::Update(float dt)
 		pos.x = pos.x + Velocity.x;
 		going_right = true;
 		going_left = false;
+		CurrectAnimation = runRight;
+		wasRight = true;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
@@ -136,6 +144,7 @@ bool j1Player::Update(float dt)
 			Velocity.y = jump_force;
 			stateplayer = JUMPING;
 			playercolliding = false;
+			
 		}
 	}
 
@@ -188,7 +197,9 @@ bool j1Player::Update(float dt)
 	{
 		pos.y -= gravity*4.0f;
 	}
-	GetCurrentAnimation();
+	
+	//GetCurrentAnimation();
+
 	return true;
 }
 
@@ -455,61 +466,45 @@ Animation* j1Player::LoadAnimation(const char* animationPath, const char* animat
 
 void j1Player::GetCurrentAnimation()
 {
-	CurrectAnimation = idleRight;
-	if (going_left == true)
+
+	if (dead == true && wasRight == false)
 	{
-		if (dead == true)
-		{
-			CurrectAnimation = deathLeft;
-		}
-		else if (stateplayer == IDLE)
-		{
-			CurrectAnimation = idleLeft;
-		}
-		else if (stateplayer == JUMPING)
-		{
-			CurrectAnimation = jumpingLeft;
-		}
-		else if (stateplayer == FALLING)
-		{
-			CurrectAnimation = fallingLeft;
-		}
-		else if (double_jump == true)
-		{
-			CurrectAnimation = airLeft;
-		}
-		else
-		{
-			CurrectAnimation = runLeft;
-		}
+		CurrectAnimation = deathLeft;
 	}
-	else if (going_right == true)
+
+	/*if (stateplayer == JUMPING && wasRight == false)
 	{
-		if (dead == true)
-		{
-			CurrectAnimation = deathRight;
-		}
-		else if (stateplayer == IDLE)
-		{
-			CurrectAnimation = idleRight;
-		}
-		else if (stateplayer == JUMPING)
-		{
-			CurrectAnimation = jumpingRight;
-		}
-		else if (stateplayer == FALLING)
-		{
-			CurrectAnimation = fallingRight;
-		}
-		else if (double_jump == true)
-		{
-			CurrectAnimation = airRight;
-		}
-		else
-		{
-			CurrectAnimation = runRight;
-		}
+		CurrectAnimation = jumpingLeft;
 	}
+	if (stateplayer == FALLING && wasRight == false)
+	{
+		CurrectAnimation = fallingLeft;
+	}*/
+	if (double_jump == false && wasRight == false)
+	{
+		CurrectAnimation = airLeft;
+	}
+
+
+
+	if (dead == true && wasRight == true)
+	{
+		CurrectAnimation = deathRight;
+	}
+
+	/*else if (stateplayer == JUMPING && wasRight == true)
+	{
+		CurrectAnimation = jumpingRight;
+	}
+	else if (stateplayer == FALLING && wasRight == true)
+	{
+		CurrectAnimation = fallingRight;
+	}*/
+	else if (double_jump == false && wasRight == true)
+	{
+		CurrectAnimation = airRight;
+	}
+
 
 
 }

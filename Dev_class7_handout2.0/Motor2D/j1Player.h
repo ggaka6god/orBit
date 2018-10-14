@@ -61,6 +61,7 @@ public:
 	bool going_right;
 	bool going_left;
 
+	bool wasRight = true;
 	bool dead = false;
 
 

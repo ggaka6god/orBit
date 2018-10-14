@@ -277,6 +277,8 @@ bool j1Scene::change_scene(const char* map_name) {
 	{	
 		App->render->camera.x = camera1.x;
 		App->render->camera.y = camera1.y;
+		/*App->player->pos.x = 560;
+		App->player->pos.y = 180;*/
 		App->player->pos.x = App->map->data.initpos.x;//App->player->initpos1.x;
 		App->player->pos.y = App->map->data.initpos.y;//App->player->initpos1.y;
 		App->map->ColliderDrawer(App->map->data);
@@ -287,6 +289,8 @@ bool j1Scene::change_scene(const char* map_name) {
 	{
 		App->render->camera.x = camera2.x;
 		App->render->camera.y = camera2.y;
+		/*App->player->pos.x = 46;
+		App->player->pos.y = 180;*/
 		App->player->pos.x = App->map->data2.initpos.x;//App->player->initpos2.x;
 		App->player->pos.y = App->map->data2.initpos.y;// App->player->initpos2.y;
 		App->map->ColliderDrawer(App->map->data2);
