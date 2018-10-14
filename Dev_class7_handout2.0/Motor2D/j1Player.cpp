@@ -33,7 +33,10 @@ bool j1Player::Awake(pugi::xml_node& config) {
 	int w = config.child("colider").attribute("width").as_int();
 	int h = config.child("colider").attribute("height").as_int();
 	playercol = { x,y,w,h };
-
+	initpos1.x = config.child("stg1InitPos").attribute("x").as_int();
+	initpos1.y = config.child("stg1InitPos").attribute("y").as_int();
+	initpos2.x = config.child("stg2InitPos").attribute("x").as_int();
+	initpos2.y = config.child("stg2InitPos").attribute("y").as_int();
 
 	return ret;
 }
@@ -58,8 +61,8 @@ bool j1Player::Start()
 
 	Velocity.x = 2.0f;
 	Velocity.y = 0.0f;
-	pos.x = 180;
-	pos.y = 0.0f;
+	pos.x =initpos1.x;;
+	pos.y = initpos1.y;
 
 	gravity = -1.0f;
 	playercolliding = false;

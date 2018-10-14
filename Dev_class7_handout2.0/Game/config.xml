@@ -33,6 +33,8 @@
   <scene>
     <map_name name="stage1_TiledV017.tmx"/>
     <map_name name="stage2_TiledV017.tmx"/>
+    <startcamera1 x="-736" y="0"  />
+    <startcamera2 x="0" y="0"  />
   </scene>
 
   <audio>
@@ -40,7 +42,7 @@
       <folder>audio/music/</folder>
       <song name="stage1.ogg"/>
       <song name="stage2.ogg"/>
-      <VolumeChanger_music value="0"/>
+      <VolumeChanger_music value="0.2"/>
     </music>
     <fx>
       <folder>audio/fx/</folder>
@@ -53,6 +55,8 @@
     <folder>animation/player.tmx</folder>
     <texture>textures/sprite_sheet_character.png</texture>
     <colider x="0" y="4" width="21" height="35"/>
+    <stg1InitPos x="560" y="180"/>
+    <stg2InitPos x="46" y="180"/>
   </player>
 
 </config>

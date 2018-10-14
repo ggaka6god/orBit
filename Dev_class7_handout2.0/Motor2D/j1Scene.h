@@ -46,6 +46,8 @@ public:
 	
 	bool firstStage = true;
 	bool secondStage = false;
+	iPoint camera1;
+	iPoint camera2;
 
 	
 private:

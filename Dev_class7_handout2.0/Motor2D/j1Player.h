@@ -81,6 +81,9 @@ public:
 	SDL_Texture* spritesheet = nullptr;
 
 	SDL_Rect playercol;
+
+	iPoint initpos1;
+	iPoint initpos2;
 private:
 
 	p2SString folder;

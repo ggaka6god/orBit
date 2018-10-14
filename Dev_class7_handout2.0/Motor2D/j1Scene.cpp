@@ -43,7 +43,10 @@ bool j1Scene::Awake(pugi::xml_node& config)
 		ret = false;
 		LOG("stagelist is null");
 	}
-
+	camera1.x = config.child("startcamera1").attribute("x").as_int();
+	camera1.y = config.child("startcamera1").attribute("y").as_int();
+	camera2.x = config.child("startcamera2").attribute("x").as_int();
+	camera2.y = config.child("startcamera2").attribute("y").as_int();
 	return ret;
 }
 
@@ -80,18 +83,25 @@ bool j1Scene::Start()
 
 	//ret = App->map->Load(StageList.start->data->GetString());
 	
-	//loading music depending in the order
+	//loading music&positions depending in the order
 
 	FirstStage = StageList.start->data->GetString();
 
 	if (FirstStage =="stage1_TiledV017.tmx" )
 	{
-
+		App->render->camera.x = camera1.x;
+		App->render->camera.y = camera1.y;
+		App->player->pos.x = App->player->initpos1.x;
+		App->player->pos.y = App->player->initpos1.y;
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());
 	}
 	else
 	{
+		App->render->camera.x = camera2.x;
+		App->render->camera.y = camera2.y;
+		App->player->pos.x = App->player->initpos2.x;
+		App->player->pos.y = App->player->initpos2.y;
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->next->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());
 	}
@@ -122,6 +132,7 @@ bool j1Scene::Start()
 		//colliderbox = App->coll->AddCollider({ 151, 120, 50, 30 }, COLLIDER_FLOOR, this);
 		//test = App->coll->AddCollider({ 400,50,20,20 }, COLLIDER_FLOOR, this);
 
+		
 	return ret;
 }
 
@@ -259,18 +270,25 @@ bool j1Scene::change_scene(const char* map_name) {
 
 	
 	App->coll->CleanUp();
-	App->player-> playercollider= App->coll->AddCollider({ 0, 0, 15, 25 }, COLLIDER_PLAYER, App->player);
-	App->render->camera.x = 0;	
-	App->render->camera.y = 0;
+	App->player-> playercollider= App->coll->AddCollider(App->player->playercol, COLLIDER_PLAYER, App->player);
+
+	
 	if (FirstStage == map_name)
 	{	
+		App->render->camera.x = camera1.x;
+		App->render->camera.y = camera1.y;
+		App->player->pos.x = App->player->initpos1.x;
+		App->player->pos.y = App->player->initpos1.y;
 		App->map->ColliderDrawer(App->map->data);
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());//aqui deberia poder leer metadata
 		App->audio->PlayMusic(stageMusic.GetString());
 	}
 	else
 	{
-
+		App->render->camera.x = camera2.x;
+		App->render->camera.y = camera2.y;
+		App->player->pos.x = App->player->initpos2.x;
+		App->player->pos.y = App->player->initpos2.y;
 		App->map->ColliderDrawer(App->map->data2);
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->next->data->GetString());//aqui leer metadata de direccion
 		App->audio->PlayMusic(stageMusic.GetString());
