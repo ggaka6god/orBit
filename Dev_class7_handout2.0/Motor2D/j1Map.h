@@ -163,6 +163,8 @@ public:
 	int numberStages = 0;
 	float speed[2];
 	float paralaxRef[2];
+	int					offset;
+
 private:
 	p2SString folder;
 	pugi::xml_document	map_file;
@@ -177,6 +179,7 @@ private:
 	int					magentaCollision2;
 	int					greenCollison2;
 	int					checkpoint2;
+	
 };
 
 #endif // __j1MAP_H__

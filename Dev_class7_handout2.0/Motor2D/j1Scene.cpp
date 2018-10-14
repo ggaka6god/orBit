@@ -91,8 +91,8 @@ bool j1Scene::Start()
 	{
 		App->render->camera.x = camera1.x;
 		App->render->camera.y = camera1.y;
-		App->player->pos.x = App->map->data.initpos.x;//App->player->initpos1.x;
-		App->player->pos.y = App->map->data.initpos.y;//App->player->initpos1.y;
+		App->player->pos.x = App->map->data.initpos.x;
+		App->player->pos.y = App->map->data.initpos.y;
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());
 	}
@@ -100,8 +100,8 @@ bool j1Scene::Start()
 	{
 		App->render->camera.x = camera2.x;
 		App->render->camera.y = camera2.y;
-		App->player->pos.x = App->map->data2.initpos.x;//App->player->initpos1.x;
-		App->player->pos.y = App->map->data2.initpos.y;//App->player->initpos1.y;
+		App->player->pos.x = App->map->data2.initpos.x;
+		App->player->pos.y = App->map->data2.initpos.y;
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->next->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());
 	}
@@ -312,7 +312,9 @@ bool j1Scene::change_scene(const char* map_name) {
 	
 	bool ret = true;
 
-	
+	App->map->paralaxRef[0] = App->map->offset;
+	App->map->paralaxRef[1] = App->map->offset;
+
 	App->coll->CleanUp();
 	App->player-> playercollider= App->coll->AddCollider(App->player->playercol, COLLIDER_PLAYER, App->player);
 
