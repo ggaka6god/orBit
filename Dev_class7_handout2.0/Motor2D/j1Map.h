@@ -167,10 +167,13 @@ private:
 	int					redCollision;
 	int					yellowCollision;
 	int					magentaCollision;
+	int					greenCollison;
+	int					checkpoint;
 	int					redCollision2;
 	int					yellowCollision2;
 	int					magentaCollision2;
-	
+	int					greenCollison2;
+	int					checkpoint2;
 };
 
 #endif // __j1MAP_H__

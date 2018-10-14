@@ -19,6 +19,7 @@ j1Collision::j1Collision()
 
 	matrix[COLLIDER_PLAYER][COLLIDER_SPIKES] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_PLATFORM] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_ROOF] = true;
 
 }
 
@@ -196,8 +197,14 @@ void j1Collision::DebugDraw()
 		case COLLIDER_SPIKES: // yellow
 			App->render->DrawQuad(item->data->rect, 255, 255, 0, alpha);
 			break;
-		case COLLIDER_PLATFORM: // green
+		case COLLIDER_PLATFORM: // magenta
 			App->render->DrawQuad(item->data->rect, 255, 0, 255, alpha);
+			break;
+		case COLLIDER_ROOF: // rose
+			App->render->DrawQuad(item->data->rect, 255, 0, 128, alpha);
+			break;
+		case CHECKPOINT: // blue
+			App->render->DrawQuad(item->data->rect, 0 , 0, 128, alpha);
 			break;
 			
 

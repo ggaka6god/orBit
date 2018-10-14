@@ -30,9 +30,13 @@ bool j1Map::Awake(pugi::xml_node& config)
 	redCollision = config.child("collision1").attribute("red").as_int();
 	yellowCollision = config.child("collision1").attribute("yellow").as_int();
 	magentaCollision = config.child("collision1").attribute("magenta").as_int();
+	greenCollison = config.child("collision1").attribute("green").as_int();
+	checkpoint = config.child("collision1").attribute("checkpoint").as_int();
 	redCollision2 = config.child("collision2").attribute("red").as_int();
 	yellowCollision2 = config.child("collision2").attribute("yellow").as_int();
 	magentaCollision2 = config.child("collision2").attribute("magenta").as_int();
+	greenCollison2 = config.child("collision2").attribute("green").as_int();
+	checkpoint2= config.child("collision2").attribute("checkpoint").as_int();
 	speed[0] = config.child("paralax").attribute("speed").as_float();
 	speed[1] = config.child("paralax").attribute("speed2").as_float();
 
@@ -481,6 +485,14 @@ bool j1Map::ColliderDrawer(MapData& data)
 
 							else if (tile_id == magentaCollision || tile_id == magentaCollision2)
 								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_PLATFORM,this);
+
+							else if (tile_id == greenCollison || tile_id == greenCollison2)
+								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_ROOF, this);
+
+							else if (tile_id == checkpoint || tile_id == checkpoint2)
+								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, CHECKPOINT, this);
+
+						
 
 
 							/*colliderfloor = App->coll->AddCollider({ 0, 150, 1024, 100 }, COLLIDER_FLOOR, this);*/
