@@ -135,6 +135,11 @@ bool j1Scene::PreUpdate()
 		App->render->camera.x = -App->player->initialVx;
 	}
 
+	if (-App->render->camera.x + App->render->camera.w >= App->map->data.width*App->map->data.tile_width*App->win->GetScale())
+	{
+		App->render->camera.x = -App->map->data.width*App->map->data.tile_width*App->win->GetScale() + App->render->camera.w;
+	}
+
 	//Camera In Y
 
 
@@ -318,6 +323,9 @@ bool j1Scene::change_scene(const char* map_name) {
 
 	App->map->paralaxRef[0] = App->map->offset;
 	App->map->paralaxRef[1] = App->map->offset;
+
+	App->player->parallaxflow = 0;
+	App->player->previousflow = 0;
 
 	App->player->initialmoment = true;
 	App->player->first_move = false;
