@@ -69,6 +69,7 @@ public:
 
 	bool initialmoment;
 	bool first_move;
+	bool god_mode;
 
 	Animation* CurrentAnimation = nullptr;
 	Animation* idleRight = nullptr;

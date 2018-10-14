@@ -60,6 +60,7 @@
     <Velocity x="2.0" y="0.0"  max_speed_y="10.0" initalVx="2.0" jump_force="7.0"/>
     <gravity value="-1.0"/>
     <colliding_offset value="1" />
+    
   
   </player>
 
