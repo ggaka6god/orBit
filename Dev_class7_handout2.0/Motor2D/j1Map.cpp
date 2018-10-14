@@ -530,7 +530,6 @@ void j1Map::Draw(MapData &data)
 	if (map_loaded == false)
 		return;
 
-
 	for (int x = 0; x < data.paralaxlist.count(); ++x)
 	{
 		App->render->Blit(data.paralaxlist[x]->texture,

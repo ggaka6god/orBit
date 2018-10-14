@@ -7,6 +7,7 @@
 #include "j1Input.h"
 #include "j1Map.h"
 #include "j1Scene.h"
+#include "j1Window.h"
 
 bool j1Player::Awake(pugi::xml_node& config) {
 
@@ -72,7 +73,7 @@ bool j1Player::Start()
 	gravity = -1.0f;
 	playercolliding = false;
 
-	jump_force = 7.5f;
+	jump_force = 7.0f;
 	max_speed_y = 10.0f;
 	stateplayer = IDLE;
 	must_fall = false;
@@ -217,10 +218,20 @@ bool j1Player::Update(float dt)
 	if (must_fall)
 	{
 		pos.y -= gravity*4.0f;
-	/*	if(going_right)
+		if(going_right)
 		CurrentAnimation = airRight;
 		if(going_left)
-		CurrentAnimation = airLeft;*/
+		CurrentAnimation = airLeft;
+	}
+
+	if (pos.x < 0)
+	{
+		pos.x = 0;
+		playercollider->rect.x = 0;
+	}
+	else if (pos.x > App->map->data.width*App->map->data.tile_width)
+	{
+		pos.x = App->map->data.width*App->map->data.tile_width;
 	}
 
 	return true;
@@ -230,6 +241,61 @@ bool j1Player::PostUpdate()
 {
 	bool ret = true;
 
+	//Controlling camera 
+
+	//Camera In X
+	App->render->camera.x = (-pos.x*App->win->GetScale() - playercollider->rect.w / 2 + App->render->camera.w / 2);
+
+	if (-App->render->camera.x <= 2)
+	{
+ 		App->render->camera.x = -2;
+	}
+
+	//Camera In Y
+
+
+	 //Camera down
+
+	if (pos.y*App->win->GetScale() + playercollider->rect.h >= -App->render->camera.y + App->render->camera.h - App->render->camera.h / 6)
+	{
+		if (!must_fall)
+			App->render->camera.y = -(pos.y * App->win->GetScale() + playercollider->rect.h - App->render->camera.h + App->render->camera.h / 6);
+		else
+			App->render->camera.y -= 8;
+	}
+
+	if (pos.y*App->win->GetScale() > -App->render->camera.y + App->render->camera.h - App->render->camera.h / 6)
+	{
+		App->render->camera.y -= 8;
+	}
+
+	if (-App->render->camera.y + App->render->camera.h > App->map->data.height*App->map->data.tile_height*App->win->GetScale())
+	{
+		App->render->camera.y = (-App->map->data.height*App->map->data.tile_height*App->win->GetScale()+App->render->camera.h);
+	}
+
+
+	 //Camera up
+
+	if(pos.y*App->win->GetScale() <= -App->render->camera.y+ App->render->camera.h/6)
+    {
+		if(App->render->camera.y+8 < 0)
+		App->render->camera.y += 8;
+	}
+
+	//Controlling player position
+
+	if (playercollider->rect.x <= 2)
+	{
+		playercollider->rect.x = pos.x = 2;
+	}
+
+	if (playercollider->rect.y + playercollider->rect.h >= App->map->data.height*App->map->data.tile_height)
+	{
+		playercollider->rect.y = App->map->data.height*App->map->data.tile_height - playercollider->rect.h;
+	}
+
+	//Blitting player
 	App->render->Blit(spritesheet, pos.x, pos.y, &CurrentAnimation->GetCurrentFrame());
 
 	return ret;
@@ -239,12 +305,10 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 {
 	bool lateralcollision = true;
 
-
 	if (c1->rect.y + c1->rect.h == c2->rect.y)
 	{
 		lateralcollision = false;
 	}
-
 
 
 	float aux = c1->rect.y; //pos.y
@@ -309,10 +373,12 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 
 				if (going_right)
 				{
+					
 
 					//stopping player if lateral col0lision
 					if (lateralcollision)
 					{
+
 						if (c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x + c1->rect.w <= c2->rect.x + 3)
 						{
 							Velocity.x = 0.0f;
@@ -337,6 +403,9 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 				//going left
 				if (going_left)
 				{
+
+					
+
 					if (lateralcollision)
 					{
 
@@ -392,6 +461,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 
 			if ((going_left || going_right) && must_fall)
 			{
+
 				if(c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x + c1->rect.w <= c2->rect.x + 3)
 				{
 					Velocity.x = 0.0f;

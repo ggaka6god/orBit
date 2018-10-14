@@ -4,7 +4,7 @@
 #include "j1Module.h"
 
 struct SDL_Texture;
-class Collider;
+struct Collider;
 
 class j1Scene : public j1Module
 {

@@ -64,7 +64,6 @@ public:
 	bool wasRight = true;
 	bool dead = false;
 
-
 	Animation* CurrentAnimation = nullptr;
 	Animation* idleRight = nullptr;
 	Animation* idleLeft = nullptr;
