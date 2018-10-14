@@ -28,7 +28,11 @@ bool j1Player::Awake(pugi::xml_node& config) {
 	deathLeft = LoadAnimation(folder.GetString(), "dead left");
 	airRight = LoadAnimation(folder.GetString(), "air right");
 	airLeft = LoadAnimation(folder.GetString(), "air left");
-
+	int x = config.child("colider").attribute("x").as_int();
+	int y = config.child("colider").attribute("y").as_int();
+	int w = config.child("colider").attribute("width").as_int();
+	int h = config.child("colider").attribute("height").as_int();
+	playercol = { x,y,w,h };
 
 
 	return ret;
@@ -50,7 +54,7 @@ bool j1Player::Start()
 
 	LOG("Loading player");
 
-	playercollider = App->coll->AddCollider({ 0, 0, 20, 35 }, COLLIDER_PLAYER, this);
+	playercollider = App->coll->AddCollider(playercol, COLLIDER_PLAYER, this);
 
 	Velocity.x = 2.0f;
 	Velocity.y = 0.0f;
