@@ -58,6 +58,10 @@ bool j1Audio::Awake(pugi::xml_node& config)
 	VolumeChanger_music = config.child("music").child("VolumeChanger_music").attribute("value").as_float();
 	VolumeChanger_fx = config.child("fx").child("VolumeChanger_fx").attribute("value").as_float();
 
+	fxDeath = config.child("fx").child("sound").attribute("death").as_string();
+	fxJump = config.child("fx").child("sound").attribute("jump").as_string();
+	fxDeath = config.child("fx").child("sound").attribute("doubleJump").as_string();
+
 	pugi::xml_node Music;
 	for (Music = config.child("music").child("song"); Music && ret; Music = Music.next_sibling("song"))
 	{
@@ -68,7 +72,7 @@ bool j1Audio::Awake(pugi::xml_node& config)
 	}
 
 	/*Mix_VolumeMusic(10);*/
-
+	
 
 	return ret;
 }

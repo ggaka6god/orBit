@@ -47,6 +47,7 @@
     <fx>
       <folder>audio/fx/</folder>
       <VolumeChanger_fx value="0"/>
+      <sound death="death.ogg" doubleJump="doble jump.ogg" jump="jump.ogg"/>
     </fx>
   </audio>
 
