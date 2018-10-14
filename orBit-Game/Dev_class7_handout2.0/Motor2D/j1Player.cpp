@@ -81,6 +81,7 @@ bool j1Player::Start()
 	playercolliding = false;
 	initialmoment = true;
 	first_move = false;
+	god_mode = false;
 
 	if (spritesheet == nullptr)
 		spritesheet = App->tex->Load(Texture.GetString());
@@ -91,6 +92,14 @@ bool j1Player::Start()
 bool j1Player::Update(float dt)
 {
 	//Player Update
+
+	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	{
+		if (god_mode == false)
+			god_mode = true;
+		else
+			god_mode = false;
+	}
 
 	if (initialmoment)
 	{
@@ -299,12 +308,27 @@ bool j1Player::PostUpdate()
 	}
 
 
+
 	 //Camera up
 
 	if (pos.y*App->win->GetScale() <= -App->render->camera.y + App->render->camera.h / 6)
     {
 		if(App->render->camera.y + (-gravity*8) < 0)
 		App->render->camera.y += (-gravity*8);
+	}
+
+	//Parallax movement
+
+	if (App->scene->firstStage)
+	{
+		App->map->paralaxRef[0] = pos.x - initpos1.x;
+		App->map->paralaxRef[1] = pos.x - initpos1.x;
+
+	}
+	else if (App->scene->secondStage)
+	{
+		App->map->paralaxRef[0] = pos.x-initpos2.x;
+		App->map->paralaxRef[1] = pos.x-initpos2.x;
 	}
 
 	//Controlling player position
@@ -466,18 +490,23 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 			must_fall = false;
 			double_jump = false;
 
-			if (going_right)
+			if (!god_mode)
 			{
-				CurrentAnimation = deathRight;
-			}
-			else
-			{
-				CurrentAnimation = deathRight;
-			}
 
-			if (CurrentAnimation->Finished())
-			{
-				App->LoadGame("save_game.xml");
+				if (going_right)
+				{
+					CurrentAnimation = deathRight;
+				}
+				else
+				{
+					CurrentAnimation = deathRight;
+				}
+
+				if (CurrentAnimation->Finished())
+				{
+					App->LoadGame("save_game.xml");
+				}
+
 			}
 
 		}

@@ -512,10 +512,6 @@ bool j1Map::ColliderDrawer(MapData& data)
 							else if (tile_id == checkpoint || tile_id == checkpoint2)
 								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, CHECKPOINT, this);
 
-						
-
-
-							/*colliderfloor = App->coll->AddCollider({ 0, 150, 1024, 100 }, COLLIDER_FLOOR, this);*/
 						}
 					}
 				}
@@ -542,7 +538,7 @@ void j1Map::Draw(MapData &data)
 	}
 
 
-	// TODO 4: Make sure we draw all the layers and not just the first one
+	//Make sure we draw all the layers and not just the first one
 	MapLayer* layer;
 
 
@@ -634,7 +630,7 @@ iPoint j1Map::WorldToMap(int x, int y, MapData& Data) const
 
 TileSet* j1Map::GetTilesetFromTileId(int id,MapData& data) const
 {
-	// TODO 3: Complete this method so we pick the right
+	// Complete this method so we pick the right
 	// Tileset based on a tile id
 
 	TileSet* tileset;
@@ -676,7 +672,7 @@ TileSet* j1Map::GetTilesetFromTileId(int id,MapData& data) const
 SDL_Rect TileSet::GetTileRect(int id) const
 {
 
-	int relative_id = id - firstgid; // problem
+	int relative_id = id - firstgid; 
 
 	SDL_Rect rect;
 

@@ -53,7 +53,7 @@ bool j1Scene::Start()
 {
 	bool ret = true;
 
-	//Loading map both maps
+	//Loading both maps
 
 	p2List_item<p2SString*>* stageListItem;
 	stageListItem = StageList.start;
@@ -131,6 +131,7 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
+
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && firstStage == false) //can only press during second stage. goes to first stage
 	{	
 			change_scene(StageList.start->data->GetString());
@@ -284,7 +285,7 @@ bool j1Scene::change_scene(const char* map_name) {
 		App->player->pos.x = App->map->data.initpos.x;
 		App->player->pos.y = App->map->data.initpos.y;
 		App->map->ColliderDrawer(App->map->data);
-		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());//aqui deberia poder leer metadata
+		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());
 		App->player->stateplayer = FALLING;
 	}
@@ -296,7 +297,7 @@ bool j1Scene::change_scene(const char* map_name) {
 		App->player->pos.x = App->map->data2.initpos.x;
 		App->player->pos.y = App->map->data2.initpos.y;
 		App->map->ColliderDrawer(App->map->data2);
-		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->next->data->GetString());//aqui leer metadata de direccion
+		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->next->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());
 		App->player->stateplayer = FALLING;
 	}

@@ -71,9 +71,6 @@ bool j1Audio::Awake(pugi::xml_node& config)
 		SongNamesList.add(SongName);
 	}
 
-	/*Mix_VolumeMusic(10);*/
-	
-
 	return ret;
 }
 

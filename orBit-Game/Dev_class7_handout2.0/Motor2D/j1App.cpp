@@ -287,8 +287,7 @@ bool j1App::LoadGame(const char* file)
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list
 	want_to_load = true;
-	//load_game.create("%s%s", fs->GetSaveDirectory(), file);
-	//LoadGameNow();
+	
 	return true;
 }
 
@@ -355,7 +354,7 @@ bool j1App::SavegameNow() const
 
 	LOG("Saving Game State to %s...", save_game.GetString());
 
-	// xml object were we will store all data
+	// xml object where we will store all data
 	pugi::xml_document data;
 	pugi::xml_node root;
 	

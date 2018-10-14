@@ -99,7 +99,7 @@ bool j1Collision::Update(float dt)
                 
 				if (matrix[collider1->data->type][collider2->data->type] && collider1->data->callback)
 				{
-					collider1->data->callback->OnCollision(collider1->data, collider2->data); //entra aqui
+					collider1->data->callback->OnCollision(collider1->data, collider2->data); 
 				}
 
 				if (matrix[collider2->data->type][collider1->data->type] && collider2->data->callback)
