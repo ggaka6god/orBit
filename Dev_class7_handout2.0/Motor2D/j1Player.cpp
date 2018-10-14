@@ -35,15 +35,27 @@ bool j1Player::Awake(pugi::xml_node& config) {
 	int h = config.child("colider").attribute("height").as_int();
 	playercol = { x,y,w,h };
 	
-	/*initpos1.x = config.child("stg1InitPos").attribute("x").as_int();
+	initpos1.x = config.child("stg1InitPos").attribute("x").as_int();
 	initpos1.y = config.child("stg1InitPos").attribute("y").as_int();
 	initpos2.x = config.child("stg2InitPos").attribute("x").as_int();
-	initpos2.y = config.child("stg2InitPos").attribute("y").as_int()*/;
+	initpos2.y = config.child("stg2InitPos").attribute("y").as_int();
+
+	//Main player variables
+
+	Velocity.x = config.child("Velocity").attribute("x").as_float();
+	Velocity.y = config.child("Velocity").attribute("y").as_float();
+	max_speed_y = config.child("Velocity").attribute("max_speed_y").as_float();
+	initialVx = config.child("Velocity").attribute("initalVx").as_float();
+	gravity = config.child("gravity").attribute("value").as_float();
+	jump_force = config.child("Velocity").attribute("jump_force").as_float();
+	colliding_offset = config.child("colliding_offset").attribute("value").as_float();
 
 	runRight->speed = 0.15f;
 	runLeft->speed = 0.15f;
 
-	/*CurrentAnimation = airRight;*/
+	CurrentAnimation = idleRight;
+
+	deathRight->loop = false;
 
 	return ret;
 }
@@ -66,18 +78,12 @@ bool j1Player::Start()
 
 	playercollider = App->coll->AddCollider(playercol, COLLIDER_PLAYER, this);
 
-	Velocity.x = 2.0f;
-	Velocity.y = 0.0f;
-	
-
-	gravity = -1.0f;
-	playercolliding = false;
-
-	jump_force = 7.0f;
-	max_speed_y = 10.0f;
 	stateplayer = IDLE;
 	must_fall = false;
-	double_jump = true;
+	double_jump = false;
+	playercolliding = false;
+	initialmoment = true;
+	first_move = false;
 
 	if (spritesheet == nullptr)
 		spritesheet = App->tex->Load(Texture.GetString());
@@ -87,17 +93,19 @@ bool j1Player::Start()
 
 bool j1Player::Update(float dt)
 {
+	//Player Update
+
+	if (initialmoment)
+	{
+		stateplayer = FALLING;
+	}
+
 	if (wasRight==true)
 		CurrentAnimation = idleRight;
 	else if (wasRight==false)
 		CurrentAnimation = idleLeft;
 
 	//Check if player is Falling or jumping
-
-	/*if (must_fall)
-	{
-		playercolliding = false;
-	}*/
 
 	if (Velocity.y < 0 && stateplayer == JUMPING)
 	{
@@ -112,94 +120,111 @@ bool j1Player::Update(float dt)
 	//Horizontal Movement 
 
 	
-
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	if (CurrentAnimation != deathRight || CurrentAnimation != deathLeft)
 	{
-		Velocity.x = 2.0f;
-		pos.x = pos.x - Velocity.x;
-		going_left = true;
-		going_right = false;
-		CurrentAnimation = runLeft;
-		wasRight = false;
-	}
 
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-	{
-		Velocity.x = 2.0f;
-		pos.x = pos.x + Velocity.x;
-		going_right = true;
-		going_left = false;
-		CurrentAnimation = runRight;
-		wasRight = true;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-	{
-		Velocity.x = 0.0f;
-		going_left = true;
-		going_right = true;
-	}
-
-	//Vertical Movement
-
-
-	if (!must_fall)
-	{
-		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && playercolliding == true)
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		{
-			Velocity.y = jump_force;
-			stateplayer = JUMPING;
-			playercolliding = false;
+			if (first_move == false)
+			{
+				first_move = true;
+			}
+
+			Velocity.x = initialVx;  
+			pos.x = pos.x - Velocity.x;
+			going_left = true;
+			going_right = false;
+			CurrentAnimation = runLeft;
+			wasRight = false;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		{
+
+			if (first_move == false)
+			{
+				first_move = true;
+			}
 			
+			Velocity.x = initialVx;     
+			pos.x = pos.x + Velocity.x;
+			going_right = true;
+			going_left = false;
+			CurrentAnimation = runRight;
+			wasRight = true;
 		}
-	}
 
-	if (stateplayer == JUMPING)
-	{
-		if (going_right)
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		{
-			CurrentAnimation = jumpingRight;
+
+			Velocity.x = 0.0f;
+			going_left = true;
+			going_right = true;
 		}
-		else
-			CurrentAnimation = jumpingLeft;
 
-		must_fall = false;
-		if (double_jump == true && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && Velocity.y!=jump_force)
+		//Vertical Movement
+
+
+		if (!must_fall)
 		{
-			Velocity.y = jump_force/1.5f;
+			if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && playercolliding == true)
+			{
+
+				Velocity.y = jump_force;
+				stateplayer = JUMPING;
+				playercolliding = false;
+
+			}
+		}
+
+		if (stateplayer == JUMPING)
+		{
+			if (going_right)
+			{
+				CurrentAnimation = jumpingRight;
+			}
+			else
+				CurrentAnimation = jumpingLeft;
+
+			must_fall = false;
+			if (double_jump == true && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && Velocity.y != jump_force)
+			{
+				Velocity.y = jump_force / 1.5f;
+				pos.y -= Velocity.y;
+				double_jump = false;
+			}
+
+			Velocity.y += gravity / 2;
 			pos.y -= Velocity.y;
-			double_jump = false;
-		}
-	
-		Velocity.y += gravity / 2;
-		pos.y -= Velocity.y;
 
-	}
-
-	if (stateplayer == FALLING && !colliding_roof)
-	{
-		must_fall = false;
-
-		if (going_right)
-		{
-			CurrentAnimation = fallingRight;
-		}
-		else
-		{
-			CurrentAnimation = fallingLeft;
 		}
 
-		if (double_jump == true && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && Velocity.y != jump_force)
+		if (stateplayer == FALLING && !colliding_roof)
 		{
-			/*stateplayer = JUMPING;*/
-			Velocity.y = jump_force/1.5f;
+			must_fall = false;
+
+			if (going_right)
+			{
+				CurrentAnimation = fallingRight;
+			}
+			else if(going_left)
+			{
+				CurrentAnimation = fallingLeft;
+			}
+			else
+				CurrentAnimation = fallingRight;
+
+			if (double_jump == true && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && Velocity.y != jump_force)
+			{
+				Velocity.y = jump_force / 1.5f;
+				pos.y -= Velocity.y;
+				double_jump = false;
+			}
+
+			Velocity.y += gravity / 2;
 			pos.y -= Velocity.y;
-			double_jump = false;
+
 		}
-
-		Velocity.y += gravity / 2;
-		pos.y -= Velocity.y;
-
 	}
 
 	//Limit maximum y axis velocity
@@ -246,9 +271,9 @@ bool j1Player::PostUpdate()
 	//Camera In X
 	App->render->camera.x = (-pos.x*App->win->GetScale() - playercollider->rect.w / 2 + App->render->camera.w / 2);
 
-	if (-App->render->camera.x <= 2)
+	if (-App->render->camera.x <= initialVx) 
 	{
- 		App->render->camera.x = -2;
+ 		App->render->camera.x = -initialVx; 
 	}
 
 	//Camera In Y
@@ -261,13 +286,15 @@ bool j1Player::PostUpdate()
 		if (!must_fall)
 			App->render->camera.y = -(pos.y * App->win->GetScale() + playercollider->rect.h - App->render->camera.h + App->render->camera.h / 6);
 		else
-			App->render->camera.y -= 8;
+			App->render->camera.y -= -(gravity*8); 
 	}
+
 
 	if (pos.y*App->win->GetScale() > -App->render->camera.y + App->render->camera.h - App->render->camera.h / 6)
 	{
-		App->render->camera.y -= 8;
+		App->render->camera.y -= -(gravity*8);  
 	}
+
 
 	if (-App->render->camera.y + App->render->camera.h > App->map->data.height*App->map->data.tile_height*App->win->GetScale())
 	{
@@ -277,17 +304,17 @@ bool j1Player::PostUpdate()
 
 	 //Camera up
 
-	if(pos.y*App->win->GetScale() <= -App->render->camera.y+ App->render->camera.h/6)
+	if (pos.y*App->win->GetScale() <= -App->render->camera.y + App->render->camera.h / 6)
     {
-		if(App->render->camera.y+8 < 0)
-		App->render->camera.y += 8;
+		if(App->render->camera.y + (-gravity*8) < 0)
+		App->render->camera.y += (-gravity*8);
 	}
 
 	//Controlling player position
 
-	if (playercollider->rect.x <= 2)
+	if (playercollider->rect.x <= initialVx)  
 	{
-		playercollider->rect.x = pos.x = 2;
+		playercollider->rect.x = pos.x = initialVx;  
 	}
 
 	if (playercollider->rect.y + playercollider->rect.h >= App->map->data.height*App->map->data.tile_height)
@@ -320,13 +347,13 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 			if ((going_left || going_right) && must_fall)
 			{
 
-				if (c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x + c1->rect.w <= c2->rect.x + 3)
+				if (c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x + c1->rect.w <= c2->rect.x + initialVx) 
 				{
 					Velocity.x = 0.0f;
 					c1->rect.x = c2->rect.x - c1->rect.w - 0.1f;
 				}
 
-				if (c1->rect.x >= c2->rect.x + c2->rect.w - 3 && c1->rect.x <= c2->rect.x + c2->rect.w)
+				if (c1->rect.x >= c2->rect.x + c2->rect.w - initialVx && c1->rect.x <= c2->rect.x + c2->rect.w)
 				{
 					Velocity.x = 0.0f;
 					c1->rect.x = c2->rect.x + c2->rect.w + 0.1f;
@@ -336,9 +363,9 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 				{
 
 					if (going_left)
-						c1->rect.x += 1.0f;
+						c1->rect.x += colliding_offset;
 					else
-						c1->rect.x -= 1.0f;
+						c1->rect.x -= colliding_offset;
 
 					double_jump = false;
 					must_fall = true;
@@ -357,7 +384,6 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 					Velocity.y = 0.0f;
 					stateplayer = IDLE;
 				}
-				// c2 ==COLLIDER_FLOOR 
 
 				if (stateplayer != JUMPING)
 				{
@@ -375,11 +401,12 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 				{
 					
 
-					//stopping player if lateral col0lision
+					//stopping player if lateral collision
+
 					if (lateralcollision)
 					{
 
-						if (c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x + c1->rect.w <= c2->rect.x + 3)
+						if (c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x + c1->rect.w <= c2->rect.x + initialVx)
 						{
 							Velocity.x = 0.0f;
 							if (stateplayer != JUMPING)
@@ -389,7 +416,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 
 						if (stateplayer == JUMPING || stateplayer == FALLING && double_jump)
 						{
-							c1->rect.x -= 1.0f;
+							c1->rect.x -= colliding_offset;
 						}
 					}
 					else if (!lateralcollision && must_fall == false)
@@ -397,19 +424,18 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 
 					if ((going_left || going_right) && must_fall)
 					{
-						c1->rect.x = c2->rect.x + c2->rect.w - 1;
+						c1->rect.x = c2->rect.x + c2->rect.w - colliding_offset;
 					}
 				}
+
 				//going left
 				if (going_left)
 				{
 
-					
-
 					if (lateralcollision)
 					{
 
-						if (c1->rect.x >= c2->rect.x + c2->rect.w - 3 && c1->rect.x <= c2->rect.x + c2->rect.w)
+						if (c1->rect.x >= c2->rect.x + c2->rect.w - initialVx && c1->rect.x <= c2->rect.x + c2->rect.w)
 						{
 							Velocity.x = 0.0f;
 							if (stateplayer != JUMPING)
@@ -419,7 +445,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 
 						if (stateplayer == JUMPING || stateplayer == FALLING && double_jump)
 						{
-							c1->rect.x += 1.0f;
+							c1->rect.x += colliding_offset;
 						}
 					}
 					else if (!lateralcollision && must_fall == false)
@@ -427,7 +453,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 
 					if ((going_left || going_right) && must_fall)
 					{
-						c1->rect.x = c2->rect.x + c2->rect.w + 1;
+						c1->rect.x = c2->rect.x + c2->rect.w + colliding_offset;
 					}
 				}
 
@@ -440,18 +466,22 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 		else if (c2->type == COLLIDER_SPIKES)
 		{
 			colliding_roof = false;
-			/*Velocity.y = 0;*/
 			must_fall = false;
 			double_jump = false;
 
-		/*	if (going_right)
+			if (going_right)
 			{
-				CurrectAnimation = deathRight;
+				CurrentAnimation = deathRight;
 			}
 			else
 			{
-				CurrectAnimation = deathRight;
-			}*/
+				CurrentAnimation = deathRight;
+			}
+
+			if (CurrentAnimation->Finished())
+			{
+				App->LoadGame("save_game.xml");
+			}
 
 		}
 
@@ -462,19 +492,19 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 			if ((going_left || going_right) && must_fall)
 			{
 
-				if(c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x + c1->rect.w <= c2->rect.x + 3)
+				if(c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x + c1->rect.w <= c2->rect.x + initialVx)
 				{
 					Velocity.x = 0.0f;
-			     	c1->rect.x = c2->rect.x - c1->rect.w-1.0f;
+			     	c1->rect.x = c2->rect.x - c1->rect.w - colliding_offset;
 				}
 
-				if (c1->rect.x >= c2->rect.x + c2->rect.w - 3 && c1->rect.x <= c2->rect.x + c2->rect.w) 
+				if (c1->rect.x >= c2->rect.x + c2->rect.w - initialVx && c1->rect.x <= c2->rect.x + c2->rect.w) 
 				{                                                                                                   
 					Velocity.x = 0.0f;                                                                               
-					c1->rect.x = c2->rect.x + c2->rect.w+1.0f;
+					c1->rect.x = c2->rect.x + c2->rect.w + colliding_offset;
 				}
 
-				if ((c1->rect.y + c1->rect.h >= c2->rect.y && c1->rect.y + c1->rect.h <= c2->rect.y + 8))
+				if ((c1->rect.y + c1->rect.h >= c2->rect.y && c1->rect.y + c1->rect.h <= c2->rect.y + (-gravity*8))) 
 				{
 
 					if (stateplayer != JUMPING)
@@ -492,7 +522,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 
 			else 
 			{
-				if ((c1->rect.y + c1->rect.h >= c2->rect.y && c1->rect.y + c1->rect.h <= c2->rect.y + 8))
+				if ((c1->rect.y + c1->rect.h >= c2->rect.y && c1->rect.y + c1->rect.h <= c2->rect.y + (-gravity*8)))   
 				{
 
 					if (stateplayer != JUMPING)
@@ -514,9 +544,9 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 		{
 			colliding_roof = true;
 
-			if (c1->rect.y<= c2->rect.y+c2->rect.h && c1->rect.y >= c2->rect.y+c2->rect.h-3)
+			if (c1->rect.y<= c2->rect.y+c2->rect.h && c1->rect.y >= c2->rect.y+c2->rect.h-initialVx)
 			{
-				c1->rect.y = c2->rect.y + c2->rect.h + 1;
+				c1->rect.y = c2->rect.y + c2->rect.h + colliding_offset;
 				Velocity.y = 0.0f;
 				stateplayer = FALLING;
 				double_jump = false;
@@ -533,14 +563,42 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 			  }
 				if (going_right)
 				{
-					c1->rect.x = c2->rect.x - c1->rect.w-1;
+					c1->rect.x = c2->rect.x - c1->rect.w - colliding_offset;
 					
 				}
 				else
 				{
-					c1->rect.x = c2->rect.x + c2->rect.w+1;
+					c1->rect.x = c2->rect.x + c2->rect.w + colliding_offset;
 				}
 			}
+		}
+
+		else if (c2->type == CHECKPOINT)
+		{
+			if(going_right)
+			{ 
+				if (c1->rect.x >= c2->rect.x + c2->rect.w - colliding_offset)
+				{
+					App->SaveGame("save_game.xml");
+			    }
+			
+			}
+			else
+			{
+				if (c1->rect.x + c1->rect.w  <= c2->rect.x + colliding_offset)
+				{
+					App->SaveGame("save_game.xml");
+				}
+			}
+		}
+
+
+		if (first_move)
+			initialmoment = false;
+
+		if (initialmoment && !first_move)
+		{
+			CurrentAnimation = idleRight;
 		}
 
 

@@ -16,10 +16,10 @@ j1Collision::j1Collision()
 
 	matrix[COLLIDER_PLAYER][COLLIDER_FLOOR] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER] = false;
-
 	matrix[COLLIDER_PLAYER][COLLIDER_SPIKES] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_PLATFORM] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_ROOF] = true;
+	matrix[COLLIDER_PLAYER][CHECKPOINT] = true;
 
 }
 

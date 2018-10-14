@@ -45,15 +45,18 @@ public:
 
 	fPoint pos;
 	fPoint Velocity;
+	iPoint initpos1;
+	iPoint initpos2;
 
 	float gravity;
 	float jump_force;
+	float initialVx;
+	float max_speed_y;
+	float colliding_offset;
 
 	player_state stateplayer;
 	bool playercolliding;
 	bool colliding_roof;
-
-	float max_speed_y;
 
 	bool double_jump;
 	bool must_fall;
@@ -63,6 +66,9 @@ public:
 
 	bool wasRight = true;
 	bool dead = false;
+
+	bool initialmoment;
+	bool first_move;
 
 	Animation* CurrentAnimation = nullptr;
 	Animation* idleRight = nullptr;
