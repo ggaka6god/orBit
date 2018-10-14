@@ -113,9 +113,9 @@ bool j1Scene::PreUpdate()
 	//win condition
 	if (firstStage && (App->player->pos.x >= App->map->data.finalpos.x) && (App->player->pos.y <= App->map->data.finalpos.y))
 	{
- 		change_scene(StageList.start->next->data->GetString());
-		firstStage = true;
-		secondStage = false;
+		change_scene(StageList.start->next->data->GetString());
+		firstStage = false;
+		secondStage = true;
 	}
 
 	else if (secondStage && (App->player->pos.x >= App->map->data2.finalpos.x) && (App->player->pos.y <= App->map->data2.finalpos.y))
@@ -124,6 +124,52 @@ bool j1Scene::PreUpdate()
 		firstStage = true;
 		secondStage = false;
 	}
+
+	//Controlling camera 
+
+	//Camera In X
+	App->render->camera.x = (-App->player->pos.x*App->win->GetScale() - App->player->playercollider->rect.w / 2 + App->render->camera.w / 2);
+
+	if (-App->render->camera.x <= App->player->initialVx)
+	{
+		App->render->camera.x = -App->player->initialVx;
+	}
+
+	//Camera In Y
+
+
+	//Camera down
+
+	if (App->player->pos.y*App->win->GetScale() + App->player->playercollider->rect.h >= -App->render->camera.y + App->render->camera.h - App->render->camera.h / 6)
+	{
+		if (!App->player->must_fall)
+			App->render->camera.y = -(App->player->pos.y * App->win->GetScale() + App->player->playercollider->rect.h - App->render->camera.h + App->render->camera.h / 6);
+		else
+			App->render->camera.y -= -(App->player->gravity * 8);
+	}
+
+
+	if (App->player->pos.y*App->win->GetScale() > -App->render->camera.y + App->render->camera.h - App->render->camera.h / 6)
+	{
+		App->render->camera.y -= -(App->player->gravity * 8);
+	}
+
+
+	if (-App->render->camera.y + App->render->camera.h > App->map->data.height*App->map->data.tile_height*App->win->GetScale())
+	{
+		App->render->camera.y = (-App->map->data.height*App->map->data.tile_height*App->win->GetScale() + App->render->camera.h);
+	}
+
+
+
+	//Camera up
+
+	if (App->player->pos.y*App->win->GetScale() <= -App->render->camera.y + App->render->camera.h / 6)
+	{
+		if (App->render->camera.y + (-App->player->gravity * 8) < 0)
+			App->render->camera.y += (-App->player->gravity * 8);
+	}
+
 
 	return true;
 }
@@ -272,6 +318,9 @@ bool j1Scene::change_scene(const char* map_name) {
 
 	App->map->paralaxRef[0] = App->map->offset;
 	App->map->paralaxRef[1] = App->map->offset;
+
+	App->player->initialmoment = true;
+	App->player->first_move = false;
 
 	App->coll->CleanUp();
 	App->player-> playercollider= App->coll->AddCollider(App->player->playercol, COLLIDER_PLAYER, App->player);

@@ -272,63 +272,22 @@ bool j1Player::PostUpdate()
 {
 	bool ret = true;
 
-	//Controlling camera 
-
-	//Camera In X
-	App->render->camera.x = (-pos.x*App->win->GetScale() - playercollider->rect.w / 2 + App->render->camera.w / 2);
-
-	if (-App->render->camera.x <= initialVx) 
-	{
- 		App->render->camera.x = -initialVx; 
-	}
-
-	//Camera In Y
-
-
-	 //Camera down
-
-	if (pos.y*App->win->GetScale() + playercollider->rect.h >= -App->render->camera.y + App->render->camera.h - App->render->camera.h / 6)
-	{
-		if (!must_fall)
-			App->render->camera.y = -(pos.y * App->win->GetScale() + playercollider->rect.h - App->render->camera.h + App->render->camera.h / 6);
-		else
-			App->render->camera.y -= -(gravity*8); 
-	}
-
-
-	if (pos.y*App->win->GetScale() > -App->render->camera.y + App->render->camera.h - App->render->camera.h / 6)
-	{
-		App->render->camera.y -= -(gravity*8);  
-	}
-
-
-	if (-App->render->camera.y + App->render->camera.h > App->map->data.height*App->map->data.tile_height*App->win->GetScale())
-	{
-		App->render->camera.y = (-App->map->data.height*App->map->data.tile_height*App->win->GetScale()+App->render->camera.h);
-	}
-
-
-
-	 //Camera up
-
-	if (pos.y*App->win->GetScale() <= -App->render->camera.y + App->render->camera.h / 6)
-    {
-		if(App->render->camera.y + (-gravity*8) < 0)
-		App->render->camera.y += (-gravity*8);
-	}
-
 	//Parallax movement
+
+	previousflow = parallaxflow;
+
+	parallaxflow = pos.x - App->map->offset;
 
 	if (App->scene->firstStage)
 	{
-		App->map->paralaxRef[0] = pos.x - initpos1.x;
-		App->map->paralaxRef[1] = pos.x - initpos1.x;
+		App->map->paralaxRef[0] -= (parallaxflow-previousflow) / 2;
+		App->map->paralaxRef[1] -= (parallaxflow-previousflow) / 1.25;
 
 	}
 	else if (App->scene->secondStage)
 	{
-		App->map->paralaxRef[0] = pos.x-initpos2.x;
-		App->map->paralaxRef[1] = pos.x-initpos2.x;
+		App->map->paralaxRef[0] -= (parallaxflow - previousflow) / 2;
+		App->map->paralaxRef[1] -= (parallaxflow - previousflow) / 1.25f;
 	}
 
 	//Controlling player position

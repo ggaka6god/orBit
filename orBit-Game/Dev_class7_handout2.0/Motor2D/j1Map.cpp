@@ -14,6 +14,7 @@ j1Map::j1Map() : j1Module(), map_loaded(false)
 	name.create("map");
 	paralaxRef[0]= offset;
 	paralaxRef[1]= offset;
+
 }
 
 // Destructor

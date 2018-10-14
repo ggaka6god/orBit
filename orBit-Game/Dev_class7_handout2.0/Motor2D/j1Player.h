@@ -69,6 +69,9 @@ public:
 	bool first_move;
 	bool god_mode;
 
+	int parallaxflow;
+	int previousflow;
+
 	Animation* CurrentAnimation = nullptr;
 	Animation* idleRight = nullptr;
 	Animation* idleLeft = nullptr;
