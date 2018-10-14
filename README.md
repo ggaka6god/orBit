@@ -7,29 +7,29 @@ The game has been made using C++, using SDL and pugi libraries. The maps have be
 ## Controls
 ### Player movement:
 
--A: move to the left;
+- A: move to the left;
 
--D: move to the right
+- D: move to the right
 
--SPACE: jump
+- SPACE: jump
 
--SPACE in mid air: doble jump
+- SPACE in mid air: doble jump
 
 ### Debug keys:
--F1: start from the very first level
--F2: start from th beginning of current level
--F5: save current state
--F6: Load the previous state
--F9: view collider
--F10: GodMode
--1: Go to 1st Stage
--2: Go to 2nd Stage
+- F1: start from the very first level
+- F2: start from th beginning of current level
+- F5: save current state
+- F6: Load the previous state
+- F9: view collider
+- F10: GodMode
+- 1: Go to 1st Stage
+- 2: Go to 2nd Stage
 
 ## Authors
- -Andrés Saladrigas
+ - Andrés Saladrigas
 github: https://github.com/TheArzhel
 
--Aitor Simona
+- Aitor Simona
 github:https://github.com/AitorSimona
 
 ## Proyect Github
@@ -44,14 +44,14 @@ github:https://github.com/AitorSimona
 
 We do not own any of the sprites, tilesets, music or sfx presented in this game. Authors credited below
 
--Player sprites:
+- Player sprites:
 https://jesse-m.itch.io/jungle-pack
 
--Tilesets & songs:
+- Tilesets & songs:
 https://ansimuz.itch.io/sunnyland-forest
 https://soumitrashewale.itch.io/sunnyland
 
--SFX were generated with BFXR
+- SFX were generated with BFXR
 https://www.bfxr.net/
 
 ## License
@@ -63,13 +63,15 @@ Licensed under the [MIT License](LICENSE.txt)
 
 ## Innovation
 
-### Additional fetures added:
--1: Go to 1st Stage
--2: Go to 2nd Stage
+### Additional fetures added
 
--Checkpoint collider: creating checkpoints to save progress. If player dies he will start from checkpoints
+- 1: Go to 1st Stage
 
--Animations on Tiled: all animations are in Tiled. Inside folder Game/animation. player animation is a xml file we read to interpret data
+- 2: Go to 2nd Stage
 
--Camera: camera limits Blits to nearby area of tileset and collider
+- Checkpoint collider: creating checkpoints to save progress. If player dies he will start from checkpoints
+
+- Animations on Tiled: all animations are in Tiled. Inside folder Game/animation. player animation is a xml file we read to interpret data
+
+- Camera: camera limits Blits to nearby area of tileset and collider
 
