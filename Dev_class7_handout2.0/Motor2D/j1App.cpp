@@ -20,7 +20,7 @@
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 {
 	frames = 0;
-	want_to_save = want_to_load = false;
+	//want_to_save = want_to_load = false;
 
 	input = new j1Input();
 	win = new j1Window();
@@ -282,12 +282,14 @@ const char* j1App::GetOrganization() const
 }
 
 // Load / Save
-void j1App::LoadGame(const char* file)
+bool j1App::LoadGame(const char* file)
 {
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list
 	want_to_load = true;
 	//load_game.create("%s%s", fs->GetSaveDirectory(), file);
+	//LoadGameNow();
+	return true;
 }
 
 // ---------------------------------------

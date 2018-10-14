@@ -41,13 +41,15 @@ public:
 	// Add a new module to handle
 	void AddModule(j1Module* module);
 
+	
+
 	// Exposing some properties for reading
 	int GetArgc() const;
 	const char* GetArgv(int index) const;
 	const char* GetTitle() const;
 	const char* GetOrganization() const;
 
-	void LoadGame(const char* file);
+	bool LoadGame(const char* file);
 	void SaveGame(const char* file) const;
 	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
 
@@ -72,6 +74,7 @@ private:
 	bool PostUpdate();
 
 	// Load / Save
+	//load
 	bool LoadGameNow();
 	bool SavegameNow() const;
 
@@ -88,6 +91,7 @@ public:
 	j1Collision*        coll;
 	j1Player*           player;
 
+	
 private:
 
 	p2List<j1Module*>	modules;
@@ -99,8 +103,9 @@ private:
 	p2SString			title;
 	p2SString			organization;
 
+	mutable bool		want_to_load;
 	mutable bool		want_to_save;
-	bool				want_to_load;
+	
 	p2SString			load_game;
 	mutable p2SString	save_game;
 };
