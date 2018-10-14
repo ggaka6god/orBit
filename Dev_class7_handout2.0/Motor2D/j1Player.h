@@ -26,6 +26,7 @@ public:
 
 	bool Awake(pugi::xml_node &config);
 	bool Start();
+	bool PreUpdate();
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
@@ -63,6 +64,9 @@ public:
 
 	bool wasRight = true;
 	bool dead = false;
+	bool lateralcollision;
+	bool moving = false;
+	int posxRef;
 
 	Animation* CurrentAnimation = nullptr;
 	Animation* idleRight = nullptr;
@@ -81,6 +85,10 @@ public:
 	SDL_Texture* spritesheet = nullptr;
 
 	SDL_Rect playercol;
+
+	iPoint initpos1;
+	iPoint initpos2;
+
 
 private:
 

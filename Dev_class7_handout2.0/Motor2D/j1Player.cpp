@@ -35,10 +35,10 @@ bool j1Player::Awake(pugi::xml_node& config) {
 	int h = config.child("colider").attribute("height").as_int();
 	playercol = { x,y,w,h };
 	
-	/*initpos1.x = config.child("stg1InitPos").attribute("x").as_int();
+	initpos1.x = config.child("stg1InitPos").attribute("x").as_int();
 	initpos1.y = config.child("stg1InitPos").attribute("y").as_int();
 	initpos2.x = config.child("stg2InitPos").attribute("x").as_int();
-	initpos2.y = config.child("stg2InitPos").attribute("y").as_int()*/;
+	initpos2.y = config.child("stg2InitPos").attribute("y").as_int();
 
 	runRight->speed = 0.15f;
 	runLeft->speed = 0.15f;
@@ -87,6 +87,7 @@ bool j1Player::Start()
 
 bool j1Player::Update(float dt)
 {
+	int posxRef = App->player->pos.x;
 	if (wasRight==true)
 		CurrentAnimation = idleRight;
 	else if (wasRight==false)
@@ -121,6 +122,7 @@ bool j1Player::Update(float dt)
 		going_right = false;
 		CurrentAnimation = runLeft;
 		wasRight = false;
+		moving = true;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
@@ -131,6 +133,7 @@ bool j1Player::Update(float dt)
 		going_left = false;
 		CurrentAnimation = runRight;
 		wasRight = true;
+		moving = true;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
@@ -138,8 +141,9 @@ bool j1Player::Update(float dt)
 		Velocity.x = 0.0f;
 		going_left = true;
 		going_right = true;
+		
 	}
-
+	
 	//Vertical Movement
 
 
@@ -239,8 +243,34 @@ bool j1Player::Update(float dt)
 
 bool j1Player::PostUpdate()
 {
+	if (App->scene->firstStage && moving == true)
+	{
+		if (posxRef <pos.x+5 && pos.x > initpos1.x && going_left==false) //paralax
+		{
+		App->map->paralaxRef[0] -= App->map->speed[0];
+			App->map->paralaxRef[1] -= App->map->speed[1];
+		}
+		else if (pos.x > posxRef &&pos.x>posxRef+5 && moving==true)
+		{
+			App->map->paralaxRef[0] += App->map->speed[0];
+			App->map->paralaxRef[1] += App->map->speed[1];
+		}
+	}
+	else if (App->scene->secondStage && App->player->moving == true)
+	{
+		if (posxRef < App->player->pos.x + 5 && App->player->pos.x >posxRef &&App->player->pos.x > App->player->initpos1.x)
+		{
+			App->map->paralaxRef[0] -= App->map->speed[0];
+			App->map->paralaxRef[1] -= App->map->speed[1];
+		}
+		else if (App->player->moving == true)
+		{
+			App->map->paralaxRef[0] += App->map->speed[0];
+			App->map->paralaxRef[1] += App->map->speed[1];
+		}
+	}
 	bool ret = true;
-
+	
 	//Controlling camera 
 
 	//Camera In X
@@ -249,8 +279,19 @@ bool j1Player::PostUpdate()
 	if (-App->render->camera.x <= 2)
 	{
  		App->render->camera.x = -2;
+		
 	}
-
+	/*if (going_right)
+	{
+		App->map->paralaxRef[0] -= App->map->speed[0];
+		App->map->paralaxRef[1] -= App->map->speed[1];
+	}
+	else if (going_left)
+	{
+		App->map->paralaxRef[0] += App->map->speed[0];
+		App->map->paralaxRef[1] += App->map->speed[1];
+		
+	}*/
 	//Camera In Y
 
 
@@ -295,15 +336,24 @@ bool j1Player::PostUpdate()
 		playercollider->rect.y = App->map->data.height*App->map->data.tile_height - playercollider->rect.h;
 	}
 
+
+
 	//Blitting player
 	App->render->Blit(spritesheet, pos.x, pos.y, &CurrentAnimation->GetCurrentFrame());
 
 	return ret;
 }
+bool j1Player::PreUpdate() {
+
+	moving = false;
+	return true;
+}
+
+
 
 void j1Player::OnCollision(Collider * c1, Collider * c2)
 {
-	bool lateralcollision = true;
+	lateralcollision = true;
 
 	if (c1->rect.y + c1->rect.h == c2->rect.y)
 	{
