@@ -256,6 +256,9 @@ bool j1Map::LoadMap(MapData& data)
 		data.tile_width = map.attribute("tilewidth").as_int();
 		data.tile_height = map.attribute("tileheight").as_int();
 		p2SString bg_color(map.attribute("backgroundcolor").as_string());
+
+
+		//loadin
 		
 		//load init pos
 		p2SString tmp(map.child("objectgroup").first_attribute().as_string());

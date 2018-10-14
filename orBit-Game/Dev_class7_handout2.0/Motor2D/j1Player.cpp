@@ -35,10 +35,7 @@ bool j1Player::Awake(pugi::xml_node& config) {
 	int h = config.child("colider").attribute("height").as_int();
 	playercol = { x,y,w,h };
 	
-	initpos1.x = config.child("stg1InitPos").attribute("x").as_int();
-	initpos1.y = config.child("stg1InitPos").attribute("y").as_int();
-	initpos2.x = config.child("stg2InitPos").attribute("x").as_int();
-	initpos2.y = config.child("stg2InitPos").attribute("y").as_int();
+
 
 	//Main player variables
 

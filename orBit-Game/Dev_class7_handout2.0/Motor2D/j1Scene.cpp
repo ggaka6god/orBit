@@ -280,10 +280,9 @@ bool j1Scene::change_scene(const char* map_name) {
 	{	
 		App->render->camera.x = camera1.x;
 		App->render->camera.y = camera1.y;
-		/*App->player->pos.x = 560;
-		App->player->pos.y = 180;*/
-		App->player->pos.x = App->map->data.initpos.x;//App->player->initpos1.x;
-		App->player->pos.y = App->map->data.initpos.y;//App->player->initpos1.y;
+
+		App->player->pos.x = App->map->data.initpos.x;
+		App->player->pos.y = App->map->data.initpos.y;
 		App->map->ColliderDrawer(App->map->data);
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());//aqui deberia poder leer metadata
 		App->audio->PlayMusic(stageMusic.GetString());
@@ -293,10 +292,9 @@ bool j1Scene::change_scene(const char* map_name) {
 	{
 		App->render->camera.x = camera2.x;
 		App->render->camera.y = camera2.y;
-		/*App->player->pos.x = 46;
-		App->player->pos.y = 180;*/
-		App->player->pos.x = App->map->data2.initpos.x;//App->player->initpos2.x;
-		App->player->pos.y = App->map->data2.initpos.y;// App->player->initpos2.y;
+
+		App->player->pos.x = App->map->data2.initpos.x;
+		App->player->pos.y = App->map->data2.initpos.y;
 		App->map->ColliderDrawer(App->map->data2);
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->next->data->GetString());//aqui leer metadata de direccion
 		App->audio->PlayMusic(stageMusic.GetString());
@@ -321,6 +319,8 @@ bool j1Scene::Load(pugi::xml_node &config)
 {
 
 	bool ret = true;
+	int x = App->player->pos.x;
+	int y = App->player->pos.y;
 
 	afterLoadingStage1 = config.child("firstStage").attribute("value").as_bool();
 	afterLoadingStage2 = config.child("secondStage").attribute("value").as_bool();
@@ -334,6 +334,8 @@ bool j1Scene::Load(pugi::xml_node &config)
 			change_scene(StageList.start->next->data->GetString());
 			secondStage = true;
 			firstStage = false;
+			App->player->pos.x = x;
+			App->player->pos.y = y;
 		}
 
 		else
@@ -341,6 +343,8 @@ bool j1Scene::Load(pugi::xml_node &config)
 			change_scene(StageList.start->data->GetString());
 			firstStage = true;
 			secondStage = false;
+			App->player->pos.x = x;
+			App->player->pos.y = y;
 
 		}
 
@@ -354,6 +358,8 @@ bool j1Scene::Load(pugi::xml_node &config)
 			change_scene(StageList.start->data->GetString());
 			firstStage = true;
 			secondStage = false;
+			App->player->pos.x = x;
+			App->player->pos.y = y;
 
 		}
 
@@ -362,6 +368,8 @@ bool j1Scene::Load(pugi::xml_node &config)
 			change_scene(StageList.start->next->data->GetString());
 			firstStage = false;
 			secondStage = true;
+			App->player->pos.x = x;
+			App->player->pos.y = y;
 		}
 	}
 	

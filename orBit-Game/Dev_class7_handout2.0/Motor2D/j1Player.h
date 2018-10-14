@@ -45,8 +45,6 @@ public:
 
 	fPoint pos;
 	fPoint Velocity;
-	iPoint initpos1;
-	iPoint initpos2;
 
 	float gravity;
 	float jump_force;
