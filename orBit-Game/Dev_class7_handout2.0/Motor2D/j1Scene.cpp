@@ -77,7 +77,7 @@ bool j1Scene::Start()
 	}
 
 
-	//loading music & positions depending in the order
+	//loading music & positions depending on the order
 
 	FirstStage = StageList.start->data->GetString();
 

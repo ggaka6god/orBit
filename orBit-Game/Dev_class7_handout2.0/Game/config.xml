@@ -27,7 +27,7 @@
     <folder>maps/</folder>
     <collision1 red="583" magenta="582" yellow="581" green="580" checkpoint="585"/>
     <collision2 red="949" magenta="948" yellow="947" green="946" checkpoint="951"/>
-    <paralax speed="0.5" speed2="1.5"/>
+    <parallax speed="0.5" speed2="1.5"/>
     <offset offset="-160"/>
   </map>
 
@@ -53,10 +53,9 @@
   </audio>
 
   <player>
-    <atributes>speed="2" jump_force="6"  </atributes>
     <folder>animation/player.tmx</folder>
     <texture>textures/sprite_sheet_character.png</texture>
-    <colider x="0" y="4" width="21" height="35"/>
+    <collider x="0" y="4" width="21" height="35"/>
     <Velocity x="2.0" y="0.0"  max_speed_y="10.0" initalVx="2.0" jump_force="7.0"/>
     <gravity value="-1.0"/>
     <colliding_offset value="1" />

@@ -29,13 +29,17 @@ bool j1Player::Awake(pugi::xml_node& config) {
 	deathLeft = LoadAnimation(folder.GetString(), "dead left");
 	airRight = LoadAnimation(folder.GetString(), "air right");
 	airLeft = LoadAnimation(folder.GetString(), "air left");
-	int x = config.child("colider").attribute("x").as_int();
-	int y = config.child("colider").attribute("y").as_int();
-	int w = config.child("colider").attribute("width").as_int();
-	int h = config.child("colider").attribute("height").as_int();
+	int x = config.child("collider").attribute("x").as_int();
+	int y = config.child("collider").attribute("y").as_int();
+	int w = config.child("collider").attribute("width").as_int();
+	int h = config.child("collider").attribute("height").as_int();
 	playercol = { x,y,w,h };
 	
+	parallaxflow = 0;
+	previousflow = 0;
 
+	pos.x = 0;
+	pos.y = 0;
 
 	//Main player variables
 
@@ -82,9 +86,15 @@ bool j1Player::Start()
 	initialmoment = true;
 	first_move = false;
 	god_mode = false;
+	colliding_roof = false;
+	going_right = false;
+	going_left = false;
+	wasRight = true;
+	dead = false;
 
 	if (spritesheet == nullptr)
 		spritesheet = App->tex->Load(Texture.GetString());
+
 
 	return true;
 }

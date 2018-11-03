@@ -38,10 +38,12 @@ bool j1Map::Awake(pugi::xml_node& config)
 	magentaCollision2 = config.child("collision2").attribute("magenta").as_int();
 	greenCollison2 = config.child("collision2").attribute("green").as_int();
 	checkpoint2= config.child("collision2").attribute("checkpoint").as_int();
-	speed[0] = config.child("paralax").attribute("speed").as_float();
-	speed[1] = config.child("paralax").attribute("speed2").as_float();
+	speed[0] = config.child("parallax").attribute("speed").as_float();
+	speed[1] = config.child("parallax").attribute("speed2").as_float();
 	offset= config.child("offset").attribute("offset").as_int();
 	
+	paralaxRef[0] = offset;
+	paralaxRef[1] = offset;
 
 	return ret;
 }
