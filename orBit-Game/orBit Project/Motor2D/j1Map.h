@@ -27,7 +27,7 @@ struct Properties
 
 };
 
-//struct with the infornmation of the paralax layers
+//struct with the infornmation of the parallax layers
 struct ImageLayer
 {
 	SDL_Rect GetParalaxRect() const;
@@ -139,6 +139,7 @@ public:
 
 	iPoint MapToWorld(int x, int y, MapData& Data) const;
 	iPoint WorldToMap(int x, int y, MapData& Data) const;
+	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
 
 	bool ColliderDrawer(MapData& data);
 
@@ -148,7 +149,7 @@ private:
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
-	bool LoadParalax(pugi::xml_node& node, ImageLayer* image);
+	bool LoadParallax(pugi::xml_node& node, ImageLayer* image);
 
 	TileSet* GetTilesetFromTileId(int id,MapData& mapdata) const;
 
