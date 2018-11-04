@@ -55,7 +55,6 @@ public:
 
 private:
 	p2SString map_name;
-	SDL_Texture* debug_tex;
 };
 
 #endif // __j1SCENE_H__

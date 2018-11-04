@@ -54,20 +54,6 @@ bool j1Scene::Start()
 {
 	bool ret = true;
 
-	// --- Pathfinding ---
-	//if (App->map->Load("iso_walk.tmx") == true)
-	//{
-	//	int w, h;
-	//	uchar* data = NULL;
-	//	if (App->map->CreateWalkabilityMap(w, h, &data))
-	//		App->pathfinding->SetMap(w, h, data);
-
-	//	RELEASE_ARRAY(data);
-	//}
-
-	//debug_tex = App->tex->Load("maps/path2.png");
-
-
 	//Loading both maps
 
 	p2List_item<p2SString*>* stageListItem;
@@ -117,7 +103,20 @@ bool j1Scene::Start()
 
 		App->map->ColliderDrawer(App->map->data);
 
-		
+		// --- Not taking into account 2nd map yet ---
+		MapLayer* layer;
+
+		for (uint l = 0; l < App->map->data.layers.count(); l++)
+		{
+			layer = App->map->data.layers.At(l)->data;
+
+			if (layer->properties.GetProperties("Nodraw").operator==("1"))
+			{
+				App->pathfinding->SetMap(App->map->data.width, App->map->data.height, (uchar*)layer);
+			}
+		}
+
+
 	return ret;
 }
 
@@ -320,23 +319,6 @@ bool j1Scene::Update(float dt)
 			map_coordinates.x, map_coordinates.y);
 
 		App->win->SetTitle(title.GetString());
-	}
-
-	// Debug pathfinding ------------------------------
-	//int x, y;
-	App->input->GetMousePosition(x, y);
-	iPoint p = App->render->ScreenToWorld(x, y);
-	p = App->map->WorldToMap(p.x, p.y,App->map->data);
-	p = App->map->MapToWorld(p.x, p.y, App->map->data);
-
-	//App->render->Blit(debug_tex, p.x, p.y);
-
-	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
-
-	for (uint i = 0; i < path->Count(); ++i)
-	{
-		iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y, App->map->data);
-		//App->render->Blit(debug_tex, pos.x, pos.y);
 	}
 
 	return true;

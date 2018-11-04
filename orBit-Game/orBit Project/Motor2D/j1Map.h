@@ -139,7 +139,6 @@ public:
 
 	iPoint MapToWorld(int x, int y, MapData& Data) const;
 	iPoint WorldToMap(int x, int y, MapData& Data) const;
-	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
 
 	bool ColliderDrawer(MapData& data);
 
