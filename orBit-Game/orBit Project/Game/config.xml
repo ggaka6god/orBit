@@ -56,7 +56,7 @@
     <folder>animation/player.tmx</folder>
     <texture>textures/sprite_sheet_character.png</texture>
     <collider x="0" y="4" width="21" height="35"/>
-    <Velocity x="2.0" y="0.0"  max_speed_y="10.0" initalVx="2.0" jump_force="7.0"/>
+    <Velocity x="2.0" y="0.0"  max_speed_y="10.0" initalVx="2.0" jump_force="5.0"/>
     <gravity value="-1.0"/>
     <colliding_offset value="1" />
     

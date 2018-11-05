@@ -210,7 +210,7 @@ bool j1Player::Update(float dt)
 				double_jump = false;
 			}
 
-			Velocity.y += gravity / 2;
+			Velocity.y += gravity / 3;
 			pos.y -= Velocity.y;
 
 		}
@@ -237,7 +237,7 @@ bool j1Player::Update(float dt)
 				double_jump = false;
 			}
 
-			Velocity.y += gravity / 2;
+			Velocity.y += gravity / 3;
 			pos.y -= Velocity.y;
 
 		}
