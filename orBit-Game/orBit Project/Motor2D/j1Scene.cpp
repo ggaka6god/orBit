@@ -370,6 +370,7 @@ bool j1Scene::change_scene(const char* map_name) {
 
 	App->coll->CleanUp();
 	App->player-> playercollider= App->coll->AddCollider(App->player->playercol, COLLIDER_PLAYER, App->player);
+	App->player->playercollider->SetPos(App->player->pos.x, App->player->pos.y);
 
 	
 	if (FirstStage == map_name)

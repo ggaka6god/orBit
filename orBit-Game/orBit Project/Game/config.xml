@@ -34,7 +34,7 @@
   <scene>
     <map_name name="stage1_TiledV017.tmx"/>
     <map_name name="stage2_TiledV017.tmx"/>
-    <startcamera1 x="-736" y="0"  />
+    <startcamera1 x="-586" y="0"  />
     <startcamera2 x="0" y="0"  />
   </scene>
 
