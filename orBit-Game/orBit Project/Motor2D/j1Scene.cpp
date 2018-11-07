@@ -104,7 +104,7 @@ bool j1Scene::Start()
 		App->map->ColliderDrawer(App->map->data);
 
 		// --- Not taking into account 2nd map yet ---
-		MapLayer* layer;
+	 /*	MapLayer* layer;
 
 		for (uint l = 0; l < App->map->data.layers.count(); l++)
 		{
@@ -114,7 +114,7 @@ bool j1Scene::Start()
 			{
 				App->pathfinding->SetMap(App->map->data.width, App->map->data.height, (uchar*)layer);
 			}
-		}
+		}*/
 
 
 	return ret;
@@ -123,8 +123,6 @@ bool j1Scene::Start()
 // Called each loop iteration
 bool j1Scene::PreUpdate()
 {
-
-
 	// debug pathfing ------------------
 	static iPoint origin;
 	static bool origin_selected = false;
@@ -397,6 +395,8 @@ bool j1Scene::change_scene(const char* map_name) {
 		App->audio->PlayMusic(stageMusic.GetString());
 		App->player->stateplayer = FALLING;
 	}
+
+
 	
 	return ret;
 }

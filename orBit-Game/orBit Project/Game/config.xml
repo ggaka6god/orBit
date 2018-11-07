@@ -2,7 +2,7 @@
 
 <config>
   <app>
-    <title>Game Development Testbed</title>
+    <title>orBit_v1.0</title>
     <organization>UPC</organization>
   </app>
 	
@@ -12,7 +12,6 @@
 
   <window>
     <resolution width="1024" height="768" scale="2"/>
-    <resolution width="1024" height="768" scale="3"/>
     <fullscreen value="false"/>
     <borderless value="false"/>
     <resizable value="false"/>
@@ -59,8 +58,7 @@
     <Velocity x="2.0" y="0.0"  max_speed_y="10.0" initalVx="2.0" jump_force="5.0"/>
     <gravity value="-1.0"/>
     <colliding_offset value="1" />
-    
-  
+   
   </player>
 
 </config>

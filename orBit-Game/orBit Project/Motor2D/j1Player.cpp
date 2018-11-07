@@ -671,5 +671,8 @@ bool j1Player::CleanUp()
 	bool ret = true;
 	App->tex->UnLoad(spritesheet);
 
+	if(playercollider != nullptr)
+	playercollider = nullptr;
+
 	return ret;
 }
