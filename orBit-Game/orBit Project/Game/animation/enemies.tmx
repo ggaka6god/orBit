@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="49" height="28" tilewidth="1" tileheight="1" nextobjectid="13">
+ <imagelayer name="enemies">
+  <image source="../textures/monster.png" width="48" height="28"/>
+ </imagelayer>
+ <objectgroup name="bat">
+  <object id="1" x="0" y="0" width="16" height="15"/>
+  <object id="4" x="16" y="0" width="16" height="15"/>
+  <object id="5" x="32" y="0" width="16" height="15"/>
+ </objectgroup>
+ <objectgroup name="slime">
+  <object id="6" x="0" y="15" width="16" height="13"/>
+  <object id="8" x="16" y="15" width="16" height="13"/>
+  <object id="9" x="32" y="15" width="16" height="13"/>
+ </objectgroup>
+ <objectgroup name="bat col">
+  <object id="10" x="21" y="5" width="6" height="8"/>
+ </objectgroup>
+ <objectgroup name="slime col">
+  <object id="12" x="21" y="17" width="7" height="11"/>
+ </objectgroup>
+</map>
