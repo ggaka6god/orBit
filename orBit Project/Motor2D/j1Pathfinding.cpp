@@ -197,8 +197,8 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	int ret = 1;
 
 	// --- We ensure that origin nor destination are not walkable tiles and that they are not the same ---
-	if (GetTileAt(origin) == INVALID_WALK_CODE
-		|| GetTileAt(destination) == INVALID_WALK_CODE
+	if (IsWalkable(origin) == false
+		|| IsWalkable(destination) == false
 		|| origin == destination)
 	{
 		ret = -1;
@@ -274,7 +274,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 					adjacent_in_open->data.CalculateF(destination);
 					}*/
 
-					if (adjacent_in_open->data.diagonal == 0)
+					if (adjacent_in_open->data.diagonal == false)
 					{
 						if (adjacent_in_open->data.g > item->data.g + 20)
 						{
