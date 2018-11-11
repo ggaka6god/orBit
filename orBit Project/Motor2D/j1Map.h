@@ -5,6 +5,7 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "j1Module.h"
+#include "SDL\include\SDL.h"
 
 // ----------------------------------------------------
 
@@ -139,8 +140,11 @@ public:
 
 	iPoint MapToWorld(int x, int y, MapData& Data) const;
 	iPoint WorldToMap(int x, int y, MapData& Data) const;
+	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer, MapData& Data) const;
 
 	bool ColliderDrawer(MapData& data);
+
+	TileSet* GetTilesetFromTileId(int id, MapData& mapdata) const;
 
 private:
 
@@ -150,7 +154,6 @@ private:
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadParallax(pugi::xml_node& node, ImageLayer* image);
 
-	TileSet* GetTilesetFromTileId(int id,MapData& mapdata) const;
 
 public:
 

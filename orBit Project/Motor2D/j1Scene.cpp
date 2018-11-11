@@ -90,6 +90,15 @@ bool j1Scene::Start()
 		App->player->pos.y = App->map->data.initpos.y;
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());
+
+		// --- Pathfinding walkability map 1 ---
+
+		int w, h;
+		uchar* buffer_data = NULL;
+		if (App->map->CreateWalkabilityMap(w, h, &buffer_data,App->map->data))
+			App->pathfinding->SetMap(w, h, buffer_data);
+
+		RELEASE_ARRAY(buffer_data);
 	}
 	else
 	{
@@ -99,23 +108,19 @@ bool j1Scene::Start()
 		App->player->pos.y = App->map->data2.initpos.y;
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->next->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());
+
+
+		// --- Pathfinding walkability map 2 ---
+
+		int w, h;
+		uchar* buffer_data = NULL;
+		if (App->map->CreateWalkabilityMap(w, h, &buffer_data, App->map->data2))
+			App->pathfinding->SetMap(w, h, buffer_data);
+
+		RELEASE_ARRAY(buffer_data);
 	}
 
 		App->map->ColliderDrawer(App->map->data);
-
-		// --- Not taking into account 2nd map yet ---
-	 /*	MapLayer* layer;
-
-		for (uint l = 0; l < App->map->data.layers.count(); l++)
-		{
-			layer = App->map->data.layers.At(l)->data;
-
-			if (layer->properties.GetProperties("Nodraw").operator==("1"))
-			{
-				App->pathfinding->SetMap(App->map->data.width, App->map->data.height, (uchar*)layer);
-			}
-		}*/
-
 
 	return ret;
 }
@@ -130,7 +135,10 @@ bool j1Scene::PreUpdate()
 	int x, y;
 	App->input->GetMousePosition(x, y);
 	iPoint p = App->render->ScreenToWorld(x, y);
+	if(firstStage)
 	p = App->map->WorldToMap(p.x, p.y, App->map->data);
+	else
+	p = App->map->WorldToMap(p.x, p.y, App->map->data2);
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
@@ -319,6 +327,42 @@ bool j1Scene::Update(float dt)
 		App->win->SetTitle(title.GetString());
 	}
 
+	// --- Debug Pathfinding
+	if (App->coll->debug)
+	{
+		iPoint p = App->render->ScreenToWorld(x, y);
+		if (firstStage)
+		{
+			p = App->map->WorldToMap(p.x, p.y, App->map->data);
+			p = App->map->MapToWorld(p.x, p.y, App->map->data);
+			App->render->Blit(App->map->data.tilesets.start->next->next->data->texture, p.x, p.y, &debug_Tex_rect);
+		}
+		else
+		{
+			p = App->map->WorldToMap(p.x, p.y, App->map->data2);
+			p = App->map->MapToWorld(p.x, p.y, App->map->data2);
+			App->render->Blit(App->map->data2.tilesets.start->next->next->data->texture, p.x, p.y, &debug_Tex_rect);
+		}
+
+		const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
+
+		for (uint i = 0; i < path->Count(); ++i)
+		{
+			if (firstStage)
+			{
+				iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y, App->map->data);
+				App->render->Blit(App->map->data.tilesets.start->next->next->data->texture, pos.x, pos.y, &debug_Tex_rect);
+			}
+			else
+			{
+				iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y, App->map->data2);
+				App->render->Blit(App->map->data2.tilesets.start->next->next->data->texture, pos.x, pos.y, &debug_Tex_rect);
+			}
+
+
+		}
+	}
+
 	return true;
 }
 
@@ -382,6 +426,16 @@ bool j1Scene::change_scene(const char* map_name) {
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());
 		App->player->stateplayer = FALLING;
+
+
+		// --- Pathfinding walkability map 1 ---
+
+		int w, h;
+		uchar* buffer_data = NULL;
+		if (App->map->CreateWalkabilityMap(w, h, &buffer_data, App->map->data))
+			App->pathfinding->SetMap(w, h, buffer_data);
+
+		RELEASE_ARRAY(buffer_data);
 	}
 	else
 	{
@@ -394,6 +448,16 @@ bool j1Scene::change_scene(const char* map_name) {
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->next->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());
 		App->player->stateplayer = FALLING;
+
+
+		// --- Pathfinding walkability map 2 ---
+
+		int w, h;
+		uchar* buffer_data = NULL;
+		if (App->map->CreateWalkabilityMap(w, h, &buffer_data, App->map->data2))
+			App->pathfinding->SetMap(w, h, buffer_data);
+
+		RELEASE_ARRAY(buffer_data);
 	}
 
 

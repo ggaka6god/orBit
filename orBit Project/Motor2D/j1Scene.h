@@ -4,6 +4,7 @@
 #include "j1Module.h"
 
 struct SDL_Texture;
+class SDL_Rect;
 
 class j1Scene : public j1Module
 {
@@ -55,6 +56,7 @@ public:
 
 private:
 	p2SString map_name;
+	SDL_Rect debug_Tex_rect = { 96,0,16,16 };
 };
 
 #endif // __j1SCENE_H__

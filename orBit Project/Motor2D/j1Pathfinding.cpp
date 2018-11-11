@@ -2,6 +2,8 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1PathFinding.h"
+#include "j1Map.h"
+#include "j1Scene.h"
 
 j1PathFinding::j1PathFinding() : j1Module(), map(NULL), last_path(DEFAULT_PATH_LENGTH), width(0), height(0)
 {
@@ -46,14 +48,23 @@ bool j1PathFinding::CheckBoundaries(const iPoint& pos) const
 bool j1PathFinding::IsWalkable(const iPoint& pos) const
 {
 	uchar t = GetTileAt(pos);
-	return t != INVALID_WALK_CODE && t > 0;
+	return t != INVALID_WALK_CODE && t >= 0;
 }
 
 // Utility: return the walkability value of a tile
 uchar j1PathFinding::GetTileAt(const iPoint& pos) const
 {
-	if (CheckBoundaries(pos))
-		return map[(pos.y*width) + pos.x];
+	if (App->scene->firstStage == true)
+	{
+		if (CheckBoundaries(pos) && App->map->data.layers.end->data->Get(pos.x, pos.y) < App->map->data.tilesets.start->next->next->data->firstgid)
+			return map[(pos.y*width) + pos.x];
+	}
+	else
+	{
+		if (CheckBoundaries(pos) && App->map->data2.layers.end->data->Get(pos.x, pos.y) < App->map->data2.tilesets.start->next->next->data->firstgid)
+			return map[(pos.y*width) + pos.x];
+	}
+
 
 	return INVALID_WALK_CODE;
 }
