@@ -46,11 +46,11 @@ public:
 	fPoint pos;
 	fPoint Velocity;
 
-	float gravity;
-	float jump_force;
-	float initialVx;
-	float max_speed_y;
-	float colliding_offset;
+	float gravity = NULL;
+	float jump_force = NULL;
+	float initialVx = NULL;
+	float max_speed_y = NULL;
+	float colliding_offset = NULL;
 
 	player_state stateplayer;
 	bool playercolliding;
@@ -69,8 +69,8 @@ public:
 	bool first_move;
 	bool god_mode;
 
-	int parallaxflow;
-	int previousflow;
+	int parallaxflow = NULL;
+	int previousflow = NULL;
 
 	Animation* CurrentAnimation = nullptr;
 	Animation* idleRight = nullptr;
@@ -92,8 +92,8 @@ public:
 
 private:
 
-	p2SString folder;
-	p2SString Texture;
+	p2SString folder = nullptr;
+	p2SString Texture = nullptr;;
 };
 
 #endif // __j1Player_H__

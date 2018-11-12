@@ -5,7 +5,7 @@
 #include "p2Point.h"
 #include "p2DynArray.h"
 
-#define DEFAULT_PATH_LENGTH 50
+#define DEFAULT_PATH_LENGTH 50 // search a way to change this value. we must read from config
 #define INVALID_WALK_CODE 255
 
 

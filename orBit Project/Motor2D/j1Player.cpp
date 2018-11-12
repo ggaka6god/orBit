@@ -179,6 +179,7 @@ bool j1Player::Update(float dt)
 			Velocity.x = 0.0f;
 			going_left = true;
 			going_right = true;
+			CurrentAnimation = idleRight;
 		}
 
 		//Vertical Movement

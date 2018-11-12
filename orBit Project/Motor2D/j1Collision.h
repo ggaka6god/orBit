@@ -56,7 +56,7 @@ public:
 	void DebugDraw();
 
 	p2List<Collider*> colliders;
-	int playertouched;
+	int playertouched = NULL;
 	bool debug = false;
 
 private:

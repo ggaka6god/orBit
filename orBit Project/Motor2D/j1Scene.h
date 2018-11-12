@@ -55,7 +55,7 @@ public:
 	bool afterLoadingStage2 = false;
 
 private:
-	p2SString map_name;
+	p2SString map_name=nullptr;
 	SDL_Rect debug_Tex_rect = { 96,0,16,16 };
 };
 

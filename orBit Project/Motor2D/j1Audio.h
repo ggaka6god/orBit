@@ -42,21 +42,21 @@ public:
 	bool Save(pugi::xml_node&config) const;
 	bool Load(pugi::xml_node&config);
 
-	p2SString musicfolder;
-	p2SString fxfolder;
+	p2SString musicfolder =nullptr;
+	p2SString fxfolder = nullptr;
 	p2List<p2SString*>	SongNamesList;
 
-	float VolumeChanger_music;
-	float VolumeChanger_fx;
+	float VolumeChanger_music=0.0;
+	float VolumeChanger_fx=0.0;
 
 	bool testbool = false;
-	p2SString fxDeath;
-	p2SString fxJump;
-	p2SString fxdoubleJump;
+	p2SString fxDeath = nullptr;
+	p2SString fxJump = nullptr;
+	p2SString fxdoubleJump = nullptr;
 
-	unsigned int deathfx;
-	unsigned int jumpfx;
-	unsigned int doublejumpfx;
+	unsigned int deathfx = NULL;
+	unsigned int jumpfx = NULL;
+	unsigned int doublejumpfx = NULL;
 private:
 
 	_Mix_Music*			music = NULL;

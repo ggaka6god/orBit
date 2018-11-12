@@ -18,7 +18,7 @@ struct Properties
 
 	bool LoadProperties(pugi::xml_node& node);
 
-	int numproperties;
+	int numproperties ;
 
 	p2SString GetProperties(const char * request);
 
@@ -163,22 +163,22 @@ public:
 	int numberStages = 0;
 	float speed[2];
 	float paralaxRef[2];
-	int					offset;
+	int					offset = 0;
 
 private:
-	p2SString folder;
+	p2SString folder = nullptr;
 	pugi::xml_document	map_file;
-	bool				map_loaded;
-	int					redCollision;
-	int					yellowCollision;
-	int					magentaCollision;
-	int					greenCollison;
-	int					checkpoint;
-	int					redCollision2;
-	int					yellowCollision2;
-	int					magentaCollision2;
-	int					greenCollison2;
-	int					checkpoint2;
+	bool				map_loaded ;
+	int					redCollision = NULL;
+	int					yellowCollision = NULL;
+	int					magentaCollision = NULL;
+	int					greenCollison = NULL;
+	int					checkpoint = NULL;
+	int					redCollision2 = NULL;
+	int					yellowCollision2 = NULL;
+	int					magentaCollision2 = NULL;
+	int					greenCollison2 = NULL;
+	int					checkpoint2 = NULL;
 	
 };
 
