@@ -58,6 +58,7 @@ bool j1Player::Awake(pugi::xml_node& config) {
 	CurrentAnimation = idleRight;
 
 	deathRight->loop = false;
+	deathLeft->loop = false;
 
 	return ret;
 }
@@ -139,8 +140,14 @@ bool j1Player::Update(float dt)
 	//Horizontal Movement 
 
 	
-	if (CurrentAnimation != deathRight || CurrentAnimation != deathLeft)
+	if (CurrentAnimation != deathRight && CurrentAnimation != deathLeft)
 	{
+		if (dead == true)
+		{
+			dead = false;
+			deathLeft->Reset();
+			deathRight->Reset();
+		}
 
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		{
@@ -345,7 +352,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 
 	float aux = c1->rect.y; //pos.y
 
-	if (c2->type == COLLIDER_FLOOR)
+	if (c2->type == COLLIDER_FLOOR && dead == false)
 	{
 		colliding_roof = false;
 	
@@ -470,6 +477,8 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 
 		else if (c2->type == COLLIDER_SPIKES)
 		{
+			Velocity.x = 0.0f;
+
 			colliding_roof = false;
 			must_fall = false;
 			double_jump = false;
@@ -480,25 +489,23 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 				if (going_right)
 				{
 					CurrentAnimation = deathRight;
-
 				}
 				else
 				{
-					CurrentAnimation = deathRight;
+					CurrentAnimation = deathLeft;
 				}
 
 				if (CurrentAnimation->Finished())
 				{
+					if(!dead)
+					dead = true;
 					App->LoadGame("save_game.xml");
 				}
 				App->audio->PlayFx(App->audio->deathfx,0);
 			}
-
-
-
 		}
 
-		else if (c2->type == COLLIDER_PLATFORM)
+		else if (c2->type == COLLIDER_PLATFORM && dead == false)
 		{
 			colliding_roof = false;
 
