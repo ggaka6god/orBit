@@ -53,6 +53,10 @@ public:
 	p2SString fxDeath;
 	p2SString fxJump;
 	p2SString fxdoubleJump;
+
+	unsigned int deathfx;
+	unsigned int jumpfx;
+	unsigned int doublejumpfx;
 private:
 
 	_Mix_Music*			music = NULL;

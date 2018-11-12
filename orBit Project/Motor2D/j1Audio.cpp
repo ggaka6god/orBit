@@ -50,6 +50,7 @@ bool j1Audio::Awake(pugi::xml_node& config)
 		ret = true;
 	}
 
+	
 	//Path names for volume modifier's nodes
 
 	musicfolder = config.child("music").child_value("folder");
@@ -60,7 +61,16 @@ bool j1Audio::Awake(pugi::xml_node& config)
 
 	fxDeath = config.child("fx").child("sound").attribute("death").as_string();
 	fxJump = config.child("fx").child("sound").attribute("jump").as_string();
-	fxDeath = config.child("fx").child("sound").attribute("doubleJump").as_string();
+	fxdoubleJump = config.child("fx").child("sound").attribute("doubleJump").as_string();
+
+	p2SString deathSound ("%s%s", fxfolder.GetString(), fxDeath.GetString());
+	deathfx = LoadFx(deathSound.GetString());
+
+	p2SString jumpSound("%s%s", fxfolder.GetString(), fxJump.GetString());
+	jumpfx = LoadFx(jumpSound.GetString());
+
+	p2SString doublejumpSound("%s%s", fxfolder.GetString(), fxdoubleJump.GetString());
+	doublejumpfx = LoadFx(doublejumpSound.GetString());
 
 	pugi::xml_node Music;
 	for (Music = config.child("music").child("song"); Music && ret; Music = Music.next_sibling("song"))
@@ -88,8 +98,15 @@ bool j1Audio::CleanUp()
 	}
 
 	p2List_item<Mix_Chunk*>* item;
-	for(item = fx.start; item != NULL; item = item->next)
+	item = fx.start;
+		
+	while (item != NULL)
+	{
 		Mix_FreeChunk(item->data);
+		item = item->next;
+	}
+	fx.clear();
+
 
 	p2List_item<p2SString*>* item2;
 	item2 = SongNamesList.start;

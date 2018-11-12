@@ -8,6 +8,7 @@
 #include "j1Map.h"
 #include "j1Scene.h"
 #include "j1Window.h"
+#include "j1Audio.h"
 
 bool j1Player::Awake(pugi::xml_node& config) {
 
@@ -109,6 +110,8 @@ bool j1Player::Update(float dt)
 			god_mode = true;
 		else
 			god_mode = false;
+
+		
 	}
 
 	if (initialmoment)
@@ -189,6 +192,7 @@ bool j1Player::Update(float dt)
 				Velocity.y = jump_force;
 				stateplayer = JUMPING;
 				playercolliding = false;
+				App->audio->PlayFx(App->audio->jumpfx, 0);
 
 			}
 		}
@@ -208,6 +212,7 @@ bool j1Player::Update(float dt)
 				Velocity.y = jump_force / 1.5f;
 				pos.y -= Velocity.y;
 				double_jump = false;
+				
 			}
 
 			Velocity.y += gravity / 3;
@@ -235,6 +240,7 @@ bool j1Player::Update(float dt)
 				Velocity.y = jump_force / 1.5f;
 				pos.y -= Velocity.y;
 				double_jump = false;
+				App->audio->PlayFx(App->audio->doublejumpfx, 0);
 			}
 
 			Velocity.y += gravity / 3;
@@ -274,6 +280,7 @@ bool j1Player::Update(float dt)
 	{
 		pos.x = App->map->data.width*App->map->data.tile_width;
 	}
+	
 
 	return true;
 }
@@ -465,6 +472,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 				if (going_right)
 				{
 					CurrentAnimation = deathRight;
+
 				}
 				else
 				{
@@ -475,8 +483,10 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 				{
 					App->LoadGame("save_game.xml");
 				}
-
+				App->audio->PlayFx(App->audio->deathfx,0);
 			}
+
+
 
 		}
 

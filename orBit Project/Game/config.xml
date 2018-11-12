@@ -46,15 +46,15 @@
     </music>
     <fx>
       <folder>audio/fx/</folder>
-      <VolumeChanger_fx value="0"/>
-      <sound death="death.ogg" doubleJump="doble jump.ogg" jump="jump.ogg"/>
+      <VolumeChanger_fx value="0.2"/>
+      <sound death="death.wav" doubleJump="doble jump.wav" jump="jump.wav"/>
     </fx>
   </audio>
 
   <player>
     <folder>animation/player.tmx</folder>
     <texture>textures/sprite_sheet_character.png</texture>
-    <collider x="0" y="4" width="21" height="35"/>
+    <collider x="5" y="4" width="15" height="35"/>
     <Velocity x="2.0" y="0.0"  max_speed_y="10.0" initalVx="2.0" jump_force="5.0"/>
     <gravity value="-1.0"/>
     <colliding_offset value="1" />

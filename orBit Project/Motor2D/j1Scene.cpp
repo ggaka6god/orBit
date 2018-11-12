@@ -241,6 +241,11 @@ bool j1Scene::Update(float dt)
 		secondStage = true;
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN ) //test sounds
+	{
+		App->audio->PlayFx(App->audio->doublejumpfx, 0);
+	}
+
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) //reload stage1
 	{
 		

@@ -5,11 +5,11 @@
 	<textures />
 	<audio>
 		<VolumeChanger_music value="0.200000003" />
-		<VolumeChanger_fx value="0" />
+		<VolumeChanger_fx value="0.200000003" />
 	</audio>
 	<player>
-		<Playerx value="700" />
-		<Playery value="221" />
+		<Playerx value="2512" />
+		<Playery value="173" />
 	</player>
 	<collision />
 	<map />
@@ -19,6 +19,6 @@
 		<secondStage value="false" />
 	</scene>
 	<renderer>
-		<camera x="-902" y="0" />
+		<camera x="-4515" y="-216" />
 	</renderer>
 </game_state>
