@@ -34,7 +34,7 @@ bool j1Player::Awake(pugi::xml_node& config) {
 	int y = config.child("collider").attribute("y").as_int();
 	int w = config.child("collider").attribute("width").as_int();
 	int h = config.child("collider").attribute("height").as_int();
-	playercol = { x,y,w,h };
+	playercol = { x,y,w,h-1 };
 	
 	parallaxflow = 0;
 	previousflow = 0;
@@ -321,7 +321,7 @@ bool j1Player::PostUpdate()
 	}
 
 	//Blitting player
-	App->render->Blit(spritesheet, pos.x, pos.y, &CurrentAnimation->GetCurrentFrame());
+	App->render->Blit(spritesheet, pos.x-3, pos.y, &CurrentAnimation->GetCurrentFrame());
 
 	return ret;
 }
