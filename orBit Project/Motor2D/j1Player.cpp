@@ -321,7 +321,14 @@ bool j1Player::PostUpdate()
 	}
 
 	//Blitting player
-	App->render->Blit(spritesheet, pos.x-3, pos.y, &CurrentAnimation->GetCurrentFrame());
+	if(going_right)
+	App->render->Blit(spritesheet, pos.x - 3, pos.y, &CurrentAnimation->GetCurrentFrame());
+	else if (going_left)
+	App->render->Blit(spritesheet, pos.x - 6, pos.y, &CurrentAnimation->GetCurrentFrame());
+	else
+	App->render->Blit(spritesheet, pos.x - 3, pos.y, &CurrentAnimation->GetCurrentFrame());
+
+
 
 	return ret;
 }
