@@ -10,6 +10,8 @@
 #include "j1Window.h"
 #include "j1Audio.h"
 
+
+
 bool j1Player::Awake(pugi::xml_node& config) {
 
 	LOG("Loading Player Parser");
@@ -288,7 +290,6 @@ bool j1Player::Update(float dt)
 	{
 		pos.x = App->map->data.width*App->map->data.tile_width;
 	}
-	
 
 	return true;
 }

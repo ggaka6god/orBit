@@ -15,6 +15,7 @@
 #include "j1Collision.h"
 #include "j1Player.h"
 #include "j1Pathfinding.h"
+#include "j1EntityManager.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -33,6 +34,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	player = new j1Player();
 	pathfinding = new j1PathFinding();
 
+
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
 	AddModule(input);
@@ -45,8 +47,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(pathfinding);
 	AddModule(scene);
 
-
-	
 
 	// render last to swap buffer
 	AddModule(render);

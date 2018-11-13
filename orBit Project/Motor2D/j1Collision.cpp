@@ -39,8 +39,8 @@ bool j1Collision::PreUpdate()
 
 	while (item != NULL)
 	{
-		if(item->data->to_delete==true)
-		RELEASE(item->data);
+		if (item->data->to_delete == true)
+			colliders.del(item);
 
 		item = item->next;
 	}
