@@ -321,18 +321,18 @@ bool j1Player::PostUpdate()
 
 	previousflow = parallaxflow;
 
-	parallaxflow = pos.x - App->map->offset;
+	parallaxflow = -App->render->camera.x/App->win->GetScale() - App->map->offset;
 
 	if (App->scene->firstStage)
 	{
-		App->map->paralaxRef[0] -= (parallaxflow-previousflow) / 2;
-		App->map->paralaxRef[1] -= (parallaxflow-previousflow) / 1.25;
+		App->map->paralaxRef[0] -= (parallaxflow-previousflow) / 10.0f;
+		App->map->paralaxRef[1] -= (parallaxflow-previousflow) / 3.0f;
 
 	}
 	else if (App->scene->secondStage)
 	{
-		App->map->paralaxRef[0] -= (parallaxflow - previousflow) / 2;
-		App->map->paralaxRef[1] -= (parallaxflow - previousflow) / 1.25f;
+		App->map->paralaxRef[0] -= (parallaxflow - previousflow) / 10.0f;
+		App->map->paralaxRef[1] -= (parallaxflow - previousflow) / 3.0f;
 	}
 
 	//Controlling player position
