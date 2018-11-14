@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="277" height="299" tilewidth="1" tileheight="1" nextobjectid="94">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="277" height="299" tilewidth="1" tileheight="1" nextobjectid="132">
  <imagelayer name="Image Layer 1">
   <image source="../textures/sprite_sheet_character.png" width="276" height="298"/>
  </imagelayer>
@@ -18,14 +18,14 @@
   <object id="25" x="253" y="2" width="23" height="35"/>
  </objectgroup>
  <objectgroup name="run right">
-  <object id="40" x="0" y="40" width="23" height="34"/>
-  <object id="41" x="23" y="40" width="23" height="34"/>
-  <object id="42" x="46" y="40" width="23" height="34"/>
-  <object id="43" x="69" y="40" width="23" height="34"/>
-  <object id="44" x="92" y="40" width="23" height="34"/>
-  <object id="45" x="115" y="40" width="23" height="34"/>
-  <object id="46" x="138" y="40" width="23" height="34"/>
-  <object id="47" x="161" y="40" width="23" height="34"/>
+  <object id="121" x="161" y="40" width="23" height="34"/>
+  <object id="124" x="138" y="40" width="23" height="34"/>
+  <object id="126" x="115" y="40" width="23" height="34"/>
+  <object id="127" x="92" y="40" width="23" height="34"/>
+  <object id="128" x="69" y="40" width="23" height="34"/>
+  <object id="129" x="46" y="40" width="23" height="34"/>
+  <object id="130" x="23" y="40" width="23" height="34"/>
+  <object id="131" x="-1" y="40" width="24" height="34"/>
  </objectgroup>
  <objectgroup name="jump right">
   <object id="48" x="0" y="74" width="23" height="37"/>
