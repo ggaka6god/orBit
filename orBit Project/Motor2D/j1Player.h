@@ -46,15 +46,16 @@ public:
 	fPoint pos;
 	fPoint Velocity;
 
-	float gravity = NULL;
-	float jump_force = NULL;
-	float initialVx = NULL;
-	float max_speed_y = NULL;
-	float colliding_offset = NULL;
+	float gravity = 0;
+	float jump_force = 0;
+	float initialVx = 0;
+	float max_speed_y = 0;
+	float colliding_offset = 0;
 
 	player_state stateplayer;
 	bool playercolliding;
 	bool colliding_roof;
+	bool colliding_floor;
 
 	bool double_jump;
 	bool must_fall;
@@ -69,8 +70,8 @@ public:
 	bool first_move;
 	bool god_mode;
 
-	int parallaxflow = NULL;
-	int previousflow = NULL;
+	int parallaxflow = 0;
+	int previousflow = 0;
 
 	Animation* CurrentAnimation = nullptr;
 	Animation* idleRight = nullptr;
