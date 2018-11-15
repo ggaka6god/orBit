@@ -7,10 +7,12 @@
 		<VolumeChanger_music value="0.200000003" />
 		<VolumeChanger_fx value="0.200000003" />
 	</audio>
-	<player>
-		<Playerx value="736" />
-		<Playery value="222" />
-	</player>
+	<entities>
+		<Player>
+			<Playerx value="338" />
+			<Playery value="462" />
+		</Player>
+	</entities>
 	<collision />
 	<map />
 	<pathfinding />
@@ -19,6 +21,6 @@
 		<secondStage value="false" />
 	</scene>
 	<renderer>
-		<camera x="-963" y="0" />
+		<camera x="-171" y="-512" />
 	</renderer>
 </game_state>

@@ -5,6 +5,7 @@
 #include "j1Player.h"
 #include "p2Log.h"
 #include "j1Window.h"
+#include "j1Scene.h"
 
 
 j1Collision::j1Collision()
@@ -120,17 +121,17 @@ bool j1Collision::Update(float dt)
 		collider1 = collider1->next;
 		collider2 = collider1->next;
 	}
+	
 
-
-	if (App->player->stateplayer!=JUMPING && App->player->stateplayer!=FALLING && playertouched == 0) 
+	if (App->scene->player->entitystate!=JUMPING && App->scene->player->entitystate!=FALLING && playertouched == 0) 
 	{
-		App->player->must_fall = true;
+		App->scene->player->must_fall = true;
 	}
 
 	return ret;
 }
 
-bool j1Collision::PostUpdate()
+bool j1Collision::PostUpdate(float dt)
 {
 	DebugDraw();
 

@@ -11,6 +11,7 @@
 #include "j1Collision.h"
 #include "j1Player.h"
 #include "j1PathFinding.h"
+#include "j1EntityManager.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -54,6 +55,9 @@ bool j1Scene::Start()
 {
 	bool ret = true;
 
+	// --- Creating entity player ---
+	player = (j1Player*)App->entities->CreateEntity("player", entity_type::PLAYER);
+
 	//Loading both maps
 
 	p2List_item<p2SString*>* stageListItem;
@@ -86,8 +90,8 @@ bool j1Scene::Start()
 	{
 		App->render->camera.x = camera1.x;
 		App->render->camera.y = camera1.y;
-		App->player->pos.x = App->map->data.initpos.x;
-		App->player->pos.y = App->map->data.initpos.y;
+		player->position.x = App->map->data.initpos.x;
+		player->position.y = App->map->data.initpos.y;
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());
 
@@ -104,8 +108,8 @@ bool j1Scene::Start()
 	{
 		App->render->camera.x = camera2.x;
 		App->render->camera.y = camera2.y;
-		App->player->pos.x = App->map->data2.initpos.x;
-		App->player->pos.y = App->map->data2.initpos.y;
+		player->position.x = App->map->data2.initpos.x;
+		player->position.y = App->map->data2.initpos.y;
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->next->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());
 
@@ -155,14 +159,14 @@ bool j1Scene::PreUpdate()
 	}
 
 	//win condition
-	if (firstStage && (App->player->pos.x >= App->map->data.finalpos.x) && (App->player->pos.y <= App->map->data.finalpos.y))
+	if (firstStage && (player->position.x >= App->map->data.finalpos.x) && (player->position.y <= App->map->data.finalpos.y))
 	{
 		change_scene(StageList.start->next->data->GetString());
 		firstStage = false;
 		secondStage = true;
 	}
 
-	else if (secondStage && (App->player->pos.x >= App->map->data2.finalpos.x) && (App->player->pos.y <= App->map->data2.finalpos.y))
+	else if (secondStage && (player->position.x >= App->map->data2.finalpos.x) && (player->position.y <= App->map->data2.finalpos.y))
 	{
 		change_scene(StageList.start->data->GetString());
 		firstStage = true;
@@ -172,11 +176,11 @@ bool j1Scene::PreUpdate()
 	//Controlling camera 
 
 	//Camera In X
-	App->render->camera.x = (-App->player->pos.x*App->win->GetScale() - App->player->playercollider->rect.w / 2 + App->render->camera.w / 2);
+	App->render->camera.x = (-player->position.x*App->win->GetScale() - player->entitycoll->rect.w / 2 + App->render->camera.w / 2);
 
-	if (-App->render->camera.x <= App->player->initialVx)
+	if (-App->render->camera.x <= player->playerinfo.initialVx)
 	{
-		App->render->camera.x = -App->player->initialVx;
+		App->render->camera.x = -player->playerinfo.initialVx;
 	}
 
 	if (-App->render->camera.x + App->render->camera.w >= App->map->data.width*App->map->data.tile_width*App->win->GetScale())
@@ -189,18 +193,18 @@ bool j1Scene::PreUpdate()
 
 	//Camera down
 
-	if (App->player->pos.y*App->win->GetScale() + App->player->playercollider->rect.h >= -App->render->camera.y + App->render->camera.h - App->render->camera.h / 6)
+	if (player->position.y*App->win->GetScale() + player->entitycoll->rect.h >= -App->render->camera.y + App->render->camera.h - App->render->camera.h / 6)
 	{
-		if (!App->player->must_fall)
-			App->render->camera.y = -(App->player->pos.y * App->win->GetScale() + App->player->playercollider->rect.h - App->render->camera.h + App->render->camera.h / 6);
+		if (!player->must_fall)
+			App->render->camera.y = -(player->position.y * App->win->GetScale() + player->entitycoll->rect.h - App->render->camera.h + App->render->camera.h / 6);
 		else
-			App->render->camera.y -= -(App->player->gravity * 8);
+			App->render->camera.y -= -(player->gravity * 8);
 	}
 
 
-	if (App->player->pos.y*App->win->GetScale() > -App->render->camera.y + App->render->camera.h - App->render->camera.h / 6)
+	if (player->position.y*App->win->GetScale() > -App->render->camera.y + App->render->camera.h - App->render->camera.h / 6)
 	{
-		App->render->camera.y -= -(App->player->gravity * 8);
+		App->render->camera.y -= -(player->gravity * 8);
 	}
 
 
@@ -213,10 +217,10 @@ bool j1Scene::PreUpdate()
 
 	//Camera up
 
-	if (App->player->pos.y*App->win->GetScale() <= -App->render->camera.y + App->render->camera.h / 6)
+	if (player->position.y*App->win->GetScale() <= -App->render->camera.y + App->render->camera.h / 6)
 	{
-		if (App->render->camera.y + (-App->player->gravity * 8) < 0)
-			App->render->camera.y = -(App->player->pos.y * App->win->GetScale() - App->render->camera.h / 6);
+		if (App->render->camera.y + (-player->gravity * 8) < 0)
+			App->render->camera.y = -(player->position.y * App->win->GetScale() - App->render->camera.h / 6);
 	}
 
 
@@ -372,7 +376,7 @@ bool j1Scene::Update(float dt)
 }
 
 // Called each loop iteration
-bool j1Scene::PostUpdate()
+bool j1Scene::PostUpdate(float dt)
 {
 	bool ret = true;
 
@@ -409,15 +413,15 @@ bool j1Scene::change_scene(const char* map_name) {
 	App->map->paralaxRef[0] = App->map->offset;
 	App->map->paralaxRef[1] = App->map->offset;
 
-	App->player->parallaxflow = 0;
-	App->player->previousflow = 0;
+	player->parallaxflow = 0;
+	player->previousflow = 0;
 
-	App->player->initialmoment = true;
-	App->player->first_move = false;
+	player->initialmoment = true;
+	player->first_move = false;
 
 	App->coll->CleanUp();
-	App->player-> playercollider= App->coll->AddCollider(App->player->playercol, COLLIDER_PLAYER, App->player);
-	App->player->playercollider->SetPos(App->player->pos.x, App->player->pos.y);
+	player->entitycoll= App->coll->AddCollider(player->entitycollrect, COLLIDER_PLAYER, App->entities);
+	player->entitycoll->SetPos(player->position.x, player->position.y);
 
 	
 	if (FirstStage == map_name)
@@ -425,12 +429,12 @@ bool j1Scene::change_scene(const char* map_name) {
 		App->render->camera.x = camera1.x;
 		App->render->camera.y = camera1.y;
 
-		App->player->pos.x = App->map->data.initpos.x;
-		App->player->pos.y = App->map->data.initpos.y;
+		player->position.x = App->map->data.initpos.x;
+		player->position.y = App->map->data.initpos.y;
 		App->map->ColliderDrawer(App->map->data);
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());
-		App->player->stateplayer = FALLING;
+		player->entitystate = FALLING;
 
 
 		// --- Pathfinding walkability map 1 ---
@@ -447,12 +451,12 @@ bool j1Scene::change_scene(const char* map_name) {
 		App->render->camera.x = camera2.x;
 		App->render->camera.y = camera2.y;
 
-		App->player->pos.x = App->map->data2.initpos.x;
-		App->player->pos.y = App->map->data2.initpos.y;
+		player->position.x = App->map->data2.initpos.x;
+		player->position.y = App->map->data2.initpos.y;
 		App->map->ColliderDrawer(App->map->data2);
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->next->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());
-		App->player->stateplayer = FALLING;
+		player->entitystate = FALLING;
 
 
 		// --- Pathfinding walkability map 2 ---
@@ -485,8 +489,8 @@ bool j1Scene::Load(pugi::xml_node &config)
 {
 
 	bool ret = true;
-	int x = App->player->pos.x;
-	int y = App->player->pos.y;
+	int x = player->position.x;
+	int y = player->position.y;
 
 	afterLoadingStage1 = config.child("firstStage").attribute("value").as_bool();
 	afterLoadingStage2 = config.child("secondStage").attribute("value").as_bool();
@@ -500,8 +504,8 @@ bool j1Scene::Load(pugi::xml_node &config)
 			change_scene(StageList.start->next->data->GetString());
 			secondStage = true;
 			firstStage = false;
-			App->player->pos.x = x;
-			App->player->pos.y = y;
+			player->position.x = x;
+			player->position.y = y;
 		}
 
 		else
@@ -509,8 +513,8 @@ bool j1Scene::Load(pugi::xml_node &config)
 			change_scene(StageList.start->data->GetString());
 			firstStage = true;
 			secondStage = false;
-			App->player->pos.x = x;
-			App->player->pos.y = y;
+			player->position.x = x;
+			player->position.y = y;
 
 		}
 
@@ -524,8 +528,8 @@ bool j1Scene::Load(pugi::xml_node &config)
 			change_scene(StageList.start->data->GetString());
 			firstStage = true;
 			secondStage = false;
-			App->player->pos.x = x;
-			App->player->pos.y = y;
+			player->position.x = x;
+			player->position.y = y;
 
 		}
 
@@ -534,8 +538,8 @@ bool j1Scene::Load(pugi::xml_node &config)
 			change_scene(StageList.start->next->data->GetString());
 			firstStage = false;
 			secondStage = true;
-			App->player->pos.x = x;
-			App->player->pos.y = y;
+			player->position.x = x;
+			player->position.y = y;
 		}
 	}
 	

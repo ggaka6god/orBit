@@ -4,55 +4,65 @@
 #include "j1Module.h"
 #include "p2Point.h"
 #include "Animation.h"
+#include "j1Entity.h"
 
 struct SDL_Texture;
 struct Collider;
 
-enum player_state
-{
-	IDLE = 0,
-	RIGHT,
-	LEFT,
-	JUMPING,
-	FALLING
+struct Playerdata {
+	float jump_force = 0;
+	float initialVx = 0;
+	float max_speed_y = 0;
+
+	Animation* idleRight = nullptr;
+	Animation* idleLeft = nullptr;
+	Animation* runRight = nullptr;
+	Animation* runLeft = nullptr;
+	Animation* jumpingRight = nullptr;
+	Animation* jumpingLeft = nullptr;
+	Animation* fallingRight = nullptr;
+	Animation* fallingLeft = nullptr;
+	Animation* deathRight = nullptr;
+	Animation* deathLeft = nullptr;
+	Animation* airRight = nullptr;
+	Animation* airLeft = nullptr;
+
+	p2SString folder = nullptr;
+	p2SString Texture = nullptr;
+
+	SDL_Rect playerrect = { 0,0,0,0 };
+
+	fPoint          Velocity = { 0,0 };
+	float           gravity = 0;
+	float  colliding_offset = 0;
 };
 
-class j1Player :public j1Module
+class j1Player :public j1Entity
 {
 public:
 
 	j1Player();
 	~j1Player();
 
-	bool Awake(pugi::xml_node &config);
 	bool Start();
 	bool Update(float dt);
-	bool PostUpdate();
+	bool PostUpdate(float dt);
 	bool CleanUp();
+
+	// Called each loop iteration
+	void FixedUpdate(float dt);
+	
+	// Called each logic iteration
+	void LogicUpdate(float dt);
+
 
 	void OnCollision(Collider* c1, Collider* c2);
 
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
-	Animation* LoadAnimation(const char* animationPath, const char* animationName);
-
-
 public:
 
-	SDL_Texture * graphics = nullptr;
-	Collider* playercollider = nullptr;
-
-	fPoint pos;
-	fPoint Velocity;
-
-	float gravity = 0;
-	float jump_force = 0;
-	float initialVx = 0;
-	float max_speed_y = 0;
-	float colliding_offset = 0;
-
-	player_state stateplayer;
 	bool playercolliding;
 	bool colliding_roof;
 	bool colliding_floor;
@@ -73,28 +83,7 @@ public:
 	int parallaxflow = 0;
 	int previousflow = 0;
 
-	Animation* CurrentAnimation = nullptr;
-	Animation* idleRight = nullptr;
-	Animation* idleLeft = nullptr;
-	Animation* runRight = nullptr;
-	Animation* runLeft = nullptr;
-	Animation* jumpingRight = nullptr;
-	Animation* jumpingLeft = nullptr;
-	Animation* fallingRight = nullptr;
-	Animation* fallingLeft = nullptr;
-	Animation* deathRight = nullptr;
-	Animation* deathLeft = nullptr;
-	Animation* airRight = nullptr;
-	Animation* airLeft = nullptr;
-
-	SDL_Texture* spritesheet = nullptr;
-
-	SDL_Rect playercol;
-
-private:
-
-	p2SString folder = nullptr;
-	p2SString Texture = nullptr;;
+	Playerdata playerinfo;
 };
 
 #endif // __j1Player_H__

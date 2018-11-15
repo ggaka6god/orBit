@@ -51,6 +51,7 @@
     </fx>
   </audio>
 
+  <entities>
   <player>
     <folder>animation/player.tmx</folder>
     <texture>textures/sprite_sheet_character.png</texture>
@@ -60,5 +61,7 @@
     <colliding_offset value="1" />
    
   </player>
+  
+  </entities>
 
 </config>
