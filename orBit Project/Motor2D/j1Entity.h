@@ -7,6 +7,8 @@
 class j1EntityManager;
 class Collider;
 
+
+
 class j1Entity
 {
 public:
@@ -40,12 +42,13 @@ public:
 	virtual void OnCollision(Collider* c1, Collider* c2)
 	{}
 
-
+	
 public:
 
 	p2SString			name;
 	fPoint			position;
 	Collider*     entitycoll;
+
 
 private:
 
