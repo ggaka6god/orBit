@@ -274,7 +274,38 @@ bool j1Map::LoadMap(MapData& data)
 			data.finalpos.x = map.child("objectgroup").next_sibling("objectgroup").child("object").attribute("x").as_int();
 			data.finalpos.y = map.child("objectgroup").next_sibling("objectgroup").child("object").attribute("y").as_int()+ map.child("objectgroup").child("object").attribute("height").as_int();
 		}
+		
+		//Load slime1 initial position
+		p2SString tmp3(map.child("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").first_attribute().as_string());
+		if (tmp3 == "slime1")
+		{
+			data.slime1.x = map.child("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").child("object").attribute("x").as_int();
+			data.slime1.y = map.child("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").child("object").attribute("y").as_int() ;
+		}
+		
+		//loading slime2 position
+		p2SString tmp4(map.child("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").first_attribute().as_string());
+		if (tmp4 == "slime2")
+		{
+			data.slime2.x = map.child("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").child("object").attribute("x").as_int();
+			data.slime2.y = map.child("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").child("object").attribute("y").as_int();
+		}
 
+		//loading bat1 position
+		p2SString tmp5(map.child("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").first_attribute().as_string());
+		if (tmp5 == "bat1")
+		{
+			data.bat1.x = map.child("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").child("object").attribute("x").as_int();
+			data.bat1.y = map.child("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").child("object").attribute("y").as_int();
+		}
+
+		//loading bat2 position
+		p2SString tmp6(map.child("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").first_attribute().as_string());
+		if (tmp6 == "bat2")
+		{
+			data.bat2.x = map.child("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").child("object").attribute("x").as_int();
+			data.bat2.y = map.child("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").next_sibling("objectgroup").child("object").attribute("y").as_int();
+		}
 
 		
 		data.background_color.r = 0;

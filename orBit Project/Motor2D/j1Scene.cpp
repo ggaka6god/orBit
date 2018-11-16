@@ -92,8 +92,22 @@ bool j1Scene::Start()
 	{
 		App->render->camera.x = camera1.x;
 		App->render->camera.y = camera1.y;
+
 		player->position.x = App->map->data.initpos.x;
 		player->position.y = App->map->data.initpos.y;
+		
+		slime->position.x = App->map->data.slime1.x;
+		slime->position.y = App->map->data.slime1.y;
+
+		//slime2->position.x = App->map->data.slime2.x;
+		//slime2->position.y = App->map->data.slime2.y;
+
+		//bat->position.x = App->map->data.bat1.x;
+		//bat->position.y = App->map->data.bat1.y;
+
+		//bat2->position.x = App->map->data.bat2.x;
+		//bat2->position.y = App->map->data.bat2.y;
+
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());
 
@@ -110,8 +124,22 @@ bool j1Scene::Start()
 	{
 		App->render->camera.x = camera2.x;
 		App->render->camera.y = camera2.y;
+
 		player->position.x = App->map->data2.initpos.x;
 		player->position.y = App->map->data2.initpos.y;
+
+		slime->position.x = App->map->data2.slime1.x;
+		slime->position.y = App->map->data2.slime1.y;
+
+		//slime2->position.x = App->map->data2.slime2.x;
+		//slime2->position.y = App->map->data2.slime2.y;
+
+		//bat->position.x = App->map->data2.bat1.x;
+		//bat->position.y = App->map->data2.bat1.y;
+
+		//bat2->position.x = App->map->data2.bat2.x;
+		//bat2->position.y = App->map->data2.bat2.y;
+
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->next->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());
 
@@ -435,6 +463,21 @@ bool j1Scene::change_scene(const char* map_name) {
 
 		player->position.x = App->map->data.initpos.x;
 		player->position.y = App->map->data.initpos.y;
+
+		slime->position.x = App->map->data.slime1.x;
+		slime->position.y = App->map->data.slime1.y;
+
+
+		//slime2->position.x = App->map->data.slime2.x;
+		//slime2->position.y = App->map->data.slime2.y;
+
+		//bat->position.x = App->map->data.bat1.x;
+		//bat->position.y = App->map->data.bat1.y;
+
+		//bat2->position.x = App->map->data.bat2.x;
+		//bat2->position.y = App->map->data.bat2.y;
+
+
 		App->map->ColliderDrawer(App->map->data);
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());
@@ -457,6 +500,20 @@ bool j1Scene::change_scene(const char* map_name) {
 
 		player->position.x = App->map->data2.initpos.x;
 		player->position.y = App->map->data2.initpos.y;
+
+		slime->position.x = App->map->data2.slime1.x;
+		slime->position.y = App->map->data2.slime1.y;
+
+		//slime2->position.x = App->map->data2.slime2.x;
+		//slime2->position.y = App->map->data2.slime2.y;
+
+		//bat->position.x = App->map->data2.bat1.x;
+		//bat->position.y = App->map->data2.bat1.y;
+
+		//bat2->position.x = App->map->data2.bat2.x;
+		//bat2->position.y = App->map->data2.bat2.y;
+
+
 		App->map->ColliderDrawer(App->map->data2);
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->next->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());

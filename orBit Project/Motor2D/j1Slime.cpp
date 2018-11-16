@@ -38,11 +38,11 @@ bool j1Slime::Start()
 
 	gravity = Slimeinfo.gravity;
 
-	position.x = 1000;
-	position.y = 100;
+	/*position.x = 1000;
+	position.y = 100;*/
 
-	/*position.x = NULL;
-	position.y = NULL;*/
+	position.x = NULL;
+	position.y = NULL;
 
 	entitystate = FALLING;
 

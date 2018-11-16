@@ -9,12 +9,12 @@
 	</audio>
 	<entities>
 		<Player>
-			<Playerx value="736" />
+			<Playerx value="735" />
 			<Playery value="222" />
 		</Player>
 		<Slime>
-			<Slimex value="1000" />
-			<Slimey value="100" />
+			<Slimex value="979" />
+			<Slimey value="172" />
 		</Slime>
 	</entities>
 	<collision />
@@ -25,6 +25,6 @@
 		<secondStage value="false" />
 	</scene>
 	<renderer>
-		<camera x="-963" y="0" />
+		<camera x="-961" y="0" />
 	</renderer>
 </game_state>
