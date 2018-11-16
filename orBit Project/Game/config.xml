@@ -66,7 +66,13 @@
          <folder>animation/enemies.tmx</folder>
          <texture>textures/monster.png</texture>
          <collider x="21" y="17" width="10" height="20"/>
-       
+         <animationspeed value="0.05"/>
+         <areaofaction value="150"/>
+         <Velocity x="0.5" y="0.0" initalVx="2.0"/>
+         <printingoffset x="8" y="1"/>
+         <colliding_offset value="5" />
+         <gravity value="-4.0"/>
+     
      </slime>
   
   </entities>

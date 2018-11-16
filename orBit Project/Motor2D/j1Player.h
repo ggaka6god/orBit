@@ -10,6 +10,7 @@ struct SDL_Texture;
 struct Collider;
 
 struct Playerdata {
+	
 	float jump_force = 0;
 	float initialVx = 0;
 	float max_speed_y = 0;

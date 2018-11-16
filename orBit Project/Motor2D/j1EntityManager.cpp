@@ -84,13 +84,15 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 	slimeinfo.runRight= LoadAnimation(slimeinfo.folder.GetString(), "slime right");
 	slimeinfo.runLeft = LoadAnimation(slimeinfo.folder.GetString(), "slime left");
 
-	slimeinfo.gravity = playernode.child("gravity").attribute("value").as_float();
-	slimeinfo.Velocity.x = playernode.child("Velocity").attribute("x").as_float();
-	slimeinfo.Velocity.y = playernode.child("Velocity").attribute("y").as_float();
-	slimeinfo.max_speed_y = playernode.child("Velocity").attribute("max_speed_y").as_float();
-	slimeinfo.initialVx = playernode.child("Velocity").attribute("initalVx").as_float();
-	slimeinfo.colliding_offset = playernode.child("colliding_offset").attribute("value").as_float();
-
+	slimeinfo.gravity = slimenode.child("gravity").attribute("value").as_float();
+	slimeinfo.Velocity.x = slimenode.child("Velocity").attribute("x").as_float();
+	slimeinfo.Velocity.y = slimenode.child("Velocity").attribute("y").as_float();
+	slimeinfo.initialVx = slimenode.child("Velocity").attribute("initalVx").as_float();
+	slimeinfo.colliding_offset = slimenode.child("colliding_offset").attribute("value").as_float();
+	slimeinfo.areaofaction = slimenode.child("areaofaction").attribute("value").as_int();
+	slimeinfo.animationspeed = slimenode.child("animationspeed").attribute("value").as_float();
+	slimeinfo.printingoffset.x = slimenode.child("printingoffset").attribute("x").as_int();
+	slimeinfo.printingoffset.y = slimenode.child("printingoffset").attribute("y").as_int();
 
 
 	// ---------------------
