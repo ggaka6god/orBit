@@ -22,6 +22,8 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_PLAYER][COLLIDER_ROOF] = true;
 	matrix[COLLIDER_PLAYER][CHECKPOINT] = true;
 
+	matrix[COLLIDER_PLAYER][COLLIDER_ENEMY_SLIME] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_ENEMY_BAT] = true;
 }
 
 j1Collision::~j1Collision()
@@ -206,6 +208,12 @@ void j1Collision::DebugDraw()
 			break;
 		case CHECKPOINT: // blue
 			App->render->DrawQuad(item->data->rect, 0 , 0, 128, alpha);
+			break;
+		case COLLIDER_ENEMY_SLIME: // brown
+			App->render->DrawQuad(item->data->rect, 153, 76, 0, alpha);
+			break;
+		case COLLIDER_ENEMY_BAT: // dark red
+			App->render->DrawQuad(item->data->rect, 153, 0, 76, alpha);
 			break;
 			
 

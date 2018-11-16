@@ -6,6 +6,7 @@
 struct SDL_Texture;
 class SDL_Rect;
 class j1Player;
+class j1Slime;
 
 class j1Scene : public j1Module
 {
@@ -57,6 +58,7 @@ public:
 
 
 	j1Player*           player = nullptr;
+	j1Slime*			slime = nullptr;
 private:
 	p2SString map_name=nullptr;
 	SDL_Rect debug_Tex_rect = { 96,0,16,16 };

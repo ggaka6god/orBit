@@ -22,7 +22,8 @@ enum entity_state
 
 enum class entity_type
 {
-	PLAYER
+	PLAYER,
+	SLIME
 };
 
 class j1Entity

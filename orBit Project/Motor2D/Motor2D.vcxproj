@@ -76,6 +76,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="j1Slime.cpp" />
     <ClCompile Include="j1Collision.cpp" />
     <ClCompile Include="j1Entity.cpp" />
     <ClCompile Include="j1EntityManager.cpp" />
@@ -102,6 +103,7 @@
     <ClInclude Include="j1Pathfinding.h" />
     <ClInclude Include="j1Player.h" />
     <ClInclude Include="j1Scene.h" />
+    <ClInclude Include="j1Slime.h" />
     <ClInclude Include="MemLeaks.h" />
     <ClInclude Include="p2DynArray.h" />
     <ClInclude Include="j1Audio.h" />

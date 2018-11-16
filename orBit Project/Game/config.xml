@@ -52,15 +52,22 @@
   </audio>
 
   <entities>
-  <player>
-    <folder>animation/player.tmx</folder>
-    <texture>textures/sprite_sheet_character.png</texture>
-    <collider x="5" y="4" width="15" height="35"/>
-    <Velocity x="2.0" y="0.0"  max_speed_y="10.0" initalVx="2.0" jump_force="5.0"/>
-    <gravity value="-1.0"/>
-    <colliding_offset value="1" />
+    <player>
+        <folder>animation/player.tmx</folder>
+        <texture>textures/sprite_sheet_character.png</texture>
+        <collider x="5" y="4" width="15" height="34"/>
+        <Velocity x="2.0" y="0.0"  max_speed_y="10.0" initalVx="2.0" jump_force="5.0"/>
+        <gravity value="-1.0"/>
+        <colliding_offset value="1" />
    
-  </player>
+    </player>
+   
+     <slime>
+         <folder>animation/enemies.tmx</folder>
+         <texture>textures/monster.png</texture>
+         <collider x="21" y="17" width="10" height="20"/>
+       
+     </slime>
   
   </entities>
 

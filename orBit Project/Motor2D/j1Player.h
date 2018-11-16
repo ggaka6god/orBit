@@ -34,7 +34,7 @@ struct Playerdata {
 
 	fPoint          Velocity = { 0,0 };
 	float           gravity = 0;
-	float  colliding_offset = 0;
+	float			colliding_offset = 0;
 };
 
 class j1Player :public j1Entity

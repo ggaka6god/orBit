@@ -9,6 +9,7 @@
 #include "j1Module.h"
 #include "j1Entity.h"
 #include "j1Player.h"
+#include "j1Slime.h"
 
 #define DEFAULT_LOGIC_PER_SECOND 60
 
@@ -46,6 +47,7 @@ public:
 
 	// --- Get Entities data ---
 	Playerdata& GetPlayerData() { return playerinfo; }
+	SlimeData& GetSlimeData() { return slimeinfo; }
 
 	// --- Save & Load ---
 	bool Load(pugi::xml_node&);
@@ -63,7 +65,7 @@ public:
 private:
 	// --- Player ---
 	Playerdata playerinfo;
-	
+	SlimeData slimeinfo;
 
 };
 

@@ -49,7 +49,7 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 	int y = playernode.child("collider").attribute("y").as_int();
 	int w = playernode.child("collider").attribute("width").as_int();
 	int h = playernode.child("collider").attribute("height").as_int();
-	playerinfo.playerrect = { x,y,w,h - 1 };
+	playerinfo.playerrect = { x,y,w,h };
 
 	// --- Player main variables ---
 
@@ -66,6 +66,32 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 
 	playerinfo.deathRight->loop = false;
 	playerinfo.deathLeft->loop = false;
+
+	//--Slime data load ------------
+
+	pugi::xml_node slimenode = config.child("slime");
+
+	slimeinfo.folder.create(slimenode.child("folder").child_value());
+	slimeinfo.Texture.create(slimenode.child("texture").child_value());
+
+	x = slimenode.child("collider").attribute("x").as_int();
+	y = slimenode.child("collider").attribute("y").as_int();
+	w = slimenode.child("collider").attribute("width").as_int();
+	h = slimenode.child("collider").attribute("height").as_int();
+	slimeinfo.SlimeRect = { x,y,w,h };
+
+
+	slimeinfo.runRight= LoadAnimation(slimeinfo.folder.GetString(), "slime right");
+	slimeinfo.runLeft = LoadAnimation(slimeinfo.folder.GetString(), "slime left");
+
+	slimeinfo.gravity = playernode.child("gravity").attribute("value").as_float();
+	slimeinfo.Velocity.x = playernode.child("Velocity").attribute("x").as_float();
+	slimeinfo.Velocity.y = playernode.child("Velocity").attribute("y").as_float();
+	slimeinfo.max_speed_y = playernode.child("Velocity").attribute("max_speed_y").as_float();
+	slimeinfo.initialVx = playernode.child("Velocity").attribute("initalVx").as_float();
+	slimeinfo.colliding_offset = playernode.child("colliding_offset").attribute("value").as_float();
+
+
 
 	// ---------------------
 
@@ -193,6 +219,9 @@ j1Entity* const j1EntityManager::CreateEntity(const char* entname, entity_type e
 	{
 	case entity_type::PLAYER:
 		entity = new j1Player();
+		break;
+	case entity_type::SLIME:
+		entity = new j1Slime();
 		break;
 	}
 	entity->Init(this);

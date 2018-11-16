@@ -9,18 +9,18 @@
 	</audio>
 	<entities>
 		<Player>
-			<Playerx value="338" />
-			<Playery value="462" />
+			<Playerx value="2193" />
+			<Playery value="341" />
 		</Player>
 	</entities>
 	<collision />
 	<map />
 	<pathfinding />
 	<scene>
-		<firstStage value="true" />
-		<secondStage value="false" />
+		<firstStage value="false" />
+		<secondStage value="true" />
 	</scene>
 	<renderer>
-		<camera x="-171" y="-512" />
+		<camera x="-3885" y="-72" />
 	</renderer>
 </game_state>

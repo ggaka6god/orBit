@@ -12,6 +12,7 @@
 #include "j1Player.h"
 #include "j1PathFinding.h"
 #include "j1EntityManager.h"
+#include "j1Slime.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -55,8 +56,9 @@ bool j1Scene::Start()
 {
 	bool ret = true;
 
-	// --- Creating entity player ---
+	// --- Creating entity  ---
 	player = (j1Player*)App->entities->CreateEntity("player", entity_type::PLAYER);
+	slime= (j1Slime*)App->entities->CreateEntity("slime", entity_type::SLIME);
 
 	//Loading both maps
 
