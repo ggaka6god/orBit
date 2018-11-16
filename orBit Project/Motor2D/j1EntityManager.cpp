@@ -94,6 +94,32 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 	slimeinfo.printingoffset.x = slimenode.child("printingoffset").attribute("x").as_int();
 	slimeinfo.printingoffset.y = slimenode.child("printingoffset").attribute("y").as_int();
 
+	//--- Bat data load --------------------
+
+	pugi::xml_node batnode = config.child("bat");
+
+	batinfo.folder.create(slimenode.child("folder").child_value());
+	batinfo.Texture.create(slimenode.child("texture").child_value());
+
+	x = batnode.child("collider").attribute("x").as_int();
+	y = batnode.child("collider").attribute("y").as_int();
+	w = batnode.child("collider").attribute("width").as_int();
+	h = batnode.child("collider").attribute("height").as_int();
+	batinfo.BatRect = { x,y,w,h };
+
+
+	batinfo.flyRight = LoadAnimation(batinfo.folder.GetString(), "bat right");
+	batinfo.flyLeft = LoadAnimation(slimeinfo.folder.GetString(), "bat left");
+
+	batinfo.gravity = batnode.child("gravity").attribute("value").as_float(); //
+	batinfo.Velocity.x = batnode.child("Velocity").attribute("x").as_float();
+	batinfo.Velocity.y = batnode.child("Velocity").attribute("y").as_float();
+	batinfo.initialVx = batnode.child("Velocity").attribute("initalVx").as_float();
+	batinfo.colliding_offset = batnode.child("colliding_offset").attribute("value").as_float();
+	batinfo.areaofaction = batnode.child("areaofaction").attribute("value").as_int();
+	batinfo.animationspeed = batnode.child("animationspeed").attribute("value").as_float();
+	batinfo.printingoffset.x = batnode.child("printingoffset").attribute("x").as_int();
+	batinfo.printingoffset.y = batnode.child("printingoffset").attribute("y").as_int();
 
 	// ---------------------
 
@@ -219,12 +245,16 @@ j1Entity* const j1EntityManager::CreateEntity(const char* entname, entity_type e
 
 	switch (entitytype)
 	{
-	case entity_type::PLAYER:
-		entity = new j1Player();
-		break;
 	case entity_type::SLIME:
 		entity = new j1Slime();
 		break;
+	case entity_type::BAT:
+		entity = new j1Bat();
+		break;
+	case entity_type::PLAYER:
+		entity = new j1Player();
+		break;
+	
 	}
 	entity->Init(this);
 	entity->Start();

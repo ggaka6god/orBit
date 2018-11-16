@@ -74,6 +74,19 @@
          <gravity value="-4.0"/>
      
      </slime>
+    
+   <bat>
+         <folder>animation/enemies.tmx</folder>
+         <texture>textures/monster.png</texture>
+         <collider x="31" y="7" width="9" height="12"/>
+         <animationspeed value="0.1"/>
+         <areaofaction value="100"/>
+         <Velocity x="1" y="0.5" initalVx="2.0"/>
+         <printingoffset x="8" y="5"/>
+         <colliding_offset value="5" />
+         <gravity value="-4.0"/>
+     
+     </bat>
   
   </entities>
 

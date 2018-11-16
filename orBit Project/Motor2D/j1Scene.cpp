@@ -58,8 +58,8 @@ bool j1Scene::Start()
 
 	// --- Creating entity  ---
 	player = (j1Player*)App->entities->CreateEntity("player", entity_type::PLAYER);
-	slime= (j1Slime*)App->entities->CreateEntity("slime", entity_type::SLIME);
-
+	slime = (j1Slime*)App->entities->CreateEntity("slime", entity_type::SLIME);
+	bat = (j1Bat*)App->entities->CreateEntity("bat", entity_type::BAT);
 	//Loading both maps
 
 	p2List_item<p2SString*>* stageListItem;

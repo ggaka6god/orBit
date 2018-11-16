@@ -16,6 +16,10 @@
 			<Slimex value="979" />
 			<Slimey value="172" />
 		</Slime>
+		<Bat>
+			<Batx value="928" />
+			<Baty value="100" />
+		</Bat>
 	</entities>
 	<collision />
 	<map />
