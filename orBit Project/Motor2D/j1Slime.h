@@ -19,16 +19,18 @@ struct SlimeData {
 	p2SString folder = nullptr;
 	p2SString Texture = nullptr;
 
-	SDL_Rect SlimeRect = { 0,0,0,0 };
+	SDL_Rect		SlimeRect = { 0,0,0,0 };
 	fPoint          Velocity = { 0,0 };
-	
+	iPoint			printingoffset = { 0,0 };
+
 	float           gravity = 0;
 	float			initialVx = 0;
-	float			max_speed_y = 0;
 	float			colliding_offset = 0;
+	float			animationspeed = 0;
+	
+	int				areaofaction = 0;
+	
 
-	
-	
 };
 
 class j1Slime :public j1Entity
@@ -63,6 +65,8 @@ public:
 	bool slimecolliding = false;
 
 	SlimeData Slimeinfo;
+
+	//const p2DynArray<iPoint>* path;
 
 };
 

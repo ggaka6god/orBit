@@ -425,6 +425,8 @@ bool j1Scene::change_scene(const char* map_name) {
 	player->entitycoll= App->coll->AddCollider(player->entitycollrect, COLLIDER_PLAYER, App->entities);
 	player->entitycoll->SetPos(player->position.x, player->position.y);
 
+	slime->entitycoll = App->coll->AddCollider(slime->entitycollrect, COLLIDER_ENEMY_SLIME, App->entities);
+	slime->entitycoll->SetPos(slime->position.x, player->position.y);
 	
 	if (FirstStage == map_name)
 	{	

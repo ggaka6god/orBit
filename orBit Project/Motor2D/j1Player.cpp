@@ -457,7 +457,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 			}
 		}
 
-		else if (c2->type == COLLIDER_SPIKES)
+		else if (c2->type == COLLIDER_SPIKES || c2->type == COLLIDER_ENEMY_SLIME   )
 		{
 			Velocity.x = 0.0f;
 

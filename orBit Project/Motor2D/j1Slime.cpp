@@ -11,7 +11,7 @@
 #include "j1Audio.h"
 #include "j1EntityManager.h"
 #include "j1Player.h"
-
+#include "j1Pathfinding.h"
 
 j1Slime::j1Slime() : j1Entity("Slime", entity_type::SLIME)
 {
@@ -27,16 +27,22 @@ bool j1Slime::Start()
 	LOG("Loading Slime");
 
 	Slimeinfo = manager->GetSlimeData();
+
 	entitycollrect = Slimeinfo.SlimeRect;
 	colliding_offset = Slimeinfo.colliding_offset;
-	CurrentAnimation = Slimeinfo.runRight;
-	Slimeinfo.runLeft->speed = 0.05;
-	Slimeinfo.runRight->speed = 0.05;
-	gravity = Slimeinfo.gravity;
 	entitycoll = App->coll->AddCollider(entitycollrect, COLLIDER_ENEMY_SLIME, (j1Module*)manager);
+
+	CurrentAnimation = Slimeinfo.runRight;
+	Slimeinfo.runLeft->speed = Slimeinfo.animationspeed;
+	Slimeinfo.runRight->speed = Slimeinfo.animationspeed;
+
+	gravity = Slimeinfo.gravity;
 
 	position.x = 1000;
 	position.y = 100;
+
+	/*position.x = NULL;
+	position.y = NULL;*/
 
 	entitystate = FALLING;
 
@@ -68,30 +74,47 @@ bool j1Slime::PostUpdate(float dt)
 
 	if ((position.x)*App->win->GetScale() >= -App->render->camera.x && (position.x)*App->win->GetScale() <= -App->render->camera.x + App->render->camera.w)
 	{
-		//slime Update
-		if (entitystate != FALLING && entitystate == RIGHT)
+		if (App->scene->player->position.x > position.x - Slimeinfo.areaofaction &&
+			App->scene->player->position.x < position.x + Slimeinfo.areaofaction &&
+			App->scene->player->position.y < position.y + Slimeinfo.areaofaction &&
+			App->scene->player->position.y > position.y - Slimeinfo.areaofaction)
 		{
-			position.x += 0.5;
-			entitystate = RIGHT;
-			must_fall = false;
+			if (App->scene->player->position.x > position.x)
+				CurrentAnimation= Slimeinfo.runRight;
+			else if (App->scene->player->position.x < position.x)
+				CurrentAnimation = Slimeinfo.runLeft;
+
+			//int pathok= App->pathfinding->CreatePath({ (int)App->scene->player->position.x,(int)App->scene->player->position.y }, { (int)this->position.x, (int)this->position.y });
+			//path=App->pathfinding->GetLastPath();
+
 		}
-		else if (entitystate != FALLING && entitystate == LEFT)
+		else 
 		{
-			position.x -= 0.5;
-			entitystate = LEFT;
-			must_fall = false;
-		}
+				if (entitystate != FALLING && entitystate == RIGHT)
+						{
+							position.x += Slimeinfo.Velocity.x;
+							entitystate = RIGHT;
+							must_fall = false;
+						}
+				else if (entitystate != FALLING && entitystate == LEFT)
+						{
+							position.x -= Slimeinfo.Velocity.x;
+							entitystate = LEFT;
+							must_fall = false;
+						}
 
 
-		if (going_right == true)
-			CurrentAnimation = Slimeinfo.runRight;
-		else if (going_right == false)
-			CurrentAnimation = Slimeinfo.runLeft;
+				if (going_right == true)
+							CurrentAnimation = Slimeinfo.runRight;
+				else if (going_right == false)
+							CurrentAnimation = Slimeinfo.runLeft;
+		}
+		
 
 		//If no ground, free fall
 		if (must_fall)
 		{
-			position.y -= gravity * 4.0f;
+			position.y -= gravity;
 		}
 
 		if (position.x < 0)
@@ -115,12 +138,9 @@ bool j1Slime::PostUpdate(float dt)
 
 		//Blitting slime
 
-		if (going_right)
-			App->render->Blit(spritesheet, position.x - 8, position.y + 1, &CurrentAnimation->GetCurrentFrame());
-		else if (going_left)
-			App->render->Blit(spritesheet, position.x - 8, position.y + 1, &CurrentAnimation->GetCurrentFrame());
-		else
-			App->render->Blit(spritesheet, position.x - 3, position.y, &CurrentAnimation->GetCurrentFrame());
+	
+			App->render->Blit(spritesheet, position.x - Slimeinfo.printingoffset.x, position.y + Slimeinfo.printingoffset.y, &CurrentAnimation->GetCurrentFrame());
+		
 		
 
 		return ret;
@@ -162,14 +182,14 @@ void j1Slime::OnCollision(Collider * c1, Collider * c2)
 			entitystate = LEFT;
 			going_left = true;
 			going_right = false;
-			c1->rect.x -= 5;
+			c1->rect.x -= Slimeinfo.colliding_offset;
 		}
 		else
 		{
 			going_right = true;
 			entitystate = RIGHT;
 			going_left = false;
-			c1->rect.x += 5;
+			c1->rect.x += Slimeinfo.colliding_offset;
 			
 		}
 		slimecolliding = true;
@@ -185,16 +205,17 @@ bool j1Slime::Load(pugi::xml_node &config)
 {
 	bool ret = true;
 
-	position.x = config.child("Slime").child("Playerx").attribute("value").as_float();
-	position.y = config.child("Slime").child("Playery").attribute("value").as_float();
+	position.x = config.child("Slime").child("Slimex").attribute("value").as_float();
+	position.y = config.child("Slime").child("Slimey").attribute("value").as_float();
+
 
 	return ret;
 }
 
 bool j1Slime::Save(pugi::xml_node &config) const
 {
-	config.append_child("Slime").append_child("Playerx").append_attribute("value") = position.x;
-	config.child("Slime").append_child("Playery").append_attribute("value") = position.y;
+	config.append_child("Slime").append_child("Slimex").append_attribute("value") = position.x;
+	config.child("Slime").append_child("Slimey").append_attribute("value") = position.y;
 
 	return true;
 }

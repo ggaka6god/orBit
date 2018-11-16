@@ -13,8 +13,8 @@
 			<Playery value="222" />
 		</Player>
 		<Slime>
-			<Playerx value="1000" />
-			<Playery value="100" />
+			<Slimex value="1000" />
+			<Slimey value="100" />
 		</Slime>
 	</entities>
 	<collision />
