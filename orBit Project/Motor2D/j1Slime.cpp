@@ -92,7 +92,13 @@ bool j1Slime::PostUpdate(float dt)
 				entitystate = LEFT;
 				going_right = false;
 			}
+			else if (App->scene->player->position.x == position.x && entitystate != FALLING)
+			{
+				CurrentAnimation = Slimeinfo.runRight;
+				entitystate = IDLE;
+				going_right = false;
 
+			}
 
 
 			//int pathok= App->pathfinding->CreatePath({ (int)App->scene->player->position.x,(int)App->scene->player->position.y }, { (int)this->position.x, (int)this->position.y });

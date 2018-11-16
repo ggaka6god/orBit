@@ -9,16 +9,16 @@
 	</audio>
 	<entities>
 		<Player>
-			<Playerx value="736" />
+			<Playerx value="706" />
 			<Playery value="222" />
 		</Player>
 		<Slime>
-			<Slimex value="979" />
+			<Slimex value="996" />
 			<Slimey value="172" />
 		</Slime>
 		<Bat>
-			<Batx value="928" />
-			<Baty value="100" />
+			<Batx value="2240" />
+			<Baty value="512" />
 		</Bat>
 	</entities>
 	<collision />
@@ -29,6 +29,6 @@
 		<secondStage value="false" />
 	</scene>
 	<renderer>
-		<camera x="-963" y="0" />
+		<camera x="-911" y="0" />
 	</renderer>
 </game_state>

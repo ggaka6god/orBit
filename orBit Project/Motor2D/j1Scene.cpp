@@ -13,6 +13,7 @@
 #include "j1PathFinding.h"
 #include "j1EntityManager.h"
 #include "j1Slime.h"
+#include "j1Bat.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -102,8 +103,8 @@ bool j1Scene::Start()
 		//slime2->position.x = App->map->data.slime2.x;
 		//slime2->position.y = App->map->data.slime2.y;
 
-		//bat->position.x = App->map->data.bat1.x;
-		//bat->position.y = App->map->data.bat1.y;
+	/*	bat->position.x = App->map->data.bat1.x;
+		bat->position.y = App->map->data.bat1.y;*/
 
 		//bat2->position.x = App->map->data.bat2.x;
 		//bat2->position.y = App->map->data.bat2.y;
@@ -134,8 +135,8 @@ bool j1Scene::Start()
 		//slime2->position.x = App->map->data2.slime2.x;
 		//slime2->position.y = App->map->data2.slime2.y;
 
-		//bat->position.x = App->map->data2.bat1.x;
-		//bat->position.y = App->map->data2.bat1.y;
+		/*bat->position.x = App->map->data2.bat1.x;
+		bat->position.y = App->map->data2.bat1.y;*/
 
 		//bat2->position.x = App->map->data2.bat2.x;
 		//bat2->position.y = App->map->data2.bat2.y;
@@ -455,6 +456,9 @@ bool j1Scene::change_scene(const char* map_name) {
 
 	slime->entitycoll = App->coll->AddCollider(slime->entitycollrect, COLLIDER_ENEMY_SLIME, App->entities);
 	slime->entitycoll->SetPos(slime->position.x, player->position.y);
+
+	bat->entitycoll = App->coll->AddCollider(bat->entitycollrect, COLLIDER_ENEMY_BAT, App->entities);
+	bat->entitycoll->SetPos(bat->position.x, player->position.y);
 	
 	if (FirstStage == map_name)
 	{	
@@ -471,8 +475,8 @@ bool j1Scene::change_scene(const char* map_name) {
 		//slime2->position.x = App->map->data.slime2.x;
 		//slime2->position.y = App->map->data.slime2.y;
 
-		//bat->position.x = App->map->data.bat1.x;
-		//bat->position.y = App->map->data.bat1.y;
+		/*bat->position.x = App->map->data.bat1.x;
+		bat->position.y = App->map->data.bat1.y;*/
 
 		//bat2->position.x = App->map->data.bat2.x;
 		//bat2->position.y = App->map->data.bat2.y;
