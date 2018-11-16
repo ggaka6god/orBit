@@ -206,7 +206,7 @@ bool j1Player::Update(float dt)
 
 					}
 
-					Velocity.y += (gravity*3.0f)*dt;
+					Velocity.y += (gravity*6.0f)*dt;
 					position.y -= ((Velocity.y))*dt;
 
 				}
@@ -235,13 +235,13 @@ bool j1Player::Update(float dt)
 					}
 
 					Velocity.y += (gravity*6.0f)*dt;
-					position.y -= ((Velocity.y))*dt; //makes no sense, damping?
+					position.y -= ((Velocity.y))*dt; 
 
 				}
 			}
 		}
 		//Limit maximum y axis velocity
-		if (Velocity.y < -playerinfo.max_speed_y) ////// was <
+		if (Velocity.y < -playerinfo.max_speed_y) 
 			Velocity.y = -playerinfo.max_speed_y;
 
 		//If no ground, free fall

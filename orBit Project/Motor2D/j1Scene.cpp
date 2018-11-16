@@ -198,13 +198,13 @@ bool j1Scene::PreUpdate()
 		if (!player->must_fall)
 			App->render->camera.y = -(player->position.y * App->win->GetScale() + player->entitycoll->rect.h - App->render->camera.h + App->render->camera.h / 6);
 		else
-			App->render->camera.y -= 8;
+			App->render->camera.y -= 4;
 	}
 
 
 	if (player->position.y*App->win->GetScale() > -App->render->camera.y + App->render->camera.h - App->render->camera.h / 6)
 	{
-		App->render->camera.y -= 8;
+		App->render->camera.y -= 10;
 	}
 
 
