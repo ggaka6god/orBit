@@ -178,9 +178,9 @@ bool j1Scene::PreUpdate()
 	//Camera In X
 	App->render->camera.x = (-player->position.x*App->win->GetScale() - player->entitycoll->rect.w / 2 + App->render->camera.w / 2);
 
-	if (-App->render->camera.x <= player->playerinfo.initialVx)
+	if (-App->render->camera.x <= 2)
 	{
-		App->render->camera.x = -player->playerinfo.initialVx;
+		App->render->camera.x = -2;
 	}
 
 	if (-App->render->camera.x + App->render->camera.w >= App->map->data.width*App->map->data.tile_width*App->win->GetScale())
@@ -198,13 +198,13 @@ bool j1Scene::PreUpdate()
 		if (!player->must_fall)
 			App->render->camera.y = -(player->position.y * App->win->GetScale() + player->entitycoll->rect.h - App->render->camera.h + App->render->camera.h / 6);
 		else
-			App->render->camera.y -= -(player->gravity * 8);
+			App->render->camera.y -= 8;
 	}
 
 
 	if (player->position.y*App->win->GetScale() > -App->render->camera.y + App->render->camera.h - App->render->camera.h / 6)
 	{
-		App->render->camera.y -= -(player->gravity * 8);
+		App->render->camera.y -= 8;
 	}
 
 
@@ -214,15 +214,15 @@ bool j1Scene::PreUpdate()
 	}
 
 
-
 	//Camera up
 
 	if (player->position.y*App->win->GetScale() <= -App->render->camera.y + App->render->camera.h / 6)
 	{
-		if (App->render->camera.y + (-player->gravity * 8) < 0)
+		if (App->render->camera.y + 8 < 0)
 			App->render->camera.y = -(player->position.y * App->win->GetScale() - App->render->camera.h / 6);
 	}
 
+	//-------------------
 
 	return true;
 }

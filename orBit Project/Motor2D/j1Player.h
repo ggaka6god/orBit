@@ -55,7 +55,6 @@ public:
 	// Called each logic iteration
 	void LogicUpdate(float dt);
 
-
 	void OnCollision(Collider* c1, Collider* c2);
 
 	bool Load(pugi::xml_node&);
@@ -64,7 +63,6 @@ public:
 public:
 
 	bool playercolliding;
-	bool colliding_roof;
 	bool colliding_floor;
 
 	bool double_jump;
@@ -84,6 +82,7 @@ public:
 	int previousflow = 0;
 
 	Playerdata playerinfo;
+
 };
 
 #endif // __j1Player_H__

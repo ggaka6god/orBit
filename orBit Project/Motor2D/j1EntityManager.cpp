@@ -61,8 +61,18 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 	playerinfo.jump_force = playernode.child("Velocity").attribute("jump_force").as_float();
 	playerinfo.colliding_offset = playernode.child("colliding_offset").attribute("value").as_float();
 
-	playerinfo.runRight->speed = 0.15f;
-	playerinfo.runLeft->speed = 0.15f;
+	playerinfo.idleRight->speed = 10.0f;
+	playerinfo.idleLeft->speed = 10.0f;
+	playerinfo.runRight->speed = 10.0f;
+	playerinfo.runLeft->speed =  10.0f;
+	playerinfo.jumpingRight->speed = 10.0f;
+	playerinfo.jumpingLeft->speed = 10.0f;
+	playerinfo.fallingRight->speed = 10.0f;
+	playerinfo.fallingLeft->speed = 10.0f;
+	playerinfo.deathRight->speed = 10.0f;
+	playerinfo.deathLeft->speed = 10.0f;
+	playerinfo.airRight->speed = 10.0f;
+	playerinfo.airLeft->speed = 10.0f;
 
 	playerinfo.deathRight->loop = false;
 	playerinfo.deathLeft->loop = false;
@@ -96,12 +106,14 @@ bool j1EntityManager::Update(float dt)
 		do_logic = true;
 	}
 
+	if(dt<update_ms_cycle*1.25f)
 	UpdateEntity(dt);
 
 	if (do_logic == true)
 	{
-		//LOG("Did logic step after %f", accumulated_time);
-		accumulated_time = accumulated_time - update_ms_cycle;
+		LOG("Did logic step after %f", accumulated_time);
+		accumulated_time = 0.0f;
+		do_logic = false;
 	}
 
 	return true;
@@ -117,7 +129,7 @@ void j1EntityManager::UpdateEntity(float dt)
 		/*if (do_logic == true)
 		{*/
 			entity->data->LogicUpdate(dt);
-		//}
+		/*}*/
 
 		entity = entity->next;
 	}
@@ -206,6 +218,7 @@ void j1EntityManager::DestroyEntity(j1Entity* entity)
 	p2List_item <j1Entity*> *entity_item = entities.At(entities.find(entity));
 	
 	entities.del(entity_item);
+
 }
 
 void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
