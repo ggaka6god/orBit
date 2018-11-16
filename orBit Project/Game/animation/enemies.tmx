@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="72" height="84" tilewidth="1" tileheight="1" nextobjectid="25">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="72" height="84" tilewidth="1" tileheight="1" nextobjectid="45">
  <imagelayer name="enemies">
   <image source="../textures/monster.png" width="72" height="84"/>
  </imagelayer>
  <objectgroup name="bat right">
-  <object id="1" x="0" y="0" width="23.9583" height="22.4609"/>
-  <object id="4" x="23.9583" y="0" width="23.9583" height="22.4609"/>
-  <object id="5" x="47.9167" y="0" width="23.9583" height="22.4609"/>
+  <object id="29" x="48" y="0" width="24" height="22"/>
+  <object id="30" x="24" y="0" width="24" height="22"/>
+  <object id="31" x="0" y="0" width="24" height="22"/>
  </objectgroup>
  <objectgroup name="slime right">
-  <object id="14" x="47.9167" y="22.4609" width="23.9583" height="19.4661"/>
-  <object id="15" x="23.9583" y="22.4609" width="23.9583" height="19.4661"/>
-  <object id="16" x="0" y="22.4609" width="23.9583" height="19.4661"/>
+  <object id="32" x="48" y="22" width="24" height="20"/>
+  <object id="33" x="24" y="22" width="24" height="20"/>
+  <object id="34" x="0" y="22" width="24" height="20"/>
  </objectgroup>
  <objectgroup name="bat col">
-  <object id="10" x="31.4453" y="7.48698" width="8.98438" height="11.9792"/>
+  <object id="10" x="31" y="7" width="8.98438" height="11.9792"/>
  </objectgroup>
  <objectgroup name="slime col">
-  <object id="12" x="31.4453" y="25.4557" width="10.4818" height="16.4714"/>
+  <object id="35" x="32" y="24" width="8" height="18"/>
  </objectgroup>
  <objectgroup name="slime left">
-  <object id="17" x="0" y="64.388" width="23.9583" height="19.4661"/>
-  <object id="18" x="23.9583" y="64.388" width="23.9583" height="19.4661"/>
-  <object id="20" x="47.9167" y="64.388" width="23.9583" height="19.4661"/>
+  <object id="42" x="48" y="64" width="24" height="20"/>
+  <object id="43" x="24" y="64" width="24" height="20"/>
+  <object id="44" x="0" y="64" width="24" height="20"/>
  </objectgroup>
  <objectgroup name="bat left">
-  <object id="22" x="0" y="41.9271" width="23.9583" height="22.4609"/>
-  <object id="23" x="23.9583" y="41.9271" width="23.9583" height="22.4609"/>
-  <object id="24" x="47.9167" y="41.9271" width="23.9583" height="22.4609"/>
+  <object id="38" x="48" y="42" width="24" height="22"/>
+  <object id="39" x="24" y="42" width="24" height="22"/>
+  <object id="40" x="0" y="42" width="24" height="22"/>
  </objectgroup>
 </map>

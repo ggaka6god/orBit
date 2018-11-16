@@ -35,10 +35,10 @@ bool j1Slime::Start()
 	gravity = Slimeinfo.gravity;
 	entitycoll = App->coll->AddCollider(entitycollrect, COLLIDER_ENEMY_SLIME, (j1Module*)manager);
 
-	position.x = 700;
-	position.y = 200;
+	position.x = 1000;
+	position.y = 100;
 
-	entitystate = RIGHT;
+	entitystate = FALLING;
 
 	going_right = true;
 	going_left = false;
@@ -54,39 +54,9 @@ bool j1Slime::Start()
 
 bool j1Slime::Update(float dt)
 {
-	//slime Update
-	
-	position.x++;
-
-	if (going_right == true)
-		CurrentAnimation = Slimeinfo.runRight;
-	else if (going_right == false)
-		CurrentAnimation = Slimeinfo.runLeft;
-
-	//If no ground, free fall
-	if (must_fall)
-	{
-		position.y -= gravity * 4.0f;
-	}
-
-	if (position.x < 0)
-	{
-		position.x = 0;
-		entitycoll->rect.x = 0;
-	}
-	else if (position.x > App->map->data.width*App->map->data.tile_width)
-	{
-		position.x = App->map->data.width*App->map->data.tile_width;
-	}
-
-	//Check if slime is Falling 
-
-
-	if (playercolliding == false && entitystate == IDLE)
-	{
-		entitystate = FALLING;
-	}
-
+	must_fall = true;
+	slimecolliding = false;
+	entitystate = FALLING;
 
 	return true;
 }
@@ -95,215 +65,118 @@ bool j1Slime::PostUpdate(float dt)
 {
 	bool ret = true;
 
-	//Blitting slime
-		App->render->Blit(spritesheet, position.x-8, position.y+1, &CurrentAnimation->GetCurrentFrame());
-	
-	return ret;
+
+	if ((position.x)*App->win->GetScale() >= -App->render->camera.x && (position.x)*App->win->GetScale() <= -App->render->camera.x + App->render->camera.w)
+	{
+		//slime Update
+		if (entitystate != FALLING && entitystate == RIGHT)
+		{
+			position.x += 0.5;
+			entitystate = RIGHT;
+			must_fall = false;
+		}
+		else if (entitystate != FALLING && entitystate == LEFT)
+		{
+			position.x -= 0.5;
+			entitystate = LEFT;
+			must_fall = false;
+		}
+
+
+		if (going_right == true)
+			CurrentAnimation = Slimeinfo.runRight;
+		else if (going_right == false)
+			CurrentAnimation = Slimeinfo.runLeft;
+
+		//If no ground, free fall
+		if (must_fall)
+		{
+			position.y -= gravity * 4.0f;
+		}
+
+		if (position.x < 0)
+		{
+			position.x = 0;
+			entitycoll->rect.x = 0;
+		}
+		else if (position.x > App->map->data.width*App->map->data.tile_width)
+		{
+			position.x = App->map->data.width*App->map->data.tile_width;
+		}
+
+		//Check if slime is Falling 
+
+
+		if (slimecolliding == false)
+		{
+			entitystate = FALLING;
+		}
+
+
+		//Blitting slime
+
+		if (going_right)
+			App->render->Blit(spritesheet, position.x - 8, position.y + 1, &CurrentAnimation->GetCurrentFrame());
+		else if (going_left)
+			App->render->Blit(spritesheet, position.x - 8, position.y + 1, &CurrentAnimation->GetCurrentFrame());
+		else
+			App->render->Blit(spritesheet, position.x - 3, position.y, &CurrentAnimation->GetCurrentFrame());
+		
+
+		return ret;
+	}
 }
 
 void j1Slime::OnCollision(Collider * c1, Collider * c2)
 {
-	
-		bool lateralcollision = true;
+	bool lateralcollision = true;
 
-		if (c1->rect.y + c1->rect.h == c2->rect.y)
+	if (c1->rect.y + c1->rect.h == c2->rect.y)
+	{
+		lateralcollision = false;
+	}
+
+	if (c2->type == COLLIDER_FLOOR || c2->type == COLLIDER_PLATFORM && dead == false && !lateralcollision)
+	{
+		must_fall = false;
+		if (going_right)
 		{
-			lateralcollision = false;
+			going_right = true;
+			entitystate = RIGHT;
+			going_left = false;
+		}
+		else
+		{
+			entitystate = LEFT;
+			going_left = true;
+			going_right = false;
 		}
 
-		float aux = c1->rect.y; //pos.y
+		slimecolliding = true;
+	}
 
-		if (c2->type == COLLIDER_FLOOR && dead == false)
+	if (lateralcollision)
+	{
+		if (going_right)
 		{
-			colliding_roof = false;
-
-			if ((going_left || going_right) && must_fall)
-			{
-
-				if (c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x + c1->rect.w <= c2->rect.x + Slimeinfo.initialVx)
-				{
-					Velocity.x = 0.0f;
-					c1->rect.x = c2->rect.x - c1->rect.w - colliding_offset;
-				}
-
-				if (c1->rect.x >= c2->rect.x + c2->rect.w - Slimeinfo.initialVx && c1->rect.x <= c2->rect.x + c2->rect.w)
-				{
-					Velocity.x = 0.0f;
-					c1->rect.x = c2->rect.x + c2->rect.w + colliding_offset;
-				}
-
-				if (lateralcollision == true)
-				{
-
-					if (going_left)
-						c1->rect.x += colliding_offset;
-					else
-						c1->rect.x -= colliding_offset;
-
-					must_fall = true;
-				}
-				else
-				{
-					must_fall = false;
-				}
-
-			}
-			else
-			{
-				if (entitystate != JUMPING && entitystate != FALLING)
-				{
-					Velocity.y = 0.0f;
-					entitystate = IDLE;
-					colliding_floor = true;
-					
-				}
-
-				if (entitystate != JUMPING)
-				{
-
-					if (going_right == true && going_left == true)
-					{
-						c1->rect.y = aux;
-					}
-					else
-					{
-						c1->rect.y = c2->rect.y - c1->rect.h;
-					}
-				}
-
-				if (going_right)
-				{
-
-					//stopping player if lateral collision
-
-					if (lateralcollision)
-					{
-
-						if (c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x + c1->rect.w <= c2->rect.x + Slimeinfo.initialVx)
-						{
-							Velocity.x = 0.0f;
-							if (entitystate != JUMPING)
-								c1->rect.y = aux;
-							c1->rect.x = c2->rect.x - c1->rect.w - colliding_offset;
-						}
-
-						
-					}
-					else if (!lateralcollision && must_fall == false)
-						entitystate = IDLE;
-
-					if ((going_left || going_right) && must_fall)
-					{
-						c1->rect.x = c2->rect.x + c2->rect.w - colliding_offset;
-					}
-				}
-
-				//going left
-				if (going_left)
-				{
-
-					if (lateralcollision)
-					{
-
-						if (c1->rect.x >= c2->rect.x + c2->rect.w - Slimeinfo.initialVx && c1->rect.x <= c2->rect.x + c2->rect.w)
-						{
-							Velocity.x = 0.0f;
-							if (entitystate != JUMPING)
-								c1->rect.y = aux;
-							c1->rect.x = c2->rect.x + c2->rect.w + colliding_offset;
-						}
-
-						if ( entitystate == FALLING )
-						{
-							c1->rect.x += colliding_offset;
-						}
-					}
-					else if (!lateralcollision && must_fall == false)
-						entitystate = IDLE;
-
-					if ((going_left || going_right) && must_fall)
-					{
-						c1->rect.x = c2->rect.x + c2->rect.w + colliding_offset;
-					}
-				}
-
-				must_fall = false;
-
-			}
+			entitystate = LEFT;
+			going_left = true;
+			going_right = false;
+			c1->rect.x -= 5;
 		}
-
-
-		else if (c2->type == COLLIDER_PLATFORM && dead == false)
+		else
 		{
-			colliding_roof = false;
-
-			if ((going_left || going_right) && must_fall)
-			{
-
-				if (c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x + c1->rect.w <= c2->rect.x + playerinfo.initialVx)
-				{
-					Velocity.x = 0.0f;
-					c1->rect.x = c2->rect.x - c1->rect.w - colliding_offset;
-				}
-
-				if (c1->rect.x >= c2->rect.x + c2->rect.w - playerinfo.initialVx && c1->rect.x <= c2->rect.x + c2->rect.w)
-				{
-					Velocity.x = 0.0f;
-					c1->rect.x = c2->rect.x + c2->rect.w + colliding_offset;
-				}
-
-				if ((c1->rect.y + c1->rect.h >= c2->rect.y && c1->rect.y + c1->rect.h <= c2->rect.y + (-gravity * 8)))
-				{
-
-					if (entitystate != JUMPING)
-					{
-						Velocity.y = 0.0f;
-						entitystate = IDLE;
-
-					}
-
-					c1->rect.y = c2->rect.y - c1->rect.h;
-					must_fall = false;
-				}
-
-			}
-
-			else
-			{
-				if ((c1->rect.y + c1->rect.h >= c2->rect.y && c1->rect.y + c1->rect.h <= c2->rect.y + (-gravity * 8)))
-				{
-
-					if (entitystate != JUMPING)
-					{
-						Velocity.y = 0.0f;
-						entitystate = IDLE;
-						colliding_floor = true;
-					}
-
-					c1->rect.y = c2->rect.y - c1->rect.h;
-				
-					must_fall = false;
-				}
-
-			}
-
+			going_right = true;
+			entitystate = RIGHT;
+			going_left = false;
+			c1->rect.x += 5;
+			
 		}
-
-	
-		//if (first_move)
-		//	initialmoment = false;
-
-		//if (initialmoment && !first_move)
-		//{
-		//	CurrentAnimation = playerinfo.idleRight;
-		//}
-
+		slimecolliding = true;
+			
 		position.x = c1->rect.x;
-		position.y = c1->rect.y;
+	}
 
-	
-		//playercolliding = true;
-	
 }
 
 

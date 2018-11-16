@@ -60,6 +60,7 @@ public:
 	bool going_right = false;
 	bool going_left = false;
 	bool must_fall = false;
+	bool slimecolliding = false;
 
 	SlimeData Slimeinfo;
 
