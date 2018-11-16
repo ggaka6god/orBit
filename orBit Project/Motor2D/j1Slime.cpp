@@ -10,6 +10,7 @@
 #include "j1Window.h"
 #include "j1Audio.h"
 #include "j1EntityManager.h"
+#include "j1Player.h"
 
 
 j1Slime::j1Slime() : j1Entity("Slime", entity_type::SLIME)
@@ -54,8 +55,9 @@ bool j1Slime::Start()
 bool j1Slime::Update(float dt)
 {
 	//slime Update
-
 	
+	position.x++;
+
 	if (going_right == true)
 		CurrentAnimation = Slimeinfo.runRight;
 	else if (going_right == false)
@@ -77,6 +79,15 @@ bool j1Slime::Update(float dt)
 		position.x = App->map->data.width*App->map->data.tile_width;
 	}
 
+	//Check if slime is Falling 
+
+
+	if (playercolliding == false && entitystate == IDLE)
+	{
+		entitystate = FALLING;
+	}
+
+
 	return true;
 }
 
@@ -85,7 +96,7 @@ bool j1Slime::PostUpdate(float dt)
 	bool ret = true;
 
 	//Blitting slime
-		App->render->Blit(spritesheet, position.x-8, position.y, &CurrentAnimation->GetCurrentFrame());
+		App->render->Blit(spritesheet, position.x-8, position.y+1, &CurrentAnimation->GetCurrentFrame());
 	
 	return ret;
 }
@@ -93,7 +104,6 @@ bool j1Slime::PostUpdate(float dt)
 void j1Slime::OnCollision(Collider * c1, Collider * c2)
 {
 	
-	{
 		bool lateralcollision = true;
 
 		if (c1->rect.y + c1->rect.h == c2->rect.y)
@@ -105,8 +115,11 @@ void j1Slime::OnCollision(Collider * c1, Collider * c2)
 
 		if (c2->type == COLLIDER_FLOOR && dead == false)
 		{
+			colliding_roof = false;
+
 			if ((going_left || going_right) && must_fall)
 			{
+
 				if (c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x + c1->rect.w <= c2->rect.x + Slimeinfo.initialVx)
 				{
 					Velocity.x = 0.0f;
@@ -127,7 +140,6 @@ void j1Slime::OnCollision(Collider * c1, Collider * c2)
 					else
 						c1->rect.x -= colliding_offset;
 
-				
 					must_fall = true;
 				}
 				else
@@ -138,7 +150,27 @@ void j1Slime::OnCollision(Collider * c1, Collider * c2)
 			}
 			else
 			{
-				
+				if (entitystate != JUMPING && entitystate != FALLING)
+				{
+					Velocity.y = 0.0f;
+					entitystate = IDLE;
+					colliding_floor = true;
+					
+				}
+
+				if (entitystate != JUMPING)
+				{
+
+					if (going_right == true && going_left == true)
+					{
+						c1->rect.y = aux;
+					}
+					else
+					{
+						c1->rect.y = c2->rect.y - c1->rect.h;
+					}
+				}
+
 				if (going_right)
 				{
 
@@ -181,7 +213,10 @@ void j1Slime::OnCollision(Collider * c1, Collider * c2)
 							c1->rect.x = c2->rect.x + c2->rect.w + colliding_offset;
 						}
 
-						
+						if ( entitystate == FALLING )
+						{
+							c1->rect.x += colliding_offset;
+						}
 					}
 					else if (!lateralcollision && must_fall == false)
 						entitystate = IDLE;
@@ -197,22 +232,21 @@ void j1Slime::OnCollision(Collider * c1, Collider * c2)
 			}
 		}
 
-		
 
 		else if (c2->type == COLLIDER_PLATFORM && dead == false)
 		{
-			/*colliding_roof = false;*/
+			colliding_roof = false;
 
 			if ((going_left || going_right) && must_fall)
 			{
 
-				if (c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x + c1->rect.w <= c2->rect.x + Slimeinfo.initialVx)
+				if (c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x + c1->rect.w <= c2->rect.x + playerinfo.initialVx)
 				{
 					Velocity.x = 0.0f;
 					c1->rect.x = c2->rect.x - c1->rect.w - colliding_offset;
 				}
 
-				if (c1->rect.x >= c2->rect.x + c2->rect.w - Slimeinfo.initialVx && c1->rect.x <= c2->rect.x + c2->rect.w)
+				if (c1->rect.x >= c2->rect.x + c2->rect.w - playerinfo.initialVx && c1->rect.x <= c2->rect.x + c2->rect.w)
 				{
 					Velocity.x = 0.0f;
 					c1->rect.x = c2->rect.x + c2->rect.w + colliding_offset;
@@ -243,11 +277,11 @@ void j1Slime::OnCollision(Collider * c1, Collider * c2)
 					{
 						Velocity.y = 0.0f;
 						entitystate = IDLE;
-						//colliding_floor = true;
+						colliding_floor = true;
 					}
 
 					c1->rect.y = c2->rect.y - c1->rect.h;
-	
+				
 					must_fall = false;
 				}
 
@@ -255,13 +289,24 @@ void j1Slime::OnCollision(Collider * c1, Collider * c2)
 
 		}
 
+	
+		//if (first_move)
+		//	initialmoment = false;
 
+		//if (initialmoment && !first_move)
+		//{
+		//	CurrentAnimation = playerinfo.idleRight;
+		//}
 
 		position.x = c1->rect.x;
 		position.y = c1->rect.y;
 
-	}
+	
+		//playercolliding = true;
+	
 }
+
+
 
 bool j1Slime::Load(pugi::xml_node &config)
 {

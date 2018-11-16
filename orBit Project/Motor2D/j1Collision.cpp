@@ -21,9 +21,11 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_PLAYER][COLLIDER_PLATFORM] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_ROOF] = true;
 	matrix[COLLIDER_PLAYER][CHECKPOINT] = true;
-
-	matrix[COLLIDER_PLAYER][COLLIDER_ENEMY_SLIME] = true;
+    matrix[COLLIDER_PLAYER][COLLIDER_ENEMY_SLIME] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_ENEMY_BAT] = true;
+
+	matrix[COLLIDER_ENEMY_SLIME][COLLIDER_FLOOR] = true;
+	matrix[COLLIDER_ENEMY_SLIME][COLLIDER_PLATFORM] = true;
 }
 
 j1Collision::~j1Collision()
