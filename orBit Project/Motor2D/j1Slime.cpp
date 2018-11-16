@@ -38,9 +38,6 @@ bool j1Slime::Start()
 
 	gravity = Slimeinfo.gravity;
 
-	/*position.x = 1000;
-	position.y = 100;*/
-
 	position.x = NULL;
 	position.y = NULL;
 
@@ -74,22 +71,35 @@ bool j1Slime::PostUpdate(float dt)
 
 	if ((position.x)*App->win->GetScale() >= -App->render->camera.x && (position.x)*App->win->GetScale() <= -App->render->camera.x + App->render->camera.w)
 	{
+		//check for player nearby
+
 		if (App->scene->player->position.x > position.x - Slimeinfo.areaofaction &&
 			App->scene->player->position.x < position.x + Slimeinfo.areaofaction &&
 			App->scene->player->position.y < position.y + Slimeinfo.areaofaction &&
 			App->scene->player->position.y > position.y - Slimeinfo.areaofaction)
 		{
-			if (App->scene->player->position.x > position.x)
-				CurrentAnimation= Slimeinfo.runRight;
-			else if (App->scene->player->position.x < position.x)
+			if (App->scene->player->position.x > position.x && entitystate != FALLING)
+			{
+				CurrentAnimation = Slimeinfo.runRight;
+				entitystate = RIGHT;
+				going_right = true;
+
+			}
+				
+			else if (App->scene->player->position.x < position.x && entitystate != FALLING)
+			{
 				CurrentAnimation = Slimeinfo.runLeft;
+				entitystate = LEFT;
+				going_right = false;
+			}
+
+
 
 			//int pathok= App->pathfinding->CreatePath({ (int)App->scene->player->position.x,(int)App->scene->player->position.y }, { (int)this->position.x, (int)this->position.y });
 			//path=App->pathfinding->GetLastPath();
 
 		}
-		else 
-		{
+		
 				if (entitystate != FALLING && entitystate == RIGHT)
 						{
 							position.x += Slimeinfo.Velocity.x;
@@ -104,11 +114,11 @@ bool j1Slime::PostUpdate(float dt)
 						}
 
 
-				if (going_right == true)
+				if (entitystate == RIGHT)
 							CurrentAnimation = Slimeinfo.runRight;
-				else if (going_right == false)
+				else if (entitystate == LEFT)
 							CurrentAnimation = Slimeinfo.runLeft;
-		}
+		
 		
 
 		//If no ground, free fall
