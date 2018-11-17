@@ -18,7 +18,6 @@ struct BatData {
 
 	p2SString folder = nullptr;
 	p2SString Texture = nullptr;
-	p2SString stringID = nullptr;
 
 	SDL_Rect		BatRect = { 0,0,0,0 };
 	fPoint          Velocity = { 0,0 };
@@ -30,7 +29,7 @@ struct BatData {
 	float			animationspeed = 0;
 
 	int				areaofaction = 0;
-
+	iPoint			RefID = { NULL,NULL };
 
 };
 

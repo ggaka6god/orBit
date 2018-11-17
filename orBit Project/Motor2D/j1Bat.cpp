@@ -54,7 +54,7 @@ bool j1Bat::Start()
 		spritesheet = App->tex->Load(BatInfo.Texture.GetString());
 
 	entityID = App->entities->entityID;
-	BatInfo.stringID = ("Bat %i", entityID);
+
 
 	return true;
 }
@@ -259,12 +259,12 @@ void j1Bat::OnCollision(Collider * c1, Collider * c2)
 bool j1Bat::Load(pugi::xml_node &config)
 {
 	bool ret = true;
-	if (entityID == 2)
+	if (entityID == BatInfo.RefID.x)
 	{
 		position.x = config.child("Entity2").child("Batx").attribute("value").as_float();
 		position.y = config.child("Entity2").child("Baty").attribute("value").as_float();
 	}
-	else if (entityID == 3)
+	else if (entityID == BatInfo.RefID.y)
 	{
 		position.x = config.child("Entity3").child("Batx").attribute("value").as_float();
 		position.y = config.child("Entity3").child("Baty").attribute("value").as_float();
@@ -275,12 +275,12 @@ bool j1Bat::Load(pugi::xml_node &config)
 
 bool j1Bat::Save(pugi::xml_node &config) const
 {
-	if (entityID == 2)
+	if (entityID == BatInfo.RefID.x)
 	{
 		config.append_child("Entity2").append_child("Batx").append_attribute("value") = position.x;
 		config.child("Entity2").append_child("Baty").append_attribute("value") = position.y;
 	}
-	else if (entityID == 3)
+	else if (entityID == BatInfo.RefID.y)
 	{
 		config.append_child("Entity3").append_child("Batx").append_attribute("value") = position.x;
 		config.child("Entity3").append_child("Baty").append_attribute("value") = position.y;

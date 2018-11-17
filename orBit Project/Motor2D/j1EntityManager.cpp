@@ -93,6 +93,8 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 	slimeinfo.animationspeed = slimenode.child("animationspeed").attribute("value").as_float();
 	slimeinfo.printingoffset.x = slimenode.child("printingoffset").attribute("x").as_int();
 	slimeinfo.printingoffset.y = slimenode.child("printingoffset").attribute("y").as_int();
+	slimeinfo.RefID.x = slimenode.child("entityID").attribute("value1").as_int();
+	slimeinfo.RefID.y = slimenode.child("entityID").attribute("value2").as_int();
 
 	//--- Bat data load --------------------
 
@@ -120,6 +122,8 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 	batinfo.animationspeed = batnode.child("animationspeed").attribute("value").as_float();
 	batinfo.printingoffset.x = batnode.child("printingoffset").attribute("x").as_int();
 	batinfo.printingoffset.y = batnode.child("printingoffset").attribute("y").as_int();
+	batinfo.RefID.x = batnode.child("entityID").attribute("value1").as_int();
+	batinfo.RefID.y = batnode.child("entityID").attribute("value2").as_int();
 
 	// ---------------------
 

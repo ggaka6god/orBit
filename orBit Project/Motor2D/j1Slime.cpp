@@ -223,12 +223,12 @@ void j1Slime::OnCollision(Collider * c1, Collider * c2)
 bool j1Slime::Load(pugi::xml_node &config)
 {
 	bool ret = true;
-	if (entityID==4)
+	if (entityID== Slimeinfo.RefID.x)
 	{
 		position.x = config.child("Entity4").child("Slimex").attribute("value").as_float();
 		position.y = config.child("Entity4").child("Slimey").attribute("value").as_float();
 	}
-	else if (entityID==5)
+	else if (entityID== Slimeinfo.RefID.y)
 	{
 		position.x = config.child("Entity5").child("Slimex").attribute("value").as_float();
 		position.y = config.child("Entity5").child("Slimey").attribute("value").as_float();
@@ -241,12 +241,12 @@ bool j1Slime::Load(pugi::xml_node &config)
 
 bool j1Slime::Save(pugi::xml_node &config) const
 {
-	if (entityID == 4)
+	if (entityID == Slimeinfo.RefID.x)
 	{
 		config.append_child("Entity4").append_child("Slimex").append_attribute("value") = position.x;
 		config.child("Entity4").append_child("Slimey").append_attribute("value") = position.y;
 	}
-	else if (entityID == 5)
+	else if (entityID == Slimeinfo.RefID.y)
 	{
 		config.append_child("Entity5").append_child("Slimex").append_attribute("value") = position.x;
 		config.child("Entity5").append_child("Slimey").append_attribute("value") = position.y;

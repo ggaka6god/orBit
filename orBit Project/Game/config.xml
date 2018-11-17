@@ -73,6 +73,7 @@
          <printingoffset x="8" y="1"/>
          <colliding_offset value="5" />
          <gravity value="-4.0"/>
+         <entityID value1="4" value2="5"/>
      
      </slime>
     
@@ -86,8 +87,10 @@
          <printingoffset x="8" y="5"/>
          <colliding_offset value="5" />
          <gravity value="-4.0"/>
-     
-     </bat>
+         <entityID value1="2" value2="3"/>
+
+
+   </bat>
   
   </entities>
 

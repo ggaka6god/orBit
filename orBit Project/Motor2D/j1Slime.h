@@ -18,7 +18,6 @@ struct SlimeData {
 
 	p2SString folder = nullptr;
 	p2SString Texture = nullptr;
-	p2SString stringID = nullptr;
 
 	SDL_Rect		SlimeRect = { 0,0,0,0 };
 	fPoint          Velocity = { 0,0 };
@@ -30,7 +29,7 @@ struct SlimeData {
 	float			animationspeed = 0;
 	
 	int				areaofaction = 0;
-	
+	iPoint			RefID = { NULL,NULL };
 
 };
 
