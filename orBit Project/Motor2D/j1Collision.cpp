@@ -6,6 +6,7 @@
 #include "p2Log.h"
 #include "j1Window.h"
 #include "j1Scene.h"
+#include "Brofiler/Brofiler.h"
 
 
 j1Collision::j1Collision()
@@ -30,6 +31,7 @@ j1Collision::~j1Collision()
 
 bool j1Collision::PreUpdate()
 {
+	BROFILER_CATEGORY("Collision_PreUpdate", Profiler::Color::DarkGoldenRod);
 
 	bool ret = true;
 
@@ -52,6 +54,7 @@ bool j1Collision::PreUpdate()
 
 bool j1Collision::Update(float dt)
 {
+	BROFILER_CATEGORY("Collision_Update", Profiler::Color::DarkCyan);
 
 	bool ret = true;
 
@@ -133,6 +136,8 @@ bool j1Collision::Update(float dt)
 
 bool j1Collision::PostUpdate(float dt)
 {
+	BROFILER_CATEGORY("Collision_Post_Update", Profiler::Color::DarkGray);
+
 	DebugDraw();
 
 	return true;

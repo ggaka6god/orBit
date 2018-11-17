@@ -163,7 +163,7 @@ public:
 	int numberStages = 0;
 	float speed[2];
 	float paralaxRef[2];
-	int					offset = 0;
+	int					offset=0;
 
 private:
 	p2SString folder = nullptr;

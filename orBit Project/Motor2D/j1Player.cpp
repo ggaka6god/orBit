@@ -123,7 +123,7 @@ bool j1Player::Update(float dt)
 
 				Velocity.x = playerinfo.initialVx;
 
-				position.x -= (Velocity.x)*dt;
+				position.x -= ceil((Velocity.x)*dt);
 
 				going_left = true;
 				going_right = false;
@@ -140,7 +140,7 @@ bool j1Player::Update(float dt)
 				}
 
 				Velocity.x = playerinfo.initialVx;
-				position.x += ((Velocity.x)*1.25f)*dt;
+				position.x += ceil((Velocity.x)*dt);
 				going_right = true;
 				going_left = false;
 				CurrentAnimation = playerinfo.runRight;
@@ -201,13 +201,13 @@ bool j1Player::Update(float dt)
 					if (double_jump == true && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && Velocity.y != playerinfo.jump_force)
 					{
 						Velocity.y = playerinfo.jump_force / 1.5f;
-						position.y -= Velocity.y*dt;
+						position.y -= ceil(Velocity.y)*dt;
 						double_jump = false;
-
+						App->audio->PlayFx(App->audio->doublejumpfx, 0);
 					}
 
-					Velocity.y += (gravity*6.0f)*dt;
-					position.y -= ((Velocity.y))*dt;
+					Velocity.y += ceil(gravity*6.0f)*dt;
+					position.y -= ceil((Velocity.y))*dt;
 
 				}
 
@@ -229,13 +229,13 @@ bool j1Player::Update(float dt)
 					if (double_jump == true && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && Velocity.y != playerinfo.jump_force)
 					{
 						Velocity.y = playerinfo.jump_force / 1.5f;
-						position.y -= Velocity.y*dt;
+						position.y -= ceil(Velocity.y)*dt;
 						double_jump = false;
 						App->audio->PlayFx(App->audio->doublejumpfx, 0);
 					}
 
-					Velocity.y += (gravity*6.0f)*dt;
-					position.y -= ((Velocity.y))*dt; 
+					Velocity.y += ceil(gravity*6.0f)*dt;
+					position.y -= ceil((Velocity.y))*dt; 
 
 				}
 			}
@@ -247,7 +247,7 @@ bool j1Player::Update(float dt)
 		//If no ground, free fall
 		if (must_fall && !god_mode)
 		{
-			Velocity.y += (gravity*6.0f)*dt;
+			Velocity.y += ceil(gravity*6.0f)*dt;
 			position.y -= Velocity.y*dt;
 			if (going_right)
 				CurrentAnimation = playerinfo.airRight;
@@ -313,8 +313,6 @@ bool j1Player::PostUpdate(float dt)
 		else
 			CurrentAnimation = playerinfo.jumpingRight;
 	}
-
-	LOG("speedo: %f",CurrentAnimation->speed);
 
 	//Blitting player
 	if(going_right)

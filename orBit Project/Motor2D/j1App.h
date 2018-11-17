@@ -96,6 +96,11 @@ public:
 	j1PathFinding*		pathfinding = nullptr;
 	j1EntityManager*    entities = nullptr;
 
+
+	uint32              framerate_cap;
+	float			    capped_ms = -1.0f;
+	bool                cap_on = true;
+
 private:
 
 	p2List<j1Module*>	modules;
@@ -119,8 +124,6 @@ private:
 	uint32				last_sec_frame_count = 0;
 	uint32				prev_last_sec_frame_count = 0;
 	float				dt = 0.0f;
-	int					capped_ms = -1;
-	uint32                 framerate_cap;
 };
 
 extern j1App* App; 

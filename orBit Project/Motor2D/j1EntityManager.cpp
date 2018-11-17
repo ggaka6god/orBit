@@ -6,8 +6,9 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1EntityManager.h"
+#include "Brofiler/Brofiler.h"
 
-j1EntityManager::j1EntityManager() : j1Module(), logic_updates_per_second(DEFAULT_LOGIC_PER_SECOND), accumulated_time(0.0f)
+j1EntityManager::j1EntityManager() : j1Module()
 {
 	name.create("entities");
 }
@@ -22,8 +23,9 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 {
 	LOG("Setting up Entity manager");
 	bool ret = true;
-	logic_updates_per_second = DEFAULT_LOGIC_PER_SECOND;
-	update_ms_cycle = 1.0f / (float)logic_updates_per_second;
+	//logic_updates_per_second = DEFAULT_LOGIC_PER_SECOND;
+	//update_ms_cycle = 1.0f / (float)logic_updates_per_second;
+    update_ms_cycle = 1.0f / (float)App->framerate_cap;
 
 	LOG("Loading Player Parser");
 
@@ -93,28 +95,32 @@ bool j1EntityManager::Start()
 // Called each loop iteration
 bool j1EntityManager::PreUpdate()
 {
-	do_logic = false;
+	BROFILER_CATEGORY("EntityManager_Pre_Update", Profiler::Color::Chartreuse);
+
+	//do_logic = false;
 	return true;
 }
 
 bool j1EntityManager::Update(float dt)
 {
-	accumulated_time += dt;
+	BROFILER_CATEGORY("EntityManager_Update", Profiler::Color::Chocolate);
 
-	if (accumulated_time >= update_ms_cycle)
-	{
-		do_logic = true;
-	}
+	//accumulated_time += dt;
+
+	//if (accumulated_time >= update_ms_cycle)
+	//{
+	//	do_logic = true;
+	//}
 
 	if(dt<update_ms_cycle*1.25f)
 	UpdateEntity(dt);
 
-	if (do_logic == true)
-	{
-		LOG("Did logic step after %f", accumulated_time);
-		accumulated_time = 0.0f;
-		do_logic = false;
-	}
+	//if (do_logic == true)
+	//{
+	//	LOG("Did logic step after %f", accumulated_time);
+	//	accumulated_time = 0.0f;
+	//	do_logic = false;
+	//}
 
 	return true;
 }
@@ -129,7 +135,7 @@ void j1EntityManager::UpdateEntity(float dt)
 		/*if (do_logic == true)
 		{*/
 			entity->data->LogicUpdate(dt);
-		/*}*/
+		//}
 
 		entity = entity->next;
 	}
@@ -137,6 +143,8 @@ void j1EntityManager::UpdateEntity(float dt)
 
 bool j1EntityManager::PostUpdate(float dt)
 {
+	BROFILER_CATEGORY("EntityManager_Post_Update", Profiler::Color::Coral);
+
 	p2List_item <j1Entity*> *entity = entities.start;
 
 	while (entity != NULL)
