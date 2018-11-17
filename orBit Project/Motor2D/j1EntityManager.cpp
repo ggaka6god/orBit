@@ -98,8 +98,8 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 
 	pugi::xml_node batnode = config.child("bat");
 
-	batinfo.folder.create(slimenode.child("folder").child_value());
-	batinfo.Texture.create(slimenode.child("texture").child_value());
+	batinfo.folder.create(batnode.child("folder").child_value());
+	batinfo.Texture.create(batnode.child("texture").child_value());
 
 	x = batnode.child("collider").attribute("x").as_int();
 	y = batnode.child("collider").attribute("y").as_int();
@@ -109,7 +109,7 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 
 
 	batinfo.flyRight = LoadAnimation(batinfo.folder.GetString(), "bat right");
-	batinfo.flyLeft = LoadAnimation(slimeinfo.folder.GetString(), "bat left");
+	batinfo.flyLeft = LoadAnimation(batinfo.folder.GetString(), "bat left");
 
 	batinfo.gravity = batnode.child("gravity").attribute("value").as_float(); //
 	batinfo.Velocity.x = batnode.child("Velocity").attribute("x").as_float();
@@ -280,6 +280,7 @@ void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
 			entity->data->OnCollision(c1, c2);
 			break;
 		}
+		
 	  entity = entity->next;
 	}
 }

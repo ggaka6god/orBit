@@ -28,7 +28,6 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_ENEMY_SLIME][COLLIDER_PLATFORM] = true;
 
 	matrix[COLLIDER_ENEMY_BAT][COLLIDER_FLOOR] = true;
-	matrix[COLLIDER_ENEMY_BAT][COLLIDER_PLAYER] = false;
 	matrix[COLLIDER_ENEMY_BAT][COLLIDER_SPIKES] = true;
 	matrix[COLLIDER_ENEMY_BAT][COLLIDER_PLATFORM] = true;
 	matrix[COLLIDER_ENEMY_BAT][COLLIDER_ROOF] = true;
@@ -81,13 +80,36 @@ bool j1Collision::Update(float dt)
 	if(collider1->next!=NULL)
 	collider2 = collider1->next;
 
+	
+
 	while(collider1!=NULL && collider2!=NULL && collider1!=collider2)
 	{
 
-		if ((collider1->data->rect.x + collider1->data->rect.w)*App->win->GetScale() >= -App->render->camera.x 
-			&& collider1->data->rect.x <=-App->render->camera.x + App->render->camera.w
+		if (collider1->data->type == COLLIDER_ENEMY_SLIME || collider2->data->type == COLLIDER_ENEMY_SLIME)
+		{
+			int a = 0;
+		}
+
+		/*if ((collider1->data->rect.x + collider1->data->rect.w)*App->win->GetScale() >= -App->render->camera.x 
+			&& collider1->data->rect.x*App->win->GetScale() <=-App->render->camera.x + App->render->camera.w
 			&& (collider2->data->rect.x + collider2->data->rect.w)*App->win->GetScale() >= -App->render->camera.x 
-			&& collider2->data->rect.x <= -App->render->camera.x + App->render->camera.w)
+			&& collider2->data->rect.x*App->win->GetScale() <= -App->render->camera.x + App->render->camera.w)
+		{
+			skipcolliders = false;
+		}*/
+
+		int refCAM = App->scene->player->position.x - 1200;
+		int refCAM2 = App->scene->player->position.x + 1200;
+		int refCol = collider1->data->rect.x + collider1->data->rect.w;
+		int refCol2 = collider1->data->rect.x;
+		int refCol3 = collider2->data->rect.x + collider2->data->rect.w;
+		int refCol4 = collider2->data->rect.x;
+
+
+		if ((refCol) >= refCAM
+			&& refCol2<= refCAM2
+			&& (refCol3) >= refCAM
+			&&  refCol4<= refCAM2)
 		{
 			skipcolliders = false;
 		}
@@ -96,9 +118,18 @@ bool j1Collision::Update(float dt)
 		{
 			//We skip colliders that are not in camera
 			skipcolliders = true;
-
-			if ((collider2->data->rect.x + collider2->data->rect.w)*App->win->GetScale() >= -App->render->camera.x 
+			if (collider1->data->type==COLLIDER_ENEMY_BAT || collider2->data->type == COLLIDER_ENEMY_BAT)
+				{
+				int a = 0;
+				}
+			/*if ((collider2->data->rect.x + collider2->data->rect.w)*App->win->GetScale() >= -App->render->camera.x 
 				&& collider2->data->rect.x*App->win->GetScale() <= -App->render->camera.x + App->render->camera.w)
+			{
+				skipcolliders = false;
+			}*/
+
+			if ((collider2->data->rect.x + collider2->data->rect.w) >= App->scene->player->position.x - 1200
+				&& collider2->data->rect.x <= App->scene->player->position.x + 1200)
 			{
 				skipcolliders = false;
 			}
@@ -120,6 +151,7 @@ bool j1Collision::Update(float dt)
 					collider2->data->callback->OnCollision(collider2->data, collider1->data);
 				}
 			}
+			
 			collider2 = collider2->next;
 			skipcolliders = false;
 		}

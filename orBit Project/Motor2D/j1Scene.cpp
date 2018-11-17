@@ -59,8 +59,11 @@ bool j1Scene::Start()
 
 	// --- Creating entity  ---
 	player = (j1Player*)App->entities->CreateEntity("player", entity_type::PLAYER);
-	slime = (j1Slime*)App->entities->CreateEntity("slime", entity_type::SLIME);
+	
 	bat = (j1Bat*)App->entities->CreateEntity("bat", entity_type::BAT);
+
+	slime = (j1Slime*)App->entities->CreateEntity("slime", entity_type::SLIME);
+	slime2 = (j1Slime*)App->entities->CreateEntity("slime", entity_type::SLIME);
 	//Loading both maps
 
 	p2List_item<p2SString*>* stageListItem;
@@ -100,8 +103,8 @@ bool j1Scene::Start()
 		slime->position.x = App->map->data.slime1.x;
 		slime->position.y = App->map->data.slime1.y;
 
-		//slime2->position.x = App->map->data.slime2.x;
-		//slime2->position.y = App->map->data.slime2.y;
+		slime2->position.x = App->map->data.slime2.x;
+		slime2->position.y = App->map->data.slime2.y;
 
 	/*	bat->position.x = App->map->data.bat1.x;
 		bat->position.y = App->map->data.bat1.y;*/
@@ -163,6 +166,7 @@ bool j1Scene::Start()
 // Called each loop iteration
 bool j1Scene::PreUpdate()
 {
+	
 	// debug pathfing ------------------
 	static iPoint origin;
 	static bool origin_selected = false;
@@ -208,6 +212,7 @@ bool j1Scene::PreUpdate()
 
 	//Camera In X
 	App->render->camera.x = (-player->position.x*App->win->GetScale() - player->entitycoll->rect.w / 2 + App->render->camera.w / 2);
+	
 
 	if (-App->render->camera.x <= player->playerinfo.initialVx)
 	{
@@ -253,6 +258,8 @@ bool j1Scene::PreUpdate()
 		if (App->render->camera.y + (-player->gravity * 8) < 0)
 			App->render->camera.y = -(player->position.y * App->win->GetScale() - App->render->camera.h / 6);
 	}
+
+	
 
 
 	return true;

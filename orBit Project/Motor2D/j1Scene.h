@@ -60,7 +60,7 @@ public:
 
 	j1Player*           player = nullptr;
 	j1Slime*			slime = nullptr;
-	//j1Slime*			slime2 = nullptr;
+	j1Slime*			slime2 = nullptr;
 	j1Bat*				bat = nullptr;
 	//j1Bat*				bat2 = nullptr;
 private:

@@ -44,7 +44,7 @@ bool j1Bat::Start()
 	entitystate = FLYING;
 
 	going_right = false;
-	going_left = true;
+	going_left = false;
 	going_down = false;
 	going_up = false;
 	
@@ -61,6 +61,8 @@ bool j1Bat::Update(float dt)
 {
 	going_down = false;
 	going_up = false;
+	going_left = false;
+	going_right = false;
 	batcolliding = false;
 	entitystate = FLYING;
 
@@ -71,87 +73,114 @@ bool j1Bat::PostUpdate(float dt)
 {
 	bool ret = true;
 
+	/*going_down = false;
+	going_up = false;
+	going_left = false;
+	going_right = false;
+	batcolliding = false;*/
 
 	if ((position.x)*App->win->GetScale() >= -App->render->camera.x && (position.x)*App->win->GetScale() <= -App->render->camera.x + App->render->camera.w)
 	{
 		//check for player nearby
 
-		if (App->scene->player->position.x > position.x - BatInfo.areaofaction &&
-			App->scene->player->position.x < position.x + BatInfo.areaofaction &&
-			App->scene->player->position.y < position.y + BatInfo.areaofaction &&
-			App->scene->player->position.y > position.y - BatInfo.areaofaction)
+		//if (App->scene->player->position.x > position.x - BatInfo.areaofaction &&
+		//	App->scene->player->position.x < position.x + BatInfo.areaofaction &&
+		//	App->scene->player->position.y < position.y + BatInfo.areaofaction &&
+		//	App->scene->player->position.y > position.y - BatInfo.areaofaction)
+		//{
+		//	if (App->scene->player->position.x > position.x )
+		//	{
+		//		CurrentAnimation = BatInfo.flyRight;
+		//		
+		//		going_right = true;
+
+		//	}
+
+		//	else if (App->scene->player->position.x < position.x )
+		//	{
+		//		CurrentAnimation = BatInfo.flyLeft;
+		//		
+		//		going_right = false;
+		//	}
+
+		//	else if (App->scene->player->position.x == position.x )
+		//	{
+		//		CurrentAnimation = BatInfo.flyRight;
+		//		going_right = false;
+		//		going_left = false;
+
+		//	}
+
+
+		//	if (App->scene->player->position.y > position.y)
+		//	{
+		//		going_down = false;
+		//		going_up = true;
+		//	}
+
+		//	else if (App->scene->player->position.y < position.y)
+		//	{
+		//		
+		//		going_down = true;
+		//		going_up = false;
+		//	}
+
+		//	else if (App->scene->player->position.y == position.y )
+		//	{
+		//		going_down = false;
+		//		going_up = false;
+
+		//	}
+
+		//
+
+		////	//int pathok= App->pathfinding->CreatePath({ (int)App->scene->player->position.x,(int)App->scene->player->position.y }, { (int)this->position.x, (int)this->position.y });
+		////	//path=App->pathfinding->GetLastPath();
+
+		//}
+
+		if (App->input->GetKey(SDL_SCANCODE_J) == KEY_REPEAT)
 		{
-			if (App->scene->player->position.x > position.x )
-			{
-				CurrentAnimation = BatInfo.flyRight;
-				
-				going_right = true;
-
-			}
-
-			else if (App->scene->player->position.x < position.x )
-			{
-				CurrentAnimation = BatInfo.flyLeft;
-				
-				going_right = false;
-			}
-
-			else if (App->scene->player->position.x == position.x )
-			{
-				CurrentAnimation = BatInfo.flyRight;
-				going_right = false;
-
-			}
-
-
-			if (App->scene->player->position.y > position.y)
-			{
-				going_down = false;
-				going_up = true;
-			}
-
-			else if (App->scene->player->position.y < position.y)
-			{
-				
-				going_down = true;
-				going_up = false;
-			}
-
-			else if (App->scene->player->position.x == position.y )
-			{
-				going_down = false;
-				going_up = false;
-
-			}
-
-
-
-		//	//int pathok= App->pathfinding->CreatePath({ (int)App->scene->player->position.x,(int)App->scene->player->position.y }, { (int)this->position.x, (int)this->position.y });
-		//	//path=App->pathfinding->GetLastPath();
-
+			position.x -= BatInfo.Velocity.x*2;
+			going_right=true;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_L) == KEY_REPEAT)
+		{
+			position.x += BatInfo.Velocity.x*2;
+			going_right = false;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT)
+		{
+			position.y -= BatInfo.Velocity.y*2;
+			going_up = true;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_K) == KEY_REPEAT)
+		{
+			position.y += BatInfo.Velocity.y*2;
+			going_down = true;
 		}
 
-		if (going_right)
-		{
-			position.x += BatInfo.Velocity.x;
-		
-		}
-		else if ( !going_right)
-		{
-			position.x -= BatInfo.Velocity.x;
-			
-		}
+		//if (going_right)
+		//{
+		//	position.x += BatInfo.Velocity.x;
+		//
+		//}
+		///*else if ( !going_right)
+		//{
+		//	position.x -= BatInfo.Velocity.x;
+		//	
+		//}*/
 
-		if (going_up)
-		{
-			position.y += BatInfo.Velocity.y;
+		//if (going_up)
+		//{
+		//	position.y += BatInfo.Velocity.y;
 
-		}
-		else if (going_down)
-		{
-			position.y -= BatInfo.Velocity.y;
+		//}
+		//else if (going_down)
+		//{
+		//	position.y -= BatInfo.Velocity.y;
 
-		}
+		//}
 
 
 		if (going_right)
@@ -197,23 +226,22 @@ void j1Bat::OnCollision(Collider * c1, Collider * c2)
 
 
 
-	/*if (c2->type == COLLIDER_FLOOR || c2->type == COLLIDER_PLATFORM && dead == false && !lateralcollision)
+	if (c2->type == COLLIDER_FLOOR || c2->type == COLLIDER_PLATFORM || c2->type == COLLIDER_ROOF || c2->type == COLLIDER_SPIKES && dead == false && !lateralcollision)
 	{
-		
-		if (going_right)
+		if (/*going_up &&*/ c2->rect.y + c2->rect.h == c1->rect.y)
 		{
-			going_right = true;
 			c1->rect.y += BatInfo.colliding_offset;
+			//going_up = false;
 		}
-		else
+		else if (/*going_down &&*/ c1->rect.y + c1->rect.h == c2->rect.y)
 		{
 			
-			going_left = true;
 			c1->rect.y -= BatInfo.colliding_offset;
+		/*	going_down = false;*/
 		}
 
 		batcolliding = true;
-	}*/
+	}
 
 	if (lateralcollision)
 	{
@@ -225,7 +253,6 @@ void j1Bat::OnCollision(Collider * c1, Collider * c2)
 		else
 		{
 			going_right = true;
-			
 			c1->rect.x += BatInfo.colliding_offset;
 
 		}
@@ -234,26 +261,27 @@ void j1Bat::OnCollision(Collider * c1, Collider * c2)
 		
 	}
 
-	if (!lateralcollision)
-	{
-		if (going_up)
-		{
-			going_up = false;
-			going_down = true;
-			c1->rect.y -= /*BatInfo.colliding_offset*/10;
-		}
-		else
-		{
-			going_up = true;
-			going_down = false;
-			c1->rect.x += /*BatInfo.colliding_offset*/10;
+	//if (!lateralcollision)
+	//{
+	//	if (going_up)
+	//	{
+	//		going_up = false;
+	//		going_down = true;
+	//		c1->rect.y -= /*BatInfo.colliding_offset*/10;
+	//	}
+	//	else
+	//	{
+	//		going_up = true;
+	//		going_down = false;
+	//		c1->rect.x += /*BatInfo.colliding_offset*/10;
 
-		}
-		batcolliding = true;
+	//	}
+	//	batcolliding = true;
 
-		
-	}
+	//	
+	//}
 	position.x = c1->rect.x;
+	position.y = c1->rect.y;
 }
 
 
