@@ -573,6 +573,18 @@ bool j1Scene::Save(pugi::xml_node &config) const
 	config.append_child("firstStage").append_attribute("value") = firstStage;
 	config.append_child("secondStage").append_attribute("value") = secondStage;
 
+	 xSlime = slime->position.x;
+	 ySlime = slime->position.y;
+
+	 xSlime2 = slime2->position.x;
+	 ySlime2 = slime2->position.y;
+
+	 xBat = bat->position.x;
+	 yBat = bat->position.y;
+
+	 xBat2 = bat2->position.x;
+	 yBat2 = bat2->position.y;
+
 	return ret;
 }
 
@@ -583,17 +595,7 @@ bool j1Scene::Load(pugi::xml_node &config)
 	int x = player->position.x;
 	int y = player->position.y;
 
-	int xSlime = slime->position.x;
-	int ySlime = slime->position.y;
-
-	int xSlime2 = slime2->position.x;
-	int ySlime2 = slime2->position.y;
-
-	int xBat = bat->position.x;
-	int yBat = bat->position.y;
-
-	int xBat2 = bat2->position.x;
-	int yBat2 = bat2->position.y;
+	
 
 	DestinationStage1 = config.child("firstStage").attribute("value").as_bool();
 	DestinationStage2 = config.child("secondStage").attribute("value").as_bool();

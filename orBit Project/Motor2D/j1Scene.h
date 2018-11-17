@@ -67,6 +67,19 @@ public:
 	//variables used on module collision
 	int areaofcollision = 0;
 
+	//variables for save and load
+	mutable int xSlime;
+	mutable int ySlime;
+
+	mutable int xSlime2;
+	mutable int ySlime2;
+
+	mutable	int xBat;
+	mutable int yBat;
+
+	mutable int xBat2;
+	mutable int yBat2;
+
 private:
 	p2SString map_name=nullptr;
 	SDL_Rect debug_Tex_rect = { 96,0,16,16 };
