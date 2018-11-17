@@ -9,6 +9,8 @@
 #include "j1Module.h"
 #include "j1Entity.h"
 #include "j1Player.h"
+#include "j1Slime.h"
+#include "j1Bat.h"
 
 //#define DEFAULT_LOGIC_PER_SECOND 60
 
@@ -46,6 +48,8 @@ public:
 
 	// --- Get Entities data ---
 	Playerdata& GetPlayerData() { return playerinfo; }
+	SlimeData& GetSlimeData() { return slimeinfo; }
+	BatData& GetBatData() { return batinfo; }
 
 	// --- Save & Load ---
 	bool Load(pugi::xml_node&);
@@ -53,17 +57,23 @@ public:
 	bool Save(pugi::xml_node&) const;
 	
 public:
-
+	
 	p2List <j1Entity*>	entities;
 	bool				do_logic;
-	int					logic_updates_per_second;
-	float				update_ms_cycle;
-	float				accumulated_time;
+	int					logic_updates_per_second = 0;
+	float				update_ms_cycle = 0;
+	float				accumulated_time = 0;
+
+	int					entityID = 0;
+
 
 private:
 	// --- Player ---
 	Playerdata playerinfo;
-	
+
+	SlimeData slimeinfo;
+
+	BatData batinfo;
 
 };
 

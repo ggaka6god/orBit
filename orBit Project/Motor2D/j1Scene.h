@@ -4,8 +4,10 @@
 #include "j1Module.h"
 
 struct SDL_Texture;
-class SDL_Rect;
+struct SDL_Rect;
 class j1Player;
+class j1Slime;
+class j1Bat;
 
 class j1Scene : public j1Module
 {
@@ -52,11 +54,32 @@ public:
 	iPoint camera1;
 	iPoint camera2;
 
-	bool afterLoadingStage1 = false;
-	bool afterLoadingStage2 = false;
+	bool DestinationStage1 = false;
+	bool DestinationStage2 = false;
 
-
+	//Entities on map
 	j1Player*           player = nullptr;
+	j1Slime*			slime = nullptr;
+	j1Slime*			slime2 = nullptr;
+	j1Bat*				bat = nullptr;
+	j1Bat*				bat2 = nullptr;
+
+	//variables used on module collision
+	int areaofcollision = 0;
+
+	//variables for save and load
+	mutable int xSlime;
+	mutable int ySlime;
+
+	mutable int xSlime2;
+	mutable int ySlime2;
+
+	mutable	int xBat;
+	mutable int yBat;
+
+	mutable int xBat2;
+	mutable int yBat2;
+
 private:
 	p2SString map_name=nullptr;
 	SDL_Rect debug_Tex_rect = { 96,0,16,16 };

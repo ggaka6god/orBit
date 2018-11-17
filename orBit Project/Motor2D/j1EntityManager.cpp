@@ -51,7 +51,7 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 	int y = playernode.child("collider").attribute("y").as_int();
 	int w = playernode.child("collider").attribute("width").as_int();
 	int h = playernode.child("collider").attribute("height").as_int();
-	playerinfo.playerrect = { x,y,w,h - 1 };
+	playerinfo.playerrect = { x,y,w,h };
 
 	// --- Player main variables ---
 
@@ -78,6 +78,64 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 
 	playerinfo.deathRight->loop = false;
 	playerinfo.deathLeft->loop = false;
+
+	//--Slime data load ------------
+
+	pugi::xml_node slimenode = config.child("slime");
+
+	slimeinfo.folder.create(slimenode.child("folder").child_value());
+	slimeinfo.Texture.create(slimenode.child("texture").child_value());
+
+	x = slimenode.child("collider").attribute("x").as_int();
+	y = slimenode.child("collider").attribute("y").as_int();
+	w = slimenode.child("collider").attribute("width").as_int();
+	h = slimenode.child("collider").attribute("height").as_int();
+	slimeinfo.SlimeRect = { x,y,w,h };
+
+
+	slimeinfo.runRight= LoadAnimation(slimeinfo.folder.GetString(), "slime right");
+	slimeinfo.runLeft = LoadAnimation(slimeinfo.folder.GetString(), "slime left");
+
+	slimeinfo.gravity = slimenode.child("gravity").attribute("value").as_float();
+	slimeinfo.Velocity.x = slimenode.child("Velocity").attribute("x").as_float();
+	slimeinfo.Velocity.y = slimenode.child("Velocity").attribute("y").as_float();
+	slimeinfo.initialVx = slimenode.child("Velocity").attribute("initalVx").as_float();
+	slimeinfo.colliding_offset = slimenode.child("colliding_offset").attribute("value").as_float();
+	slimeinfo.areaofaction = slimenode.child("areaofaction").attribute("value").as_int();
+	slimeinfo.animationspeed = slimenode.child("animationspeed").attribute("value").as_float();
+	slimeinfo.printingoffset.x = slimenode.child("printingoffset").attribute("x").as_int();
+	slimeinfo.printingoffset.y = slimenode.child("printingoffset").attribute("y").as_int();
+	slimeinfo.RefID.x = slimenode.child("entityID").attribute("value1").as_int();
+	slimeinfo.RefID.y = slimenode.child("entityID").attribute("value2").as_int();
+
+	//--- Bat data load --------------------
+
+	pugi::xml_node batnode = config.child("bat");
+
+	batinfo.folder.create(batnode.child("folder").child_value());
+	batinfo.Texture.create(batnode.child("texture").child_value());
+
+	x = batnode.child("collider").attribute("x").as_int();
+	y = batnode.child("collider").attribute("y").as_int();
+	w = batnode.child("collider").attribute("width").as_int();
+	h = batnode.child("collider").attribute("height").as_int();
+	batinfo.BatRect = { x,y,w,h };
+
+
+	batinfo.flyRight = LoadAnimation(batinfo.folder.GetString(), "bat right");
+	batinfo.flyLeft = LoadAnimation(batinfo.folder.GetString(), "bat left");
+
+	batinfo.gravity = batnode.child("gravity").attribute("value").as_float(); //
+	batinfo.Velocity.x = batnode.child("Velocity").attribute("x").as_float();
+	batinfo.Velocity.y = batnode.child("Velocity").attribute("y").as_float();
+	batinfo.initialVx = batnode.child("Velocity").attribute("initalVx").as_float();
+	batinfo.colliding_offset = batnode.child("colliding_offset").attribute("value").as_float();
+	batinfo.areaofaction = batnode.child("areaofaction").attribute("value").as_int();
+	batinfo.animationspeed = batnode.child("animationspeed").attribute("value").as_float();
+	batinfo.printingoffset.x = batnode.child("printingoffset").attribute("x").as_int();
+	batinfo.printingoffset.y = batnode.child("printingoffset").attribute("y").as_int();
+	batinfo.RefID.x = batnode.child("entityID").attribute("value1").as_int();
+	batinfo.RefID.y = batnode.child("entityID").attribute("value2").as_int();
 
 	// ---------------------
 
@@ -211,10 +269,18 @@ j1Entity* const j1EntityManager::CreateEntity(const char* entname, entity_type e
 
 	switch (entitytype)
 	{
+	case entity_type::SLIME:
+		entity = new j1Slime();
+		break;
+	case entity_type::BAT:
+		entity = new j1Bat();
+		break;
 	case entity_type::PLAYER:
 		entity = new j1Player();
 		break;
+	
 	}
+	entityID++;
 	entity->Init(this);
 	entity->Start();
 	entities.add(entity);
@@ -240,6 +306,7 @@ void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
 			entity->data->OnCollision(c1, c2);
 			break;
 		}
+		
 	  entity = entity->next;
 	}
 }

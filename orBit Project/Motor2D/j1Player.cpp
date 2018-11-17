@@ -58,6 +58,7 @@ bool j1Player::Start()
 	if (spritesheet == nullptr)
 		spritesheet = App->tex->Load(playerinfo.Texture.GetString());
 
+	entityID = App->entities->entityID;
 
 	return true;
 }
@@ -467,7 +468,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 			}
 		}
 
-		else if (c2->type == COLLIDER_SPIKES)
+		else if (c2->type == COLLIDER_SPIKES || c2->type == COLLIDER_ENEMY_SLIME || c2->type == COLLIDER_ENEMY_BAT)
 		{
 			Velocity.x = 0.0f;
 

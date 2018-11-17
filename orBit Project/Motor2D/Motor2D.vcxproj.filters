@@ -46,6 +46,13 @@
     <ClCompile Include="j1Entity.cpp">
       <Filter>Desenvolupament  ========\Entities</Filter>
     </ClCompile>
+
+    <ClCompile Include="j1Slime.cpp">
+      <Filter>Desenvolupament  ========\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Bat.cpp">
+      <Filter>Desenvolupament  ========\Entities</Filter>
+
     <ClCompile Include="j1Player.cpp">
       <Filter>Desenvolupament  ========\Entities</Filter>
     </ClCompile>
@@ -54,6 +61,7 @@
     </ClCompile>
     <ClCompile Include="j1PerfTimer.cpp">
       <Filter>Desenvolupament  ========\Tools</Filter>
+
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -126,6 +134,11 @@
     <ClInclude Include="j1Entity.h">
       <Filter>Desenvolupament  ========\Entities</Filter>
     </ClInclude>
+    <ClInclude Include="j1Slime.h">
+      <Filter>Desenvolupament  ========\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Bat.h">
+      <Filter>Desenvolupament  ========\Entities</Filter>
     <ClInclude Include="j1Player.h">
       <Filter>Desenvolupament  ========\Entities</Filter>
     </ClInclude>

@@ -21,6 +21,6 @@
 		<secondStage value="false" />
 	</scene>
 	<renderer>
-		<camera x="-915" y="0" />
+		<camera x="-3973" y="-512" />
 	</renderer>
 </game_state>

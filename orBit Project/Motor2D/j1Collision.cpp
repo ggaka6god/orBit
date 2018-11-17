@@ -15,6 +15,48 @@ j1Collision::j1Collision()
 
 	matrix[COLLIDER_FLOOR][COLLIDER_PLAYER] = false;
 	matrix[COLLIDER_FLOOR][COLLIDER_FLOOR] = false;
+	matrix[COLLIDER_FLOOR][COLLIDER_SPIKES] = false;
+	matrix[COLLIDER_FLOOR][COLLIDER_PLATFORM] = false;
+	matrix[COLLIDER_FLOOR][COLLIDER_ROOF] = false;
+	matrix[COLLIDER_FLOOR][CHECKPOINT] = false;
+	matrix[COLLIDER_FLOOR][COLLIDER_ENEMY_BAT] = false;
+	matrix[COLLIDER_FLOOR][COLLIDER_ENEMY_SLIME] = false;
+
+	matrix[COLLIDER_PLATFORM][COLLIDER_PLAYER] = false;
+	matrix[COLLIDER_PLATFORM][COLLIDER_FLOOR] = false;
+	matrix[COLLIDER_PLATFORM][COLLIDER_SPIKES] = false;
+	matrix[COLLIDER_PLATFORM][COLLIDER_PLATFORM] = false;
+	matrix[COLLIDER_PLATFORM][COLLIDER_ROOF] = false;
+	matrix[COLLIDER_PLATFORM][CHECKPOINT] = false;
+	matrix[COLLIDER_PLATFORM][COLLIDER_ENEMY_BAT] = false;
+	matrix[COLLIDER_PLATFORM][COLLIDER_ENEMY_SLIME] = false;
+
+	matrix[COLLIDER_ROOF][COLLIDER_PLAYER] = false;
+	matrix[COLLIDER_ROOF][COLLIDER_FLOOR] = false;
+	matrix[COLLIDER_ROOF][COLLIDER_SPIKES] = false;
+	matrix[COLLIDER_ROOF][COLLIDER_PLATFORM] = false;
+	matrix[COLLIDER_ROOF][COLLIDER_ROOF] = false;
+	matrix[COLLIDER_ROOF][CHECKPOINT] = false;
+	matrix[COLLIDER_ROOF][COLLIDER_ENEMY_BAT] = false;
+	matrix[COLLIDER_ROOF][COLLIDER_ENEMY_SLIME] = false;
+
+	matrix[CHECKPOINT][COLLIDER_PLAYER] = false;
+	matrix[CHECKPOINT][COLLIDER_FLOOR] = false;
+	matrix[CHECKPOINT][COLLIDER_SPIKES] = false;
+	matrix[CHECKPOINT][COLLIDER_PLATFORM] = false;
+	matrix[CHECKPOINT][COLLIDER_ROOF] = false;
+	matrix[CHECKPOINT][CHECKPOINT] = false;
+	matrix[CHECKPOINT][COLLIDER_ENEMY_BAT] = false;
+	matrix[CHECKPOINT][COLLIDER_ENEMY_SLIME] = false;
+
+	matrix[COLLIDER_SPIKES][COLLIDER_PLAYER] = false;
+	matrix[COLLIDER_SPIKES][COLLIDER_FLOOR] = false;
+	matrix[COLLIDER_SPIKES][COLLIDER_SPIKES] = false;
+	matrix[COLLIDER_SPIKES][COLLIDER_PLATFORM] = false;
+	matrix[COLLIDER_SPIKES][COLLIDER_ROOF] = false;
+	matrix[COLLIDER_SPIKES][CHECKPOINT] = false;
+	matrix[COLLIDER_SPIKES][COLLIDER_ENEMY_BAT] = false;
+	matrix[COLLIDER_SPIKES][COLLIDER_ENEMY_SLIME] = false;
 
 	matrix[COLLIDER_PLAYER][COLLIDER_FLOOR] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER] = false;
@@ -22,6 +64,26 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_PLAYER][COLLIDER_PLATFORM] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_ROOF] = true;
 	matrix[COLLIDER_PLAYER][CHECKPOINT] = true;
+    matrix[COLLIDER_PLAYER][COLLIDER_ENEMY_SLIME] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_ENEMY_BAT] = true;
+
+	matrix[COLLIDER_ENEMY_SLIME][COLLIDER_FLOOR] = true;
+	matrix[COLLIDER_ENEMY_SLIME][COLLIDER_PLATFORM] = true;
+	matrix[COLLIDER_ENEMY_SLIME][CHECKPOINT] = false;
+	matrix[COLLIDER_ENEMY_SLIME][COLLIDER_SPIKES] = false;
+	matrix[COLLIDER_ENEMY_SLIME][COLLIDER_ROOF] = false;
+	matrix[COLLIDER_ENEMY_SLIME][COLLIDER_ENEMY_BAT] = false;
+	matrix[COLLIDER_ENEMY_SLIME][COLLIDER_PLAYER] = false;
+	matrix[COLLIDER_ENEMY_SLIME][COLLIDER_ENEMY_SLIME] = false;
+
+	matrix[COLLIDER_ENEMY_BAT][COLLIDER_FLOOR] = true;
+	matrix[COLLIDER_ENEMY_BAT][COLLIDER_SPIKES] = true;
+	matrix[COLLIDER_ENEMY_BAT][COLLIDER_PLATFORM] = true;
+	matrix[COLLIDER_ENEMY_BAT][COLLIDER_ROOF] = true;
+	matrix[COLLIDER_ENEMY_BAT][CHECKPOINT] = false;
+	matrix[COLLIDER_ENEMY_BAT][COLLIDER_ENEMY_BAT] = false;
+	matrix[COLLIDER_ENEMY_BAT][COLLIDER_ENEMY_SLIME] = false;
+	matrix[COLLIDER_ENEMY_BAT][COLLIDER_PLAYER] = false;
 
 }
 
@@ -60,7 +122,7 @@ bool j1Collision::Update(float dt)
 
 	playertouched = 0;
 
-	bool skipcolliders = true; //skip colliders that are not in camera
+	bool skipcolliders = true; //skip colliders that are not entities
 
 	// Calculate collisions
 
@@ -72,55 +134,64 @@ bool j1Collision::Update(float dt)
 	if(collider1->next!=NULL)
 	collider2 = collider1->next;
 
+	
+
 	while(collider1!=NULL && collider2!=NULL && collider1!=collider2)
 	{
+		skipcolliders = true;
 
-		if ((collider1->data->rect.x + collider1->data->rect.w)*App->win->GetScale() >= -App->render->camera.x 
-			&& collider1->data->rect.x <=-App->render->camera.x + App->render->camera.w
-			&& (collider2->data->rect.x + collider2->data->rect.w)*App->win->GetScale() >= -App->render->camera.x 
-			&& collider2->data->rect.x <= -App->render->camera.x + App->render->camera.w)
+		//check for entities in colliders
+		if (collider1->data->type == COLLIDER_PLAYER	  || collider2->data->type == COLLIDER_PLAYER      ||
+			collider1->data->type == COLLIDER_ENEMY_SLIME || collider2->data->type == COLLIDER_ENEMY_SLIME ||
+			collider1->data->type == COLLIDER_ENEMY_BAT   || collider2->data->type == COLLIDER_ENEMY_BAT)
 		{
 			skipcolliders = false;
 		}
+		
 
 		while (collider2 != NULL && skipcolliders==false)
 		{
 			//We skip colliders that are not in camera
 			skipcolliders = true;
-
-			if ((collider2->data->rect.x + collider2->data->rect.w)*App->win->GetScale() >= -App->render->camera.x 
-				&& collider2->data->rect.x*App->win->GetScale() <= -App->render->camera.x + App->render->camera.w)
+			
+			//only check area near entity
+			if ( // Target Collision    ------------------------------   Set Area surrounding Entity
+				(collider2->data->rect.x							  <= collider1->data->rect.x + App->scene->areaofcollision &&
+				 collider2->data->rect.x + collider2->data->rect.w    >= collider1->data->rect.x - App->scene->areaofcollision &&
+				 collider2->data->rect.y							  <= collider1->data->rect.y + App->scene->areaofcollision &&
+				 collider2->data->rect.y + collider2->data->rect.h    >= collider1->data->rect.y - App->scene->areaofcollision)
+															||
+				(collider1->data->rect.x							  <= collider2->data->rect.x + App->scene->areaofcollision &&
+				 collider1->data->rect.x + collider1->data->rect.w	  >= collider2->data->rect.x - App->scene->areaofcollision &&
+				 collider1->data->rect.y							  <= collider2->data->rect.y + App->scene->areaofcollision &&
+				 collider1->data->rect.y + collider1->data->rect.h	  >= collider2->data->rect.y - App->scene->areaofcollision)
+				)
 			{
 				skipcolliders = false;
 			}
-
-			if (collider1->data->CheckCollision(collider2->data->rect) == true && skipcolliders==false)
+			
+			if (collider1->data->CheckCollision(collider2->data->rect) == true && skipcolliders == false)
 			{
-				if (collider1->data->type == COLLIDER_PLAYER || collider2->data->type == COLLIDER_PLAYER)
-				{
-					playertouched++;
-				}
-                
-				if (matrix[collider1->data->type][collider2->data->type] && collider1->data->callback)
-				{
-					collider1->data->callback->OnCollision(collider1->data, collider2->data); 
-				}
+					if (collider1->data->type == COLLIDER_PLAYER || collider2->data->type == COLLIDER_PLAYER)
+					{
+						playertouched++;
+					}
 
-				if (matrix[collider2->data->type][collider1->data->type] && collider2->data->callback)
-				{
-					collider2->data->callback->OnCollision(collider2->data, collider1->data);
-				}
+					if (matrix[collider1->data->type][collider2->data->type] && collider1->data->callback)
+					{
+						collider1->data->callback->OnCollision(collider1->data, collider2->data);
+					}
+
+					if (matrix[collider2->data->type][collider1->data->type] && collider2->data->callback)
+					{
+						collider2->data->callback->OnCollision(collider2->data, collider1->data);
+					}
 			}
+			
 			collider2 = collider2->next;
 			skipcolliders = false;
 		}
 
-		if (skipcolliders == true)
-		{
-			collider2 = collider2->next;
-			continue;
-		}
-		skipcolliders = true;
 		collider1 = collider1->next;
 		collider2 = collider1->next;
 	}
@@ -211,6 +282,12 @@ void j1Collision::DebugDraw()
 			break;
 		case CHECKPOINT: // blue
 			App->render->DrawQuad(item->data->rect, 0 , 0, 128, alpha);
+			break;
+		case COLLIDER_ENEMY_SLIME: // brown
+			App->render->DrawQuad(item->data->rect, 153, 76, 0, alpha);
+			break;
+		case COLLIDER_ENEMY_BAT: // dark red
+			App->render->DrawQuad(item->data->rect, 153, 0, 76, alpha);
 			break;
 			
 

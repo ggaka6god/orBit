@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="200" height="40" tilewidth="16" tileheight="16" nextobjectid="6">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="200" height="40" tilewidth="16" tileheight="16" nextobjectid="13">
  <tileset firstgid="1" name="tileset forest - Copy" tilewidth="16" tileheight="16" tilecount="400" columns="25">
   <image source="tileset forest - Copy.png" width="400" height="256"/>
  </tileset>
@@ -60311,7 +60311,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="949"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -64056,5 +64056,17 @@
  </objectgroup>
  <objectgroup name="finalpos">
   <object id="5" x="3136" y="160" width="16" height="32"/>
+ </objectgroup>
+ <objectgroup name="slime1">
+  <object id="8" x="896" y="320" width="16" height="16"/>
+ </objectgroup>
+ <objectgroup name="slime2">
+  <object id="10" x="2080" y="64" width="16" height="16"/>
+ </objectgroup>
+ <objectgroup name="bat1">
+  <object id="11" x="1792" y="416" width="16" height="16"/>
+ </objectgroup>
+ <objectgroup name="bat2">
+  <object id="12" x="2544" y="448" width="16" height="16"/>
  </objectgroup>
 </map>
