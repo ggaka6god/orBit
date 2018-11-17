@@ -247,7 +247,7 @@ bool j1Player::Update(float dt)
 		//If no ground, free fall
 		if (must_fall && !god_mode)
 		{
-			Velocity.y += (gravity*10.0f)*dt;
+			Velocity.y += (gravity*6.0f)*dt;
 			position.y -= Velocity.y*dt;
 			if (going_right)
 				CurrentAnimation = playerinfo.airRight;
@@ -344,14 +344,18 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 		{
 			if ((going_left || going_right) && must_fall)
 			{
+				if (c1->rect.y + c1->rect.h > c2->rect.y)
+				{
+					c1->rect.y = c2->rect.y - c1->rect.h;
+				}
 
-				if (c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x + c1->rect.w <= c2->rect.x + 4)
+				if (c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x + c1->rect.w <= c2->rect.x + 2)
 				{
 					Velocity.x = 0.0f;
 					c1->rect.x = c2->rect.x - c1->rect.w - colliding_offset;
 				}
 
-				if (c1->rect.x >= c2->rect.x + c2->rect.w - 4 && c1->rect.x <= c2->rect.x + c2->rect.w)
+				if (c1->rect.x >= c2->rect.x + c2->rect.w - 2 && c1->rect.x <= c2->rect.x + c2->rect.w)
 				{
 					Velocity.x = 0.0f;
 					c1->rect.x = c2->rect.x + c2->rect.w + colliding_offset;
@@ -378,6 +382,10 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 			{
 				if (entitystate != JUMPING && entitystate != FALLING)
 				{
+					if (c1->rect.y + c1->rect.h > c2->rect.y)
+					{
+						c1->rect.y = c2->rect.y - c1->rect.h;
+					}
 					Velocity.y = 0.0f;
 					entitystate = IDLE;
 					colliding_floor = true;

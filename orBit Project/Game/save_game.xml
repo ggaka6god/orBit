@@ -9,8 +9,8 @@
 	</audio>
 	<entities>
 		<Player>
-			<Playerx value="338" />
-			<Playery value="462" />
+			<Playerx value="705" />
+			<Playery value="222" />
 		</Player>
 	</entities>
 	<collision />
@@ -21,6 +21,6 @@
 		<secondStage value="false" />
 	</scene>
 	<renderer>
-		<camera x="-175" y="-512" />
+		<camera x="-909" y="0" />
 	</renderer>
 </game_state>
