@@ -14,6 +14,8 @@
 #include "j1EntityManager.h"
 #include "j1Slime.h"
 #include "j1Bat.h"
+#include "Brofiler\Brofiler.h"
+
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -172,7 +174,10 @@ bool j1Scene::Start()
 // Called each loop iteration
 bool j1Scene::PreUpdate()
 {
-	
+
+	BROFILER_CATEGORY("Scene_Pre__Update", Profiler::Color::MediumSeaGreen);
+
+
 	// debug pathfing ------------------
 	static iPoint origin;
 	static bool origin_selected = false;
@@ -220,9 +225,9 @@ bool j1Scene::PreUpdate()
 	App->render->camera.x = (-player->position.x*App->win->GetScale() - player->entitycoll->rect.w / 2 + App->render->camera.w / 2);
 	
 
-	if (-App->render->camera.x <= player->playerinfo.initialVx)
+	if (-App->render->camera.x <= 2)
 	{
-		App->render->camera.x = -player->playerinfo.initialVx;
+		App->render->camera.x = -2;
 	}
 
 	if (-App->render->camera.x + App->render->camera.w >= App->map->data.width*App->map->data.tile_width*App->win->GetScale())
@@ -240,13 +245,13 @@ bool j1Scene::PreUpdate()
 		if (!player->must_fall)
 			App->render->camera.y = -(player->position.y * App->win->GetScale() + player->entitycoll->rect.h - App->render->camera.h + App->render->camera.h / 6);
 		else
-			App->render->camera.y -= -(player->gravity * 8);
+			App->render->camera.y -= 4;
 	}
 
 
 	if (player->position.y*App->win->GetScale() > -App->render->camera.y + App->render->camera.h - App->render->camera.h / 6)
 	{
-		App->render->camera.y -= -(player->gravity * 8);
+		App->render->camera.y -= 10;
 	}
 
 
@@ -256,16 +261,16 @@ bool j1Scene::PreUpdate()
 	}
 
 
-
 	//Camera up
 
 	if (player->position.y*App->win->GetScale() <= -App->render->camera.y + App->render->camera.h / 6)
 	{
-		if (App->render->camera.y + (-player->gravity * 8) < 0)
+		if (App->render->camera.y + 8 < 0)
 			App->render->camera.y = -(player->position.y * App->win->GetScale() - App->render->camera.h / 6);
 	}
 
-	
+
+	//-------------------
 
 
 	return true;
@@ -274,6 +279,7 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
+	BROFILER_CATEGORY("Scene_Update", Profiler::Color::MediumSpringGreen);
 
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && firstStage == false) //can only press during second stage. goes to first stage
 	{	
@@ -340,6 +346,9 @@ bool j1Scene::Update(float dt)
 
 	if(App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) //save
 		App->SaveGame("save_game.xml");
+
+	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+		App->cap_on = !App->cap_on;
 
 	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		App->render->camera.y += 2;
@@ -422,6 +431,8 @@ bool j1Scene::Update(float dt)
 // Called each loop iteration
 bool j1Scene::PostUpdate(float dt)
 {
+	BROFILER_CATEGORY("Scene_Post_Update", Profiler::Color::MediumTurquoise);
+
 	bool ret = true;
 
 	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)

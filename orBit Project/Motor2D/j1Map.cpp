@@ -7,6 +7,7 @@
 #include <math.h>
 #include "j1Collision.h"
 #include "j1Window.h"
+#include "Brofiler/Brofiler.h"
 
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -556,6 +557,8 @@ bool j1Map::ColliderDrawer(MapData& data)
 
 void j1Map::Draw(MapData &data)
 {
+	BROFILER_CATEGORY("Map_Draw", Profiler::Color::Bisque);
+
 	if (map_loaded == false)
 		return;
 

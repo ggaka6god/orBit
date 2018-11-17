@@ -37,9 +37,6 @@
     <ClCompile Include="j1Collision.cpp">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="j1Player.cpp">
-      <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="j1Pathfinding.cpp">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClCompile>
@@ -49,11 +46,22 @@
     <ClCompile Include="j1Entity.cpp">
       <Filter>Desenvolupament  ========\Entities</Filter>
     </ClCompile>
+
     <ClCompile Include="j1Slime.cpp">
       <Filter>Desenvolupament  ========\Entities</Filter>
     </ClCompile>
     <ClCompile Include="j1Bat.cpp">
       <Filter>Desenvolupament  ========\Entities</Filter>
+
+    <ClCompile Include="j1Player.cpp">
+      <Filter>Desenvolupament  ========\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Timer.cpp">
+      <Filter>Desenvolupament  ========\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="j1PerfTimer.cpp">
+      <Filter>Desenvolupament  ========\Tools</Filter>
+
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -114,9 +122,6 @@
     <ClInclude Include="j1Collision.h">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="j1Player.h">
-      <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="MemLeaks.h">
       <Filter>Desenvolupament  ========</Filter>
     </ClInclude>
@@ -134,6 +139,14 @@
     </ClInclude>
     <ClInclude Include="j1Bat.h">
       <Filter>Desenvolupament  ========\Entities</Filter>
+    <ClInclude Include="j1Player.h">
+      <Filter>Desenvolupament  ========\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Timer.h">
+      <Filter>Desenvolupament  ========\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="j1PerfTimer.h">
+      <Filter>Desenvolupament  ========\Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

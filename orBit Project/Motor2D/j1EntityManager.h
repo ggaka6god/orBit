@@ -12,7 +12,7 @@
 #include "j1Slime.h"
 #include "j1Bat.h"
 
-#define DEFAULT_LOGIC_PER_SECOND 60
+//#define DEFAULT_LOGIC_PER_SECOND 60
 
 class j1Entity;
 

@@ -6,8 +6,9 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1EntityManager.h"
+#include "Brofiler/Brofiler.h"
 
-j1EntityManager::j1EntityManager() : j1Module(), logic_updates_per_second(DEFAULT_LOGIC_PER_SECOND), accumulated_time(0.0f)
+j1EntityManager::j1EntityManager() : j1Module()
 {
 	name.create("entities");
 }
@@ -22,8 +23,9 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 {
 	LOG("Setting up Entity manager");
 	bool ret = true;
-	logic_updates_per_second = DEFAULT_LOGIC_PER_SECOND;
-	update_ms_cycle = 1.0f / (float)logic_updates_per_second;
+	//logic_updates_per_second = DEFAULT_LOGIC_PER_SECOND;
+	//update_ms_cycle = 1.0f / (float)logic_updates_per_second;
+    update_ms_cycle = 1.0f / (float)App->framerate_cap;
 
 	LOG("Loading Player Parser");
 
@@ -61,8 +63,18 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 	playerinfo.jump_force = playernode.child("Velocity").attribute("jump_force").as_float();
 	playerinfo.colliding_offset = playernode.child("colliding_offset").attribute("value").as_float();
 
-	playerinfo.runRight->speed = 0.15f;
-	playerinfo.runLeft->speed = 0.15f;
+	playerinfo.idleRight->speed = 10.0f;
+	playerinfo.idleLeft->speed = 10.0f;
+	playerinfo.runRight->speed = 10.0f;
+	playerinfo.runLeft->speed =  10.0f;
+	playerinfo.jumpingRight->speed = 10.0f;
+	playerinfo.jumpingLeft->speed = 10.0f;
+	playerinfo.fallingRight->speed = 10.0f;
+	playerinfo.fallingLeft->speed = 10.0f;
+	playerinfo.deathRight->speed = 10.0f;
+	playerinfo.deathLeft->speed = 10.0f;
+	playerinfo.airRight->speed = 10.0f;
+	playerinfo.airLeft->speed = 10.0f;
 
 	playerinfo.deathRight->loop = false;
 	playerinfo.deathLeft->loop = false;
@@ -141,26 +153,32 @@ bool j1EntityManager::Start()
 // Called each loop iteration
 bool j1EntityManager::PreUpdate()
 {
-	do_logic = false;
+	BROFILER_CATEGORY("EntityManager_Pre_Update", Profiler::Color::Chartreuse);
+
+	//do_logic = false;
 	return true;
 }
 
 bool j1EntityManager::Update(float dt)
 {
-	accumulated_time += dt;
+	BROFILER_CATEGORY("EntityManager_Update", Profiler::Color::Chocolate);
 
-	if (accumulated_time >= update_ms_cycle)
-	{
-		do_logic = true;
-	}
+	//accumulated_time += dt;
 
+	//if (accumulated_time >= update_ms_cycle)
+	//{
+	//	do_logic = true;
+	//}
+
+	if(dt<update_ms_cycle*1.25f)
 	UpdateEntity(dt);
 
-	if (do_logic == true)
-	{
-		//LOG("Did logic step after %f", accumulated_time);
-		accumulated_time = accumulated_time - update_ms_cycle;
-	}
+	//if (do_logic == true)
+	//{
+	//	LOG("Did logic step after %f", accumulated_time);
+	//	accumulated_time = 0.0f;
+	//	do_logic = false;
+	//}
 
 	return true;
 }
@@ -183,6 +201,8 @@ void j1EntityManager::UpdateEntity(float dt)
 
 bool j1EntityManager::PostUpdate(float dt)
 {
+	BROFILER_CATEGORY("EntityManager_Post_Update", Profiler::Color::Coral);
+
 	p2List_item <j1Entity*> *entity = entities.start;
 
 	while (entity != NULL)
@@ -272,6 +292,7 @@ void j1EntityManager::DestroyEntity(j1Entity* entity)
 	p2List_item <j1Entity*> *entity_item = entities.At(entities.find(entity));
 	
 	entities.del(entity_item);
+
 }
 
 void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
