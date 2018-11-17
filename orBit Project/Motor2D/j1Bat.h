@@ -29,7 +29,7 @@ struct BatData {
 	float			animationspeed = 0;
 
 	int				areaofaction = 0;
-	iPoint			RefID = { NULL,NULL };
+	iPoint			RefID = { 0,0 };
 
 };
 

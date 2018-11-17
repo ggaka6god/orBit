@@ -57,14 +57,14 @@ public:
 	bool Save(pugi::xml_node&) const;
 	
 public:
-
+	
 	p2List <j1Entity*>	entities;
 	bool				do_logic;
-	int					logic_updates_per_second = NULL;;
-	float				update_ms_cycle = NULL;;
-	float				accumulated_time = NULL;;
+	int					logic_updates_per_second = 0;
+	float				update_ms_cycle = 0;
+	float				accumulated_time = 0;
 
-	int					entityID = NULL;
+	int					entityID = 0;
 
 
 private:

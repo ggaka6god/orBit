@@ -8,7 +8,7 @@
 #include "PugiXml\src\pugixml.hpp"
 
 class j1EntityManager;
-class Collider;
+struct Collider;
 
 enum entity_state
 {
@@ -78,13 +78,13 @@ public:
 public:
 
 	// --- Basic ---
-	p2SString			name;
-	fPoint			position;
-	fPoint          Velocity;
+	p2SString			name = nullptr;
+	fPoint			position = {0,0};
+	fPoint          Velocity = { 0,0 };
 
 	// --- Collider data ---
 	Collider*     entitycoll = nullptr;
-	SDL_Rect entitycollrect;
+	SDL_Rect entitycollrect = { 0,0,0,0 };
 	float colliding_offset = 0;
 
 	// --- Gravity ---
@@ -93,7 +93,7 @@ public:
 	// --- Entity ---
 	entity_type  entitytype;
 	entity_state entitystate;
-	int entityID = NULL;
+	int entityID = 0;
 	
 
 	// --- Animation ---
@@ -102,7 +102,7 @@ public:
 	// --- Spritesheet ---
 	SDL_Texture* spritesheet = nullptr;
 
-	j1EntityManager*	manager;
+	j1EntityManager*	manager = nullptr;
 };
 
 #endif // __J1ENTITY_H__

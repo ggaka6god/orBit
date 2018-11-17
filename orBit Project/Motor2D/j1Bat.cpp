@@ -25,7 +25,7 @@ j1Bat::~j1Bat()
 bool j1Bat::Start()
 {
 	LOG("Loading Bat");
-
+	
 	BatInfo = manager->GetBatData();
 
 	entitycollrect = BatInfo.BatRect;

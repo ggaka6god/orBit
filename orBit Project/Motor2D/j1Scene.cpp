@@ -463,20 +463,21 @@ bool j1Scene::change_scene(const char* map_name) {
 	player->first_move = false;
 
 	App->coll->CleanUp();
-	player->entitycoll= App->coll->AddCollider(player->entitycollrect, COLLIDER_PLAYER, App->entities);
-	player->entitycoll->SetPos(player->position.x, player->position.y);
 
-	slime->entitycoll = App->coll->AddCollider(slime->entitycollrect, COLLIDER_ENEMY_SLIME, App->entities);
-	slime->entitycoll->SetPos(slime->position.x, slime->position.y);
-
-	slime2->entitycoll = App->coll->AddCollider(slime2->entitycollrect, COLLIDER_ENEMY_SLIME, App->entities);
-	slime2->entitycoll->SetPos(slime2->position.x, slime2->position.y);
-
-	bat->entitycoll = App->coll->AddCollider(bat->entitycollrect, COLLIDER_ENEMY_BAT, App->entities);
-	bat->entitycoll->SetPos(bat->position.x, bat->position.y);
+	App->entities->DestroyEntity(bat);
+	App->entities->DestroyEntity(bat2);
+	App->entities->DestroyEntity(slime);
+	App->entities->DestroyEntity(slime2);
 	
-	bat2->entitycoll = App->coll->AddCollider(bat2->entitycollrect, COLLIDER_ENEMY_BAT, App->entities);
-	bat2->entitycoll->SetPos(bat2->position.x, bat2->position.y);
+
+	player->entitycoll= App->coll->AddCollider(player->entitycollrect, COLLIDER_PLAYER, App->entities);
+
+	bat = (j1Bat*)App->entities->CreateEntity("bat", entity_type::BAT);
+	bat2 = (j1Bat*)App->entities->CreateEntity("bat", entity_type::BAT);
+
+	slime = (j1Slime*)App->entities->CreateEntity("slime", entity_type::SLIME);
+	slime2 = (j1Slime*)App->entities->CreateEntity("slime", entity_type::SLIME);
+
 
 	if (FirstStage == map_name)
 	{	
@@ -549,6 +550,17 @@ bool j1Scene::change_scene(const char* map_name) {
 
 		RELEASE_ARRAY(buffer_data);
 	}
+	//slime->entitycoll = App->coll->AddCollider(slime->entitycollrect, COLLIDER_ENEMY_SLIME, App->entities);
+	//slime->entitycoll->SetPos(slime->position.x, slime->position.y);
+
+	////slime2->entitycoll = App->coll->AddCollider(slime2->entitycollrect, COLLIDER_ENEMY_SLIME, App->entities);
+	//slime2->entitycoll->SetPos(slime2->position.x, slime2->position.y);
+
+	////bat->entitycoll = App->coll->AddCollider(bat->entitycollrect, COLLIDER_ENEMY_BAT, App->entities);
+	//bat->entitycoll->SetPos(bat->position.x, bat->position.y);
+
+	////bat2->entitycoll = App->coll->AddCollider(bat2->entitycollrect, COLLIDER_ENEMY_BAT, App->entities);
+	//bat2->entitycoll->SetPos(bat2->position.x, bat2->position.y);
 
 	return ret;
 }
@@ -583,14 +595,14 @@ bool j1Scene::Load(pugi::xml_node &config)
 	int xBat2 = bat2->position.x;
 	int yBat2 = bat2->position.y;
 
-	afterLoadingStage1 = config.child("firstStage").attribute("value").as_bool();
-	afterLoadingStage2 = config.child("secondStage").attribute("value").as_bool();
+	DestinationStage1 = config.child("firstStage").attribute("value").as_bool();
+	DestinationStage2 = config.child("secondStage").attribute("value").as_bool();
 
 	if (firstStage)
 	{
 
-
-		if (afterLoadingStage2)
+		//stage 2
+		if (DestinationStage2)
 		{
 			change_scene(StageList.start->next->data->GetString());
 			secondStage = true;
@@ -598,7 +610,7 @@ bool j1Scene::Load(pugi::xml_node &config)
 			
 		}
 
-		else
+		else //stage 1
 		{
 			change_scene(StageList.start->data->GetString());
 			firstStage = true;
@@ -610,14 +622,15 @@ bool j1Scene::Load(pugi::xml_node &config)
 
 	else if (secondStage)
 	{
-		if (afterLoadingStage1)
+		//stage1
+		if (DestinationStage1)
 		{
 			change_scene(StageList.start->data->GetString());
 			firstStage = true;
 			secondStage = false;
 			
 		}
-
+		//stage2
 		else
 		{
 			change_scene(StageList.start->next->data->GetString());
@@ -628,6 +641,7 @@ bool j1Scene::Load(pugi::xml_node &config)
 	}
 	player->position.x = x;
 	player->position.y = y;
+	
 
 	slime->position.x = xSlime;
 	slime->position.y = ySlime;
@@ -640,6 +654,14 @@ bool j1Scene::Load(pugi::xml_node &config)
 
 	bat2->position.x = xBat2;
 	bat2->position.y = yBat2;
+
+	/*slime->entitycoll->SetPos(slime->position.x, slime->position.y);
+	
+	slime2->entitycoll->SetPos(slime2->position.x, slime2->position.y);
+
+	bat->entitycoll->SetPos(bat->position.x, bat->position.y);
+
+	bat2->entitycoll->SetPos(bat2->position.x, bat2->position.y);*/
 
 	return ret;
 }

@@ -4,7 +4,7 @@
 #include "j1Module.h"
 
 struct SDL_Texture;
-class SDL_Rect;
+struct SDL_Rect;
 class j1Player;
 class j1Slime;
 class j1Bat;
@@ -54,8 +54,8 @@ public:
 	iPoint camera1;
 	iPoint camera2;
 
-	bool afterLoadingStage1 = false;
-	bool afterLoadingStage2 = false;
+	bool DestinationStage1 = false;
+	bool DestinationStage2 = false;
 
 	//Entities on map
 	j1Player*           player = nullptr;
@@ -65,7 +65,7 @@ public:
 	j1Bat*				bat2 = nullptr;
 
 	//variables used on module collision
-	int areaofcollision = NULL;
+	int areaofcollision = 0;
 
 private:
 	p2SString map_name=nullptr;
