@@ -9,30 +9,34 @@
 	</audio>
 	<entities>
 		<Player>
-			<Playerx value="736" />
-			<Playery value="222" />
+			<Playerx value="1763" />
+			<Playery value="398" />
 		</Player>
-		<Bat>
-			<Batx value="400" />
-			<Baty value="250" />
-		</Bat>
-		<Slime>
-			<Slimex value="977" />
-			<Slimey value="172" />
-			<Slimey value="560" />
-		</Slime>
-		<Slime>
-			<Slimex value="1840" />
-		</Slime>
+		<Entity2>
+			<Batx value="1952" />
+			<Baty value="421" />
+		</Entity2>
+		<Entity3>
+			<Batx value="436" />
+			<Baty value="437" />
+		</Entity3>
+		<Entity4>
+			<Slimex value="958" />
+			<Slimey value="332" />
+		</Entity4>
+		<Entity5>
+			<Slimex value="2080" />
+			<Slimey value="64" />
+		</Entity5>
 	</entities>
 	<collision />
 	<map />
 	<pathfinding />
 	<scene>
-		<firstStage value="true" />
-		<secondStage value="false" />
+		<firstStage value="false" />
+		<secondStage value="true" />
 	</scene>
 	<renderer>
-		<camera x="-963" y="0" />
+		<camera x="-3021" y="-330" />
 	</renderer>
 </game_state>

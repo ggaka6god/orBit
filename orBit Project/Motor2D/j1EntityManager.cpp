@@ -256,6 +256,7 @@ j1Entity* const j1EntityManager::CreateEntity(const char* entname, entity_type e
 		break;
 	
 	}
+	entityID++;
 	entity->Init(this);
 	entity->Start();
 	entities.add(entity);

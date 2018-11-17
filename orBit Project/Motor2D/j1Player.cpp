@@ -59,6 +59,7 @@ bool j1Player::Start()
 	if (spritesheet == nullptr)
 		spritesheet = App->tex->Load(playerinfo.Texture.GetString());
 
+	entityID = App->entities->entityID;
 
 	return true;
 }

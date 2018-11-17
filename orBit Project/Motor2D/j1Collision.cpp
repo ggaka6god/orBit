@@ -68,7 +68,7 @@ bool j1Collision::Update(float dt)
 
 	playertouched = 0;
 
-	bool skipcolliders = true; //skip colliders that are not in camera
+	bool skipcolliders = true; //skip colliders that are not entities
 
 	// Calculate collisions
 
@@ -84,84 +84,60 @@ bool j1Collision::Update(float dt)
 
 	while(collider1!=NULL && collider2!=NULL && collider1!=collider2)
 	{
+		skipcolliders = true;
 
-		if (collider1->data->type == COLLIDER_ENEMY_SLIME || collider2->data->type == COLLIDER_ENEMY_SLIME)
-		{
-			int a = 0;
-		}
-
-		/*if ((collider1->data->rect.x + collider1->data->rect.w)*App->win->GetScale() >= -App->render->camera.x 
-			&& collider1->data->rect.x*App->win->GetScale() <=-App->render->camera.x + App->render->camera.w
-			&& (collider2->data->rect.x + collider2->data->rect.w)*App->win->GetScale() >= -App->render->camera.x 
-			&& collider2->data->rect.x*App->win->GetScale() <= -App->render->camera.x + App->render->camera.w)
-		{
-			skipcolliders = false;
-		}*/
-
-		int refCAM = App->scene->player->position.x - 1200;
-		int refCAM2 = App->scene->player->position.x + 1200;
-		int refCol = collider1->data->rect.x + collider1->data->rect.w;
-		int refCol2 = collider1->data->rect.x;
-		int refCol3 = collider2->data->rect.x + collider2->data->rect.w;
-		int refCol4 = collider2->data->rect.x;
-
-
-		if ((refCol) >= refCAM
-			&& refCol2<= refCAM2
-			&& (refCol3) >= refCAM
-			&&  refCol4<= refCAM2)
+		//check for entities in colliders
+		if (collider1->data->type == COLLIDER_PLAYER	  || collider2->data->type == COLLIDER_PLAYER      ||
+			collider1->data->type == COLLIDER_ENEMY_SLIME || collider2->data->type == COLLIDER_ENEMY_SLIME ||
+			collider1->data->type == COLLIDER_ENEMY_BAT   || collider2->data->type == COLLIDER_ENEMY_BAT)
 		{
 			skipcolliders = false;
 		}
+		
 
 		while (collider2 != NULL && skipcolliders==false)
 		{
 			//We skip colliders that are not in camera
 			skipcolliders = true;
-			if (collider1->data->type==COLLIDER_ENEMY_BAT || collider2->data->type == COLLIDER_ENEMY_BAT)
-				{
-				int a = 0;
-				}
-			/*if ((collider2->data->rect.x + collider2->data->rect.w)*App->win->GetScale() >= -App->render->camera.x 
-				&& collider2->data->rect.x*App->win->GetScale() <= -App->render->camera.x + App->render->camera.w)
-			{
-				skipcolliders = false;
-			}*/
-
-			if ((collider2->data->rect.x + collider2->data->rect.w) >= App->scene->player->position.x - 1200
-				&& collider2->data->rect.x <= App->scene->player->position.x + 1200)
+			
+			//only check area near entity
+			if ( // Target Collision    ------------------------------   Set Area surrounding Entity
+				(collider2->data->rect.x							  <= collider1->data->rect.x + App->scene->areaofcollision &&
+				 collider2->data->rect.x + collider2->data->rect.w    >= collider1->data->rect.x - App->scene->areaofcollision &&
+				 collider2->data->rect.y							  <= collider1->data->rect.y + App->scene->areaofcollision &&
+				 collider2->data->rect.y + collider2->data->rect.h    >= collider1->data->rect.y - App->scene->areaofcollision)
+															||
+				(collider1->data->rect.x							  <= collider2->data->rect.x + App->scene->areaofcollision &&
+				 collider1->data->rect.x + collider1->data->rect.w	  >= collider2->data->rect.x - App->scene->areaofcollision &&
+				 collider1->data->rect.y							  <= collider2->data->rect.y + App->scene->areaofcollision &&
+				 collider1->data->rect.y + collider1->data->rect.h	  >= collider2->data->rect.y - App->scene->areaofcollision)
+				)
 			{
 				skipcolliders = false;
 			}
-
-			if (collider1->data->CheckCollision(collider2->data->rect) == true && skipcolliders==false)
+			
+			if (collider1->data->CheckCollision(collider2->data->rect) == true && skipcolliders == false)
 			{
-				if (collider1->data->type == COLLIDER_PLAYER || collider2->data->type == COLLIDER_PLAYER)
-				{
-					playertouched++;
-				}
-                
-				if (matrix[collider1->data->type][collider2->data->type] && collider1->data->callback)
-				{
-					collider1->data->callback->OnCollision(collider1->data, collider2->data); 
-				}
+					if (collider1->data->type == COLLIDER_PLAYER || collider2->data->type == COLLIDER_PLAYER)
+					{
+						playertouched++;
+					}
 
-				if (matrix[collider2->data->type][collider1->data->type] && collider2->data->callback)
-				{
-					collider2->data->callback->OnCollision(collider2->data, collider1->data);
-				}
+					if (matrix[collider1->data->type][collider2->data->type] && collider1->data->callback)
+					{
+						collider1->data->callback->OnCollision(collider1->data, collider2->data);
+					}
+
+					if (matrix[collider2->data->type][collider1->data->type] && collider2->data->callback)
+					{
+						collider2->data->callback->OnCollision(collider2->data, collider1->data);
+					}
 			}
 			
 			collider2 = collider2->next;
 			skipcolliders = false;
 		}
 
-		if (skipcolliders == true)
-		{
-			collider2 = collider2->next;
-			continue;
-		}
-		skipcolliders = true;
 		collider1 = collider1->next;
 		collider2 = collider1->next;
 	}

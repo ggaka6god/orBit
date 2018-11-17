@@ -49,6 +49,9 @@ bool j1Scene::Awake(pugi::xml_node& config)
 	camera1.y = config.child("startcamera1").attribute("y").as_int();
 	camera2.x = config.child("startcamera2").attribute("x").as_int();
 	camera2.y = config.child("startcamera2").attribute("y").as_int();
+
+	areaofcollision = config.child("areaofcollision").attribute("value").as_int();
+
 	return ret;
 }
 
@@ -57,13 +60,16 @@ bool j1Scene::Start()
 {
 	bool ret = true;
 
+
 	// --- Creating entity  ---
 	player = (j1Player*)App->entities->CreateEntity("player", entity_type::PLAYER);
 	
 	bat = (j1Bat*)App->entities->CreateEntity("bat", entity_type::BAT);
+	bat2 = (j1Bat*)App->entities->CreateEntity("bat", entity_type::BAT);
 
 	slime = (j1Slime*)App->entities->CreateEntity("slime", entity_type::SLIME);
 	slime2 = (j1Slime*)App->entities->CreateEntity("slime", entity_type::SLIME);
+
 	//Loading both maps
 
 	p2List_item<p2SString*>* stageListItem;
@@ -106,11 +112,11 @@ bool j1Scene::Start()
 		slime2->position.x = App->map->data.slime2.x;
 		slime2->position.y = App->map->data.slime2.y;
 
-	/*	bat->position.x = App->map->data.bat1.x;
-		bat->position.y = App->map->data.bat1.y;*/
+		bat->position.x = App->map->data.bat1.x;
+		bat->position.y = App->map->data.bat1.y;
 
-		//bat2->position.x = App->map->data.bat2.x;
-		//bat2->position.y = App->map->data.bat2.y;
+		bat2->position.x = App->map->data.bat2.x;
+		bat2->position.y = App->map->data.bat2.y;
 
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());
@@ -135,14 +141,14 @@ bool j1Scene::Start()
 		slime->position.x = App->map->data2.slime1.x;
 		slime->position.y = App->map->data2.slime1.y;
 
-		//slime2->position.x = App->map->data2.slime2.x;
-		//slime2->position.y = App->map->data2.slime2.y;
+		slime2->position.x = App->map->data2.slime2.x;
+		slime2->position.y = App->map->data2.slime2.y;
 
-		/*bat->position.x = App->map->data2.bat1.x;
-		bat->position.y = App->map->data2.bat1.y;*/
+		bat->position.x = App->map->data2.bat1.x;
+		bat->position.y = App->map->data2.bat1.y;
 
-		//bat2->position.x = App->map->data2.bat2.x;
-		//bat2->position.y = App->map->data2.bat2.y;
+		bat2->position.x = App->map->data2.bat2.x;
+		bat2->position.y = App->map->data2.bat2.y;
 
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->next->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());
@@ -421,7 +427,6 @@ bool j1Scene::PostUpdate(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
-
 	return ret;
 }
 
@@ -462,11 +467,17 @@ bool j1Scene::change_scene(const char* map_name) {
 	player->entitycoll->SetPos(player->position.x, player->position.y);
 
 	slime->entitycoll = App->coll->AddCollider(slime->entitycollrect, COLLIDER_ENEMY_SLIME, App->entities);
-	slime->entitycoll->SetPos(slime->position.x, player->position.y);
+	slime->entitycoll->SetPos(slime->position.x, slime->position.y);
+
+	slime2->entitycoll = App->coll->AddCollider(slime2->entitycollrect, COLLIDER_ENEMY_SLIME, App->entities);
+	slime2->entitycoll->SetPos(slime2->position.x, slime2->position.y);
 
 	bat->entitycoll = App->coll->AddCollider(bat->entitycollrect, COLLIDER_ENEMY_BAT, App->entities);
-	bat->entitycoll->SetPos(bat->position.x, player->position.y);
+	bat->entitycoll->SetPos(bat->position.x, bat->position.y);
 	
+	bat2->entitycoll = App->coll->AddCollider(bat2->entitycollrect, COLLIDER_ENEMY_BAT, App->entities);
+	bat2->entitycoll->SetPos(bat2->position.x, bat2->position.y);
+
 	if (FirstStage == map_name)
 	{	
 		App->render->camera.x = camera1.x;
@@ -478,16 +489,14 @@ bool j1Scene::change_scene(const char* map_name) {
 		slime->position.x = App->map->data.slime1.x;
 		slime->position.y = App->map->data.slime1.y;
 
+		slime2->position.x = App->map->data.slime2.x;
+		slime2->position.y = App->map->data.slime2.y;
 
-		//slime2->position.x = App->map->data.slime2.x;
-		//slime2->position.y = App->map->data.slime2.y;
+		bat->position.x = App->map->data.bat1.x;
+		bat->position.y = App->map->data.bat1.y;
 
-		/*bat->position.x = App->map->data.bat1.x;
-		bat->position.y = App->map->data.bat1.y;*/
-
-		//bat2->position.x = App->map->data.bat2.x;
-		//bat2->position.y = App->map->data.bat2.y;
-
+		bat2->position.x = App->map->data.bat2.x;
+		bat2->position.y = App->map->data.bat2.y;
 
 		App->map->ColliderDrawer(App->map->data);
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());
@@ -515,14 +524,14 @@ bool j1Scene::change_scene(const char* map_name) {
 		slime->position.x = App->map->data2.slime1.x;
 		slime->position.y = App->map->data2.slime1.y;
 
-		//slime2->position.x = App->map->data2.slime2.x;
-		//slime2->position.y = App->map->data2.slime2.y;
+		slime2->position.x = App->map->data2.slime2.x;
+		slime2->position.y = App->map->data2.slime2.y;
 
-		//bat->position.x = App->map->data2.bat1.x;
-		//bat->position.y = App->map->data2.bat1.y;
+		bat->position.x = App->map->data2.bat1.x;
+		bat->position.y = App->map->data2.bat1.y;
 
-		//bat2->position.x = App->map->data2.bat2.x;
-		//bat2->position.y = App->map->data2.bat2.y;
+		bat2->position.x = App->map->data2.bat2.x;
+		bat2->position.y = App->map->data2.bat2.y;
 
 
 		App->map->ColliderDrawer(App->map->data2);
@@ -541,8 +550,6 @@ bool j1Scene::change_scene(const char* map_name) {
 		RELEASE_ARRAY(buffer_data);
 	}
 
-
-	
 	return ret;
 }
 
@@ -564,6 +571,18 @@ bool j1Scene::Load(pugi::xml_node &config)
 	int x = player->position.x;
 	int y = player->position.y;
 
+	int xSlime = slime->position.x;
+	int ySlime = slime->position.y;
+
+	int xSlime2 = slime2->position.x;
+	int ySlime2 = slime2->position.y;
+
+	int xBat = bat->position.x;
+	int yBat = bat->position.y;
+
+	int xBat2 = bat2->position.x;
+	int yBat2 = bat2->position.y;
+
 	afterLoadingStage1 = config.child("firstStage").attribute("value").as_bool();
 	afterLoadingStage2 = config.child("secondStage").attribute("value").as_bool();
 
@@ -576,8 +595,7 @@ bool j1Scene::Load(pugi::xml_node &config)
 			change_scene(StageList.start->next->data->GetString());
 			secondStage = true;
 			firstStage = false;
-			player->position.x = x;
-			player->position.y = y;
+			
 		}
 
 		else
@@ -585,8 +603,6 @@ bool j1Scene::Load(pugi::xml_node &config)
 			change_scene(StageList.start->data->GetString());
 			firstStage = true;
 			secondStage = false;
-			player->position.x = x;
-			player->position.y = y;
 
 		}
 
@@ -594,15 +610,12 @@ bool j1Scene::Load(pugi::xml_node &config)
 
 	else if (secondStage)
 	{
-
 		if (afterLoadingStage1)
 		{
 			change_scene(StageList.start->data->GetString());
 			firstStage = true;
 			secondStage = false;
-			player->position.x = x;
-			player->position.y = y;
-
+			
 		}
 
 		else
@@ -610,10 +623,23 @@ bool j1Scene::Load(pugi::xml_node &config)
 			change_scene(StageList.start->next->data->GetString());
 			firstStage = false;
 			secondStage = true;
-			player->position.x = x;
-			player->position.y = y;
+			
 		}
 	}
-	
+	player->position.x = x;
+	player->position.y = y;
+
+	slime->position.x = xSlime;
+	slime->position.y = ySlime;
+
+	slime2->position.x = xSlime2;
+	slime2->position.y = ySlime2;
+
+	bat->position.x = xBat;
+	bat->position.y = yBat;
+
+	bat2->position.x = xBat2;
+	bat2->position.y = yBat2;
+
 	return ret;
 }

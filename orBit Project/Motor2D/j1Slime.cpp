@@ -51,6 +51,9 @@ bool j1Slime::Start()
 	if (spritesheet == nullptr)
 		spritesheet = App->tex->Load(Slimeinfo.Texture.GetString());
 
+	entityID = App->entities->entityID;
+
+	
 	
 	return true;
 }
@@ -220,9 +223,17 @@ void j1Slime::OnCollision(Collider * c1, Collider * c2)
 bool j1Slime::Load(pugi::xml_node &config)
 {
 	bool ret = true;
-
-	position.x = config.child("Slime").child("Slimex").attribute("value").as_float();
-	position.y = config.child("Slime").child("Slimey").attribute("value").as_float();
+	if (entityID==4)
+	{
+		position.x = config.child("Entity4").child("Slimex").attribute("value").as_float();
+		position.y = config.child("Entity4").child("Slimey").attribute("value").as_float();
+	}
+	else if (entityID==5)
+	{
+		position.x = config.child("Entity5").child("Slimex").attribute("value").as_float();
+		position.y = config.child("Entity5").child("Slimey").attribute("value").as_float();
+	}
+	
 
 
 	return ret;
@@ -230,8 +241,16 @@ bool j1Slime::Load(pugi::xml_node &config)
 
 bool j1Slime::Save(pugi::xml_node &config) const
 {
-	config.append_child("Slime").append_child("Slimex").append_attribute("value") = position.x;
-	config.child("Slime").append_child("Slimey").append_attribute("value") = position.y;
+	if (entityID == 4)
+	{
+		config.append_child("Entity4").append_child("Slimex").append_attribute("value") = position.x;
+		config.child("Entity4").append_child("Slimey").append_attribute("value") = position.y;
+	}
+	else if (entityID == 5)
+	{
+		config.append_child("Entity5").append_child("Slimex").append_attribute("value") = position.x;
+		config.child("Entity5").append_child("Slimey").append_attribute("value") = position.y;
+	}
 
 	return true;
 }

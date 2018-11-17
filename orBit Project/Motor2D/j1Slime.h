@@ -18,6 +18,7 @@ struct SlimeData {
 
 	p2SString folder = nullptr;
 	p2SString Texture = nullptr;
+	p2SString stringID = nullptr;
 
 	SDL_Rect		SlimeRect = { 0,0,0,0 };
 	fPoint          Velocity = { 0,0 };
@@ -65,7 +66,7 @@ public:
 	bool slimecolliding = false;
 
 	SlimeData Slimeinfo;
-
+	
 	//const p2DynArray<iPoint>* path;
 
 };

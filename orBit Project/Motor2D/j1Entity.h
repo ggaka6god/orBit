@@ -93,6 +93,8 @@ public:
 	// --- Entity ---
 	entity_type  entitytype;
 	entity_state entitystate;
+	int entityID = NULL;
+	
 
 	// --- Animation ---
 	Animation* CurrentAnimation = nullptr;

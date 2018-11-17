@@ -60,9 +60,12 @@ public:
 
 	p2List <j1Entity*>	entities;
 	bool				do_logic;
-	int					logic_updates_per_second;
-	float				update_ms_cycle;
-	float				accumulated_time;
+	int					logic_updates_per_second = NULL;;
+	float				update_ms_cycle = NULL;;
+	float				accumulated_time = NULL;;
+
+	int					entityID = NULL;
+
 
 private:
 	// --- Player ---
