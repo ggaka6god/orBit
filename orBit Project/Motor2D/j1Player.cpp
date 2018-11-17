@@ -123,7 +123,7 @@ bool j1Player::Update(float dt)
 
 				Velocity.x = playerinfo.initialVx;
 
-				position.x -= ceil((Velocity.x)*dt);
+				position.x = position.x - ((Velocity.x))*dt;
 
 				going_left = true;
 				going_right = false;
@@ -140,7 +140,7 @@ bool j1Player::Update(float dt)
 				}
 
 				Velocity.x = playerinfo.initialVx;
-				position.x += ceil((Velocity.x)*dt);
+				position.x = position.x + ceil((Velocity.x)*dt);
 				going_right = true;
 				going_left = false;
 				CurrentAnimation = playerinfo.runRight;
@@ -556,7 +556,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 		else if (c2->type == COLLIDER_ROOF)
 		{
 
-			if (c1->rect.y <= c2->rect.y + c2->rect.h && c1->rect.y >= c2->rect.y + c2->rect.h - 4)
+			if (c1->rect.y <= c2->rect.y + c2->rect.h && c1->rect.y >= c2->rect.y + c2->rect.h - 6)
 			{
 				c1->rect.y = c2->rect.y + c2->rect.h + colliding_offset;
 				Velocity.y = 0.0f;

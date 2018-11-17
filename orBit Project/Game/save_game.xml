@@ -9,7 +9,7 @@
 	</audio>
 	<entities>
 		<Player>
-			<Playerx value="705" />
+			<Playerx value="706" />
 			<Playery value="222" />
 		</Player>
 	</entities>
@@ -21,6 +21,6 @@
 		<secondStage value="false" />
 	</scene>
 	<renderer>
-		<camera x="-907" y="0" />
+		<camera x="-915" y="0" />
 	</renderer>
 </game_state>
