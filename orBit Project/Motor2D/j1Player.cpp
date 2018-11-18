@@ -67,6 +67,7 @@ bool j1Player::Update(float dt)
 {
 	//Player Update
 
+
 		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 		{
 			if (god_mode == false)
@@ -77,7 +78,6 @@ bool j1Player::Update(float dt)
 			}
 			else
 				god_mode = false;
-
 		}
 
 		if (initialmoment)
@@ -138,7 +138,11 @@ bool j1Player::Update(float dt)
 					first_move = true;
 				}
 
+				if(entitystate!=JUMPING && entitystate!=FALLING && !must_fall)
+				position.x = ceilf(position.x + playerinfo.initialVx*dt);
+				else
 				position.x = (position.x + playerinfo.initialVx*dt);
+
 			
 				going_right = true;
 				going_left = false;

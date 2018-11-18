@@ -5,6 +5,7 @@
 #include "p2Point.h"
 #include "Animation.h"
 #include "j1Entity.h"
+#include "j1Timer.h"
 
 struct SDL_Texture;
 struct Collider;
@@ -63,27 +64,26 @@ public:
 
 public:
 
-	bool playercolliding;
-	bool colliding_floor;
+	bool playercolliding = false;
+	bool colliding_floor = false;
 
-	bool double_jump;
-	bool must_fall;
+	bool double_jump = false;
+	bool must_fall = false;
 
-	bool going_right;
-	bool going_left;
+	bool going_right = false;
+	bool going_left = false;
 
-	bool wasRight;
-	bool dead;
+	bool wasRight = false;
+	bool dead = false;
 
-	bool initialmoment;
-	bool first_move;
-	bool god_mode;
+	bool initialmoment = true;
+	bool first_move = false;
+	bool god_mode = false;
 
 	int parallaxflow = 0;
 	int previousflow = 0;
 
 	Playerdata playerinfo;
-
 };
 
 #endif // __j1Player_H__
