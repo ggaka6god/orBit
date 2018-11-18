@@ -69,12 +69,12 @@
          <folder>animation/enemies.tmx</folder>
          <texture>textures/monster.png</texture>
          <collider x="21" y="17" width="10" height="20"/>
-         <animationspeed value="0.05"/>
+         <animationspeed value="7.5"/>
          <areaofaction value="150"/>
-         <Velocity x="0.5" y="0.0" initalVx="2.0"/>
+         <Velocity x="50.0" y="0.0" initalVx="50.0"/>
          <printingoffset x="8" y="1"/>
          <colliding_offset value="5" />
-         <gravity value="-4.0"/>
+         <gravity value="-100.0"/>
          <entityID value1="4" value2="5"/>
      
      </slime>
@@ -83,9 +83,9 @@
          <folder>animation/enemies.tmx</folder>
          <texture>textures/monster.png</texture>
          <collider x="31" y="7" width="9" height="12"/>
-         <animationspeed value="0.1"/>
+         <animationspeed value="10.0"/>
          <areaofaction value="100"/>
-         <Velocity x="1" y="0.5" initalVx="2.0"/>
+         <Velocity x="50" y="25" initalVx="50.0"/>
          <printingoffset x="8" y="5"/>
          <colliding_offset value="5" />
          <gravity value="-4.0"/>

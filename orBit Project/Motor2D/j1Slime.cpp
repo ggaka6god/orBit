@@ -111,13 +111,13 @@ bool j1Slime::PostUpdate(float dt)
 		
 				if (entitystate != FALLING && entitystate == RIGHT)
 						{
-							position.x += Slimeinfo.Velocity.x;
+							position.x += Slimeinfo.Velocity.x*dt;
 							entitystate = RIGHT;
 							must_fall = false;
 						}
 				else if (entitystate != FALLING && entitystate == LEFT)
 						{
-							position.x -= Slimeinfo.Velocity.x;
+							position.x -= Slimeinfo.Velocity.x*dt;
 							entitystate = LEFT;
 							must_fall = false;
 						}
@@ -133,7 +133,7 @@ bool j1Slime::PostUpdate(float dt)
 		//If no ground, free fall
 		if (must_fall)
 		{
-			position.y -= gravity;
+			position.y -= gravity*dt;
 		}
 
 		if (position.x < 0)
@@ -172,14 +172,25 @@ void j1Slime::OnCollision(Collider * c1, Collider * c2)
 {
 	bool lateralcollision = true;
 
-	if (c1->rect.y + c1->rect.h == c2->rect.y)
+	//if (c1->rect.y + c1->rect.h == c2->rect.y)
+	//{
+	//	lateralcollision = false;
+	//}
+
+	if (c1->rect.y + c1->rect.h >= c2->rect.y && c1->rect.y + c1->rect.h <= c2->rect.y + 2)
 	{
 		lateralcollision = false;
 	}
 
 	if (c2->type == COLLIDER_FLOOR || c2->type == COLLIDER_PLATFORM && dead == false && !lateralcollision)
 	{
+		if (c1->rect.y + c1->rect.h > c2->rect.y && c1->rect.y + c1->rect.h<c2->rect.y + colliding_offset)
+		{
+			c1->rect.y = c2->rect.y - c1->rect.h;
+		}
+
 		must_fall = false;
+
 		if (going_right)
 		{
 			going_right = true;
@@ -194,6 +205,8 @@ void j1Slime::OnCollision(Collider * c1, Collider * c2)
 		}
 
 		slimecolliding = true;
+
+
 	}
 
 	if (lateralcollision)
@@ -203,14 +216,14 @@ void j1Slime::OnCollision(Collider * c1, Collider * c2)
 			entitystate = LEFT;
 			going_left = true;
 			going_right = false;
-			c1->rect.x -= Slimeinfo.colliding_offset;
+			c1->rect.x = c2->rect.x - c1->rect.w - 2.0f;
 		}
 		else
 		{
 			going_right = true;
 			entitystate = RIGHT;
 			going_left = false;
-			c1->rect.x += Slimeinfo.colliding_offset;
+			c1->rect.x = c2->rect.x + c2->rect.w + 2.0f;
 			
 		}
 		slimecolliding = true;

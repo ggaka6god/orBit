@@ -154,22 +154,22 @@ bool j1Bat::PostUpdate(float dt)
 
 		if (going_right)
 		{
-			position.x += BatInfo.Velocity.x;
+			position.x += BatInfo.Velocity.x*dt;
 		}
 		else if ( !going_right)
 		{
-			position.x -= BatInfo.Velocity.x;
+			position.x -= BatInfo.Velocity.x*dt;
 			
 		}
 
 		if (going_up)
 		{
-			position.y += BatInfo.Velocity.y;
+			position.y += BatInfo.Velocity.y*dt;
 
 		}
 		else if (going_down)
 		{
-			position.y -= BatInfo.Velocity.y;
+			position.y -= BatInfo.Velocity.y*dt;
 
 		}
 
@@ -246,8 +246,6 @@ void j1Bat::OnCollision(Collider * c1, Collider * c2)
 
 		}
 		batcolliding = true;
-
-		
 	}
 
 

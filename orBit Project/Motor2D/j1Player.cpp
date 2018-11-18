@@ -122,9 +122,15 @@ bool j1Player::Update(float dt)
 					first_move = true;
 				}
 
-				Velocity.x = playerinfo.initialVx;
+				float auxpos = position.x;
 
-				position.x = position.x - ((Velocity.x))*dt;
+				position.x -= playerinfo.initialVx*dt;
+
+				if (-(position.x - auxpos) > dt/10.0f )
+				{
+					if (entitystate != JUMPING && entitystate != FALLING && !must_fall)
+					position.x += 0.4f;
+				}
 
 				going_left = true;
 				going_right = false;
@@ -140,8 +146,19 @@ bool j1Player::Update(float dt)
 					first_move = true;
 				}
 
-				Velocity.x = playerinfo.initialVx;
-				position.x = position.x + ceil((Velocity.x)*dt);
+				float auxpos = position.x;
+
+				/*Velocity.x = playerinfo.initialVx;
+				position.x = position.x + ceil((Velocity.x)*dt);*/
+
+				position.x += ceil(playerinfo.initialVx*dt);
+
+				if ((position.x - auxpos) > (dt * 200.0f))
+				{
+					//if (entitystate != JUMPING && entitystate != FALLING && !must_fall)
+						position.x -= 0.1f;
+				}
+
 				going_right = true;
 				going_left = false;
 				CurrentAnimation = playerinfo.runRight;
