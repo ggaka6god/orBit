@@ -10,7 +10,7 @@
 	<entities>
 		<Player>
 			<Playerx value="706" />
-			<Playery value="222" />
+			<Playery value="181" />
 		</Player>
 	</entities>
 	<collision />
@@ -21,6 +21,6 @@
 		<secondStage value="false" />
 	</scene>
 	<renderer>
-		<camera x="-3973" y="-512" />
+		<camera x="-915" y="0" />
 	</renderer>
 </game_state>

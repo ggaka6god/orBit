@@ -197,10 +197,11 @@ bool j1Bat::PostUpdate(float dt)
 
 		//Blitting bat
 
-		App->render->Blit(spritesheet, position.x - BatInfo.printingoffset.x, position.y - BatInfo.printingoffset.y, &CurrentAnimation->GetCurrentFrame());
+		App->render->Blit(spritesheet, position.x - BatInfo.printingoffset.x, position.y - BatInfo.printingoffset.y, &CurrentAnimation->GetCurrentFrame(dt));
 
-		return ret;
+		//return ret;
 	}
+	return ret;
 }
 
 void j1Bat::OnCollision(Collider * c1, Collider * c2)

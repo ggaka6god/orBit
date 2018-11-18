@@ -158,12 +158,14 @@ bool j1Slime::PostUpdate(float dt)
 		//Blitting slime
 
 	
-			App->render->Blit(spritesheet, position.x - Slimeinfo.printingoffset.x, position.y + Slimeinfo.printingoffset.y, &CurrentAnimation->GetCurrentFrame());
+		App->render->Blit(spritesheet, position.x - Slimeinfo.printingoffset.x, position.y + Slimeinfo.printingoffset.y, &CurrentAnimation->GetCurrentFrame(dt));
 		
 		
 
-		return ret;
+		//return ret;
 	}
+
+	return ret;
 }
 
 void j1Slime::OnCollision(Collider * c1, Collider * c2)
