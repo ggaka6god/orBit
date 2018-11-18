@@ -166,7 +166,21 @@ bool j1Scene::Start()
 		RELEASE_ARRAY(buffer_data);
 	}
 
-		App->map->ColliderDrawer(App->map->data);
+	// --- Initial position for enemies ---
+	xSlime = slime->position.x;
+	ySlime = slime->position.y;
+
+	xSlime2 = slime2->position.x;
+	ySlime2 = slime2->position.y;
+
+	xBat = bat->position.x;
+	yBat = bat->position.y;
+
+	xBat2 = bat2->position.x;
+	yBat2 = bat2->position.y;
+
+
+	App->map->ColliderDrawer(App->map->data);
 
 	return ret;
 }
@@ -363,30 +377,30 @@ bool j1Scene::Update(float dt)
 	if (firstStage == true)
 	{
 		App->map->Draw(App->map->data);
-		
-		
+
+
 		iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y, App->map->data);
 		p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d",
 			App->map->data.width, App->map->data.height,
 			App->map->data.tile_width, App->map->data.tile_height,
 			App->map->data.tilesets.count(),
 			map_coordinates.x, map_coordinates.y);
-
-		App->win->SetTitle(title.GetString());
+		//Debug purpose
+		//App->win->SetTitle(title.GetString());
 	}
 	else
 	{
 		App->map->Draw(App->map->data2);
 
-		
+
 		iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y, App->map->data2);
 		p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d",
 			App->map->data.width, App->map->data.height,
 			App->map->data.tile_width, App->map->data.tile_height,
 			App->map->data.tilesets.count(),
 			map_coordinates.x, map_coordinates.y);
-
-		App->win->SetTitle(title.GetString());
+		//Debug purpose
+		//App->win->SetTitle(title.GetString());
 	}
 
 	// --- Debug Pathfinding

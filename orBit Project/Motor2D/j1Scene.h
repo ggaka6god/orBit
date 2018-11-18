@@ -68,17 +68,17 @@ public:
 	int areaofcollision = 0;
 
 	//variables for save and load
-	mutable int xSlime;
-	mutable int ySlime;
+	mutable int xSlime = 0;
+	mutable int ySlime = 0;
 
-	mutable int xSlime2;
-	mutable int ySlime2;
+	mutable int xSlime2 = 0;
+	mutable int ySlime2 = 0;
 
-	mutable	int xBat;
-	mutable int yBat;
+	mutable	int xBat = 0;
+	mutable int yBat = 0;
 
-	mutable int xBat2;
-	mutable int yBat2;
+	mutable int xBat2 = 0;
+	mutable int yBat2 = 0;
 
 private:
 	p2SString map_name=nullptr;

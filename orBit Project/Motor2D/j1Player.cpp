@@ -606,7 +606,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 		{
 			if (going_right)
 			{
-				if (c1->rect.x >= c2->rect.x + c2->rect.w - colliding_offset)
+				if (c1->rect.x >= c2->rect.x + c2->rect.w - colliding_offset*3.0f)
 				{
 					App->SaveGame("save_game.xml");
 				}
@@ -614,7 +614,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 			}
 			else
 			{
-				if (c1->rect.x + c1->rect.w <= c2->rect.x + colliding_offset)
+				if (c1->rect.x + c1->rect.w <= c2->rect.x + colliding_offset*3.0f)
 				{
 					App->SaveGame("save_game.xml");
 				}
