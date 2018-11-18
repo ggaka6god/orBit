@@ -122,16 +122,8 @@ bool j1Player::Update(float dt)
 					first_move = true;
 				}
 
-				float auxpos = position.x;
-
-				position.x -= playerinfo.initialVx*dt;
-
-				if (-(position.x - auxpos) > dt/10.0f )
-				{
-					if (entitystate != JUMPING && entitystate != FALLING && !must_fall)
-					position.x += 0.49f;
-				}
-
+				position.x = (position.x - playerinfo.initialVx*dt);
+				
 				going_left = true;
 				going_right = false;
 				CurrentAnimation = playerinfo.runLeft;
@@ -146,18 +138,8 @@ bool j1Player::Update(float dt)
 					first_move = true;
 				}
 
-				float auxpos = position.x;
-
-				/*Velocity.x = playerinfo.initialVx;
-				position.x = position.x + ceil((Velocity.x)*dt);*/
-
-				position.x += ceilf(playerinfo.initialVx*dt);
-
-				if ((position.x - auxpos) > (dt * 200.0f))
-				{
-						position.x -= 0.9f;
-				}
-
+				position.x = (position.x + playerinfo.initialVx*dt);
+			
 				going_right = true;
 				going_left = false;
 				CurrentAnimation = playerinfo.runRight;
@@ -366,13 +348,13 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 
 				if (c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x + c1->rect.w <= c2->rect.x + 2)
 				{
-					Velocity.x = 0.0f;
+					//Velocity.x = 0.0f;
 					c1->rect.x = c2->rect.x - c1->rect.w - colliding_offset;
 				}
 
 				if (c1->rect.x >= c2->rect.x + c2->rect.w - 2 && c1->rect.x <= c2->rect.x + c2->rect.w)
 				{
-					Velocity.x = 0.0f;
+					//Velocity.x = 0.0f;
 					c1->rect.x = c2->rect.x + c2->rect.w + colliding_offset;
 				}
 
@@ -401,7 +383,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 					{
 						c1->rect.y = c2->rect.y - c1->rect.h;
 					}
-					Velocity.y = 0.0f;
+					//Velocity.y = 0.0f;
 					entitystate = IDLE;
 					colliding_floor = true;
 					double_jump = true;
@@ -430,7 +412,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 
 						if (c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x + c1->rect.w <= c2->rect.x + 4)
 						{
-							Velocity.x = 0.0f;
+							//Velocity.x = 0.0f;
 							if (entitystate != JUMPING)
 								c1->rect.y = aux;
 							c1->rect.x = c2->rect.x - c1->rect.w - colliding_offset;
@@ -459,7 +441,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 
 						if (c1->rect.x >= c2->rect.x + c2->rect.w - 4 && c1->rect.x <= c2->rect.x + c2->rect.w)
 						{
-							Velocity.x = 0.0f;
+							//Velocity.x = 0.0f;
 							if (entitystate != JUMPING)
 								c1->rect.y = aux;
 							c1->rect.x = c2->rect.x + c2->rect.w + colliding_offset;
@@ -486,7 +468,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 
 		else if (c2->type == COLLIDER_SPIKES || c2->type == COLLIDER_ENEMY_SLIME || c2->type == COLLIDER_ENEMY_BAT)
 		{
-			Velocity.x = 0.0f;
+			//Velocity.x = 0.0f;
 
 			must_fall = false;
 			double_jump = false;
@@ -522,13 +504,13 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 
 				if (c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x + c1->rect.w <= c2->rect.x + 4)
 				{
-					Velocity.x = 0.0f;
+					//Velocity.x = 0.0f;
 					c1->rect.x = c2->rect.x - c1->rect.w - colliding_offset;
 				}
 
 				if (c1->rect.x >= c2->rect.x + c2->rect.w - 4 && c1->rect.x <= c2->rect.x + c2->rect.w)
 				{
-					Velocity.x = 0.0f;
+					//Velocity.x = 0.0f;
 					c1->rect.x = c2->rect.x + c2->rect.w + colliding_offset;
 				}
 
@@ -537,7 +519,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 
 					if (entitystate != JUMPING)
 					{
-						Velocity.y = 0.0f;
+						//Velocity.y = 0.0f;
 						entitystate = IDLE;
 
 					}
@@ -556,7 +538,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 
 					if (entitystate != JUMPING)
 					{
-						Velocity.y = 0.0f;
+						//Velocity.y = 0.0f;
 						entitystate = IDLE;
 						colliding_floor = true;
 					}
@@ -576,7 +558,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 			if (c1->rect.y <= c2->rect.y + c2->rect.h && c1->rect.y >= c2->rect.y + c2->rect.h - 6)
 			{
 				c1->rect.y = c2->rect.y + c2->rect.h + colliding_offset;
-				Velocity.y = 0.0f;
+				//Velocity.y = 0.0f;
 				entitystate = FALLING;
 				double_jump = false;
 				must_fall = true;
