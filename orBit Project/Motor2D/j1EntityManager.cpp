@@ -97,8 +97,8 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 	slimeinfo.runLeft = LoadAnimation(slimeinfo.folder.GetString(), "slime left");
 
 	slimeinfo.gravity = slimenode.child("gravity").attribute("value").as_float();
-	slimeinfo.Velocity.x = slimenode.child("Velocity").attribute("x").as_float();
-	slimeinfo.Velocity.y = slimenode.child("Velocity").attribute("y").as_float();
+	slimeinfo.Velocity.x = slimeinfo.auxVel.x = slimenode.child("Velocity").attribute("x").as_float();
+	slimeinfo.Velocity.y = slimeinfo.auxVel.y = slimenode.child("Velocity").attribute("y").as_float();
 	slimeinfo.initialVx = slimenode.child("Velocity").attribute("initalVx").as_float();
 	slimeinfo.colliding_offset = slimenode.child("colliding_offset").attribute("value").as_float();
 	slimeinfo.areaofaction = slimenode.child("areaofaction").attribute("value").as_int();
@@ -126,8 +126,8 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 	batinfo.flyLeft = LoadAnimation(batinfo.folder.GetString(), "bat left");
 
 	batinfo.gravity = batnode.child("gravity").attribute("value").as_float(); //
-	batinfo.Velocity.x = batnode.child("Velocity").attribute("x").as_float();
-	batinfo.Velocity.y = batnode.child("Velocity").attribute("y").as_float();
+	batinfo.Velocity.x = batinfo.auxVel.x = batnode.child("Velocity").attribute("x").as_float();
+	batinfo.Velocity.y = batinfo.auxVel.y = batnode.child("Velocity").attribute("y").as_float();
 	batinfo.initialVx = batnode.child("Velocity").attribute("initalVx").as_float();
 	batinfo.colliding_offset = batnode.child("colliding_offset").attribute("value").as_float();
 	batinfo.areaofaction = batnode.child("areaofaction").attribute("value").as_int();
@@ -219,6 +219,7 @@ bool j1EntityManager::PostUpdate(float dt)
 bool j1EntityManager::CleanUp()
 {
 	LOG("cleanup j1EntityManager");
+
 	// release all entities
 	p2List_item<j1Entity*>* entity = entities.start;
 

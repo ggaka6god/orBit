@@ -129,7 +129,7 @@ bool j1Player::Update(float dt)
 				if (-(position.x - auxpos) > dt/10.0f )
 				{
 					if (entitystate != JUMPING && entitystate != FALLING && !must_fall)
-					position.x += 0.4f;
+					position.x += 0.49f;
 				}
 
 				going_left = true;
@@ -151,12 +151,11 @@ bool j1Player::Update(float dt)
 				/*Velocity.x = playerinfo.initialVx;
 				position.x = position.x + ceil((Velocity.x)*dt);*/
 
-				position.x += ceil(playerinfo.initialVx*dt);
+				position.x += ceilf(playerinfo.initialVx*dt);
 
 				if ((position.x - auxpos) > (dt * 200.0f))
 				{
-					//if (entitystate != JUMPING && entitystate != FALLING && !must_fall)
-						position.x -= 0.1f;
+						position.x -= 0.9f;
 				}
 
 				going_right = true;

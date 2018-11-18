@@ -71,113 +71,108 @@ bool j1Slime::PostUpdate(float dt)
 {
 	bool ret = true;
 
-
-	if ((position.x)*App->win->GetScale() >= -App->render->camera.x && (position.x)*App->win->GetScale() <= -App->render->camera.x + App->render->camera.w)
+	if (!App->scene->player->dead)
 	{
-		//check for player nearby
 
-		if (App->scene->player->position.x > position.x - Slimeinfo.areaofaction &&
-			App->scene->player->position.x < position.x + Slimeinfo.areaofaction &&
-			App->scene->player->position.y < position.y + Slimeinfo.areaofaction &&
-			App->scene->player->position.y > position.y - Slimeinfo.areaofaction)
+		if ((position.x)*App->win->GetScale() >= -App->render->camera.x && (position.x)*App->win->GetScale() <= -App->render->camera.x + App->render->camera.w)
 		{
-			if (App->scene->player->position.x > position.x && entitystate != FALLING)
+			//check for player nearby
+
+			if (App->scene->player->position.x > position.x - Slimeinfo.areaofaction &&
+				App->scene->player->position.x < position.x + Slimeinfo.areaofaction &&
+				App->scene->player->position.y < position.y + Slimeinfo.areaofaction &&
+				App->scene->player->position.y > position.y - Slimeinfo.areaofaction)
 			{
-				CurrentAnimation = Slimeinfo.runRight;
-				entitystate = RIGHT;
-				going_right = true;
+				if (App->scene->player->position.x > position.x && entitystate != FALLING)
+				{
+					CurrentAnimation = Slimeinfo.runRight;
+					entitystate = RIGHT;
+					going_right = true;
+				}
+
+				else if (App->scene->player->position.x < position.x && entitystate != FALLING)
+				{
+					CurrentAnimation = Slimeinfo.runLeft;
+					entitystate = LEFT;
+					going_right = false;
+				}
+				else if (App->scene->player->position.x == position.x && entitystate != FALLING)
+				{
+					CurrentAnimation = Slimeinfo.runRight;
+					entitystate = IDLE;
+					going_right = false;
+				}
+
+				CreatePathfinding({ (int)App->scene->player->position.x, (int)App->scene->player->position.y });
+
+				Pathfind(dt);
 
 			}
-				
-			else if (App->scene->player->position.x < position.x && entitystate != FALLING)
+			else
 			{
-				CurrentAnimation = Slimeinfo.runLeft;
-				entitystate = LEFT;
-				going_right = false;
-			}
-			else if (App->scene->player->position.x == position.x && entitystate != FALLING)
-			{
-				CurrentAnimation = Slimeinfo.runRight;
-				entitystate = IDLE;
-				going_right = false;
+				if (Slimeinfo.Velocity != Slimeinfo.auxVel)
+				{
+					Slimeinfo.Velocity = Slimeinfo.auxVel;
+				}
 
-			}
-
-
-			//int pathok= App->pathfinding->CreatePath({ (int)App->scene->player->position.x,(int)App->scene->player->position.y }, { (int)this->position.x, (int)this->position.y });
-			//path=App->pathfinding->GetLastPath();
-
-		}
-		
 				if (entitystate != FALLING && entitystate == RIGHT)
-						{
-							position.x += Slimeinfo.Velocity.x*dt;
-							entitystate = RIGHT;
-							must_fall = false;
-						}
+				{
+					position.x += Slimeinfo.Velocity.x*dt;
+					entitystate = RIGHT;
+					must_fall = false;
+				}
+
 				else if (entitystate != FALLING && entitystate == LEFT)
-						{
-							position.x -= Slimeinfo.Velocity.x*dt;
-							entitystate = LEFT;
-							must_fall = false;
-						}
+				{
+					position.x -= Slimeinfo.Velocity.x*dt;
+					entitystate = LEFT;
+					must_fall = false;
+				}
+			}
 
+			if (entitystate == RIGHT)
+				CurrentAnimation = Slimeinfo.runRight;
+			else if (entitystate == LEFT)
+				CurrentAnimation = Slimeinfo.runLeft;
 
-				if (entitystate == RIGHT)
-							CurrentAnimation = Slimeinfo.runRight;
-				else if (entitystate == LEFT)
-							CurrentAnimation = Slimeinfo.runLeft;
-		
-		
+			//If no ground, free fall
+			if (must_fall)
+			{
+				position.y -= gravity*dt;
+			}
 
-		//If no ground, free fall
-		if (must_fall)
-		{
-			position.y -= gravity*dt;
+			if (position.x < 0)
+			{
+				position.x = 0;
+				entitycoll->rect.x = 0;
+			}
+			else if (position.x > App->map->data.width*App->map->data.tile_width)
+			{
+				position.x = App->map->data.width*App->map->data.tile_width;
+			}
+
+			//Check if slime is Falling 
+
+			if (slimecolliding == false)
+			{
+				entitystate = FALLING;
+			}
 		}
-
-		if (position.x < 0)
-		{
-			position.x = 0;
-			entitycoll->rect.x = 0;
-		}
-		else if (position.x > App->map->data.width*App->map->data.tile_width)
-		{
-			position.x = App->map->data.width*App->map->data.tile_width;
-		}
-
-		//Check if slime is Falling 
-
-
-		if (slimecolliding == false)
-		{
-			entitystate = FALLING;
-		}
-
-
-		//Blitting slime
-
-	
-		App->render->Blit(spritesheet, position.x - Slimeinfo.printingoffset.x, position.y + Slimeinfo.printingoffset.y, &CurrentAnimation->GetCurrentFrame(dt));
-		
-		
-
-		//return ret;
 	}
+
+	//Blitting slime
+	App->render->Blit(spritesheet, position.x - Slimeinfo.printingoffset.x, position.y + Slimeinfo.printingoffset.y, &CurrentAnimation->GetCurrentFrame(dt));
 
 	return ret;
 }
+
+
 
 void j1Slime::OnCollision(Collider * c1, Collider * c2)
 {
 	bool lateralcollision = true;
 
-	//if (c1->rect.y + c1->rect.h == c2->rect.y)
-	//{
-	//	lateralcollision = false;
-	//}
-
-	if (c1->rect.y + c1->rect.h >= c2->rect.y && c1->rect.y + c1->rect.h <= c2->rect.y + 2)
+	if (c1->rect.y + c1->rect.h >= c2->rect.y && c1->rect.y + c1->rect.h <= c2->rect.y + 3)
 	{
 		lateralcollision = false;
 	}
@@ -206,7 +201,6 @@ void j1Slime::OnCollision(Collider * c1, Collider * c2)
 
 		slimecolliding = true;
 
-
 	}
 
 	if (lateralcollision)
@@ -224,13 +218,108 @@ void j1Slime::OnCollision(Collider * c1, Collider * c2)
 			entitystate = RIGHT;
 			going_left = false;
 			c1->rect.x = c2->rect.x + c2->rect.w + 2.0f;
-			
 		}
 		slimecolliding = true;
 			
 		position.x = c1->rect.x;
 	}
 
+}
+
+bool j1Slime::ReestablishVariables()
+{
+	bool ret = true;
+
+	pathfinding_size = 0;
+
+	return ret;
+}
+
+bool j1Slime::CreatePathfinding(const iPoint destination)
+{
+	bool ret = false;
+
+	if (App->scene->firstStage == true)
+	{
+		if (App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y, App->map->data), App->map->WorldToMap(destination.x, destination.y, App->map->data)))
+		{
+			last_pathfinding = App->pathfinding->GetLastPath();
+			pathfinding_size = last_pathfinding->Count();
+			pathfinding_index = 1;
+			current_path.Clear();
+
+			for (int i = 0; i < pathfinding_size; ++i) {
+				current_path.PushBack(*last_pathfinding->At(i));
+				ret = true;
+			}
+		}
+	}
+
+	else
+	{
+		if (App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y, App->map->data2), App->map->WorldToMap(destination.x, destination.y, App->map->data2)))
+		{
+			last_pathfinding = App->pathfinding->GetLastPath();
+			pathfinding_size = last_pathfinding->Count();
+			pathfinding_index = 1;
+			current_path.Clear();
+
+			for (int i = 0; i < pathfinding_size; ++i) {
+				current_path.PushBack(*last_pathfinding->At(i));
+				ret = true;
+			}
+		}
+	}
+
+	return ret;
+}
+
+bool j1Slime::Pathfind(float dt)
+{
+	bool ret = true;
+
+	if (pathfinding_size > 1) {
+		if (App->scene->firstStage == true)
+		{
+			iPoint next_node = App->map->MapToWorld(current_path[pathfinding_index].x, current_path[pathfinding_index].y, App->map->data);
+			UpdateMovement(dt);
+
+			if (App->map->WorldToMap(position.x, position.y, App->map->data) == App->map->WorldToMap(next_node.x, next_node.y, App->map->data)) {
+				if (pathfinding_index < pathfinding_size - 1)
+					pathfinding_index++;
+			}
+			if (App->map->WorldToMap(position.x, position.y, App->map->data) == current_path[pathfinding_size - 1])
+				ret = false;
+		}
+
+		else
+		{
+			iPoint next_node = App->map->MapToWorld(current_path[pathfinding_index].x, current_path[pathfinding_index].y, App->map->data2);
+			UpdateMovement(dt);
+
+			if (App->map->WorldToMap(position.x, position.y, App->map->data2) == App->map->WorldToMap(next_node.x, next_node.y, App->map->data2)) {
+				if (pathfinding_index < pathfinding_size - 1)
+					pathfinding_index++;
+			}
+			if (App->map->WorldToMap(position.x, position.y, App->map->data2) == current_path[pathfinding_size - 1])
+				ret = false;
+		}
+	}
+	else
+		ret = false;
+
+	return ret;
+}
+
+void j1Slime::UpdateMovement(float dt)
+{
+	Slimeinfo.Velocity.x = current_path[pathfinding_index].x - App->map->WorldToMap(position.x, position.y, App->map->data).x;
+	Slimeinfo.Velocity.y = current_path[pathfinding_index].y - App->map->WorldToMap(position.x, position.y, App->map->data).y;
+
+	Slimeinfo.Velocity.x = Slimeinfo.Velocity.x*50.0f * dt;
+	Slimeinfo.Velocity.y = Slimeinfo.Velocity.y*50.0f * dt;
+	position.x += Slimeinfo.Velocity.x;
+	position.y += Slimeinfo.Velocity.y;
 }
 
 
@@ -273,6 +362,9 @@ bool j1Slime::Save(pugi::xml_node &config) const
 bool j1Slime::CleanUp()
 {
 	bool ret = true;
+	
+	delete path_info;
+
 	App->tex->UnLoad(spritesheet);
 
 	if (entitycoll != nullptr)

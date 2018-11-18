@@ -6,6 +6,7 @@
 #include "SDL\include\SDL.h"
 #include "Animation.h"
 #include "PugiXml\src\pugixml.hpp"
+#include "p2DynArray.h"
 
 class j1EntityManager;
 struct Collider;

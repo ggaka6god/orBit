@@ -1,13 +1,11 @@
 #ifndef __j1BAT_H__
 #define __j1BAT_H__
 
-#include "j1Module.h"
-#include "p2Point.h"
-#include "Animation.h"
 #include "j1Entity.h"
 
 struct SDL_Texture;
 struct Collider;
+struct PathInfo;
 
 struct BatData {
 
@@ -21,6 +19,7 @@ struct BatData {
 
 	SDL_Rect		BatRect = { 0,0,0,0 };
 	fPoint          Velocity = { 0,0 };
+	fPoint          auxVel = { 0,0 };
 	iPoint			printingoffset = { 0,0 };
 
 	float           gravity = 0;
@@ -57,6 +56,18 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
+	// --- Pathfinding ---
+
+	bool ReestablishVariables();
+
+	bool CreatePathfinding(const iPoint destination);
+
+	bool Pathfind(float dt);
+
+	void UpdateMovement(float dt);
+
+	// ----------------------
+
 public:
 	bool dead = false;
 	bool going_right = false;
@@ -70,7 +81,21 @@ public:
 
 	BatData BatInfo;
 
-	//const p2DynArray<iPoint>* path;
+	// Pathfinding
+	const p2DynArray<iPoint>* last_pathfinding = nullptr;
+	p2DynArray<iPoint> current_path;
+
+	uint pathfinding_index = 0;
+	uint pathfinding_size = 0;
+
+	bool create_pathfinding = false;
+	bool pathfinding_stop = false;
+	bool pathfinding_finished = true;
+	bool pathfinding = false;
+	bool pathfind = false;
+	//_pathfinding
+
+	PathInfo* path_info = nullptr;
 
 };
 

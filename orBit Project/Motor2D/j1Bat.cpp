@@ -13,8 +13,12 @@
 #include "j1Player.h"
 #include "j1Pathfinding.h"
 
+
 j1Bat::j1Bat() : j1Entity("Bat", entity_type::BAT)
 {
+
+	last_pathfinding = nullptr;
+	current_path.Clear();
 }
 
 j1Bat::~j1Bat()
@@ -84,50 +88,10 @@ bool j1Bat::PostUpdate(float dt)
 			App->scene->player->position.y < position.y + BatInfo.areaofaction &&
 			App->scene->player->position.y > position.y - BatInfo.areaofaction)
 		{
-			if (App->scene->player->position.x > position.x )
-			{
-				CurrentAnimation = BatInfo.flyRight;
-				
-				going_right = true;
-
-			}
-
-			else if (App->scene->player->position.x < position.x )
-			{
-				CurrentAnimation = BatInfo.flyLeft;
-				
-				going_right = false;
-			}
-
-			if (App->scene->player->position.y > position.y)
-			{
-				going_down = false;
-				going_up = true;
-			}
-
-			else if (App->scene->player->position.y < position.y)
-			{
-				
-				going_down = true;
-				going_up = false;
-			}
-
-			else if (App->scene->player->position.y == position.y  && App->scene->player->position.x == position.x)
-
-			{
-				going_down = false;
-				going_up = false;
-				going_right = false;
-				going_left = false;
-				CurrentAnimation = BatInfo.flyRight;
-
-			}
-
 		
+			CreatePathfinding({ (int)App->scene->player->position.x, (int)App->scene->player->position.y });
 
-		//	//int pathok= App->pathfinding->CreatePath({ (int)App->scene->player->position.x,(int)App->scene->player->position.y }, { (int)this->position.x, (int)this->position.y });
-		//	//path=App->pathfinding->GetLastPath();
-
+			Pathfind(dt);
 		}
 
 		//Debug Purpose (moving bat around)
@@ -152,36 +116,41 @@ bool j1Bat::PostUpdate(float dt)
 			going_down = true;
 		}*/
 
-		if (going_right)
+		else
 		{
-			position.x += BatInfo.Velocity.x*dt;
-		}
-		else if ( !going_right)
-		{
-			position.x -= BatInfo.Velocity.x*dt;
-			
-		}
+			if (BatInfo.Velocity != BatInfo.auxVel)
+			{
+				BatInfo.Velocity = BatInfo.auxVel;
+			}
 
-		if (going_up)
-		{
-			position.y += BatInfo.Velocity.y*dt;
+			if (going_right)
+			{
+				position.x += BatInfo.Velocity.x*dt;
+			}
+			else if (!going_right)
+			{
+				position.x -= BatInfo.Velocity.x*dt;
+
+			}
+
+			if (going_up)
+			{
+				position.y += BatInfo.Velocity.y*dt;
+
+			}
+			else if (going_down)
+			{
+				position.y -= BatInfo.Velocity.y*dt;
+
+			}
 
 		}
-		else if (going_down)
-		{
-			position.y -= BatInfo.Velocity.y*dt;
-
-		}
-
 
 		if (going_right)
 			CurrentAnimation = BatInfo.flyRight;
 		else if (!going_right)
 			CurrentAnimation = BatInfo.flyLeft;
 
-
-
-		
 		//check for limits
 		if (position.x < 0)
 		{
@@ -193,13 +162,9 @@ bool j1Bat::PostUpdate(float dt)
 			position.x = App->map->data.width*App->map->data.tile_width;
 		}
 
-		
-
 		//Blitting bat
 
 		App->render->Blit(spritesheet, position.x - BatInfo.printingoffset.x, position.y - BatInfo.printingoffset.y, &CurrentAnimation->GetCurrentFrame(dt));
-
-		//return ret;
 	}
 	return ret;
 }
@@ -253,7 +218,100 @@ void j1Bat::OnCollision(Collider * c1, Collider * c2)
 	position.y = c1->rect.y;
 }
 
+bool j1Bat::ReestablishVariables()
+{
+	bool ret = true;
 
+	pathfinding_size = 0;
+
+	return ret;
+}
+
+bool j1Bat::CreatePathfinding(const iPoint destination)
+{
+	bool ret = false;
+
+	if (App->scene->firstStage == true)
+	{
+		if (App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y, App->map->data), App->map->WorldToMap(destination.x, destination.y,App->map->data)))
+		{
+			last_pathfinding = App->pathfinding->GetLastPath();
+			pathfinding_size = last_pathfinding->Count();
+			pathfinding_index = 1;
+			current_path.Clear();
+
+			for (int i = 0; i < pathfinding_size; ++i) {
+				current_path.PushBack(*last_pathfinding->At(i));
+				ret = true;
+			}
+		}
+	}
+	else
+	{
+		if (App->pathfinding->CreatePath(App->map->WorldToMap(position.x, position.y, App->map->data2), App->map->WorldToMap(destination.x, destination.y,App->map->data2)))
+		{
+			last_pathfinding = App->pathfinding->GetLastPath();
+			pathfinding_size = last_pathfinding->Count();
+			pathfinding_index = 1;
+			current_path.Clear();
+
+			for (int i = 0; i < pathfinding_size; ++i) {
+				current_path.PushBack(*last_pathfinding->At(i));
+				ret = true;
+			}
+		}
+	}
+
+	return ret;
+}
+
+bool j1Bat::Pathfind(float dt)
+{
+	bool ret = true;
+
+	if (pathfinding_size > 1) {
+		if (App->scene->firstStage == true)
+		{
+			iPoint next_node = App->map->MapToWorld(current_path[pathfinding_index].x, current_path[pathfinding_index].y,App->map->data);
+			UpdateMovement(dt);
+
+			if (App->map->WorldToMap(position.x, position.y,App->map->data) == App->map->WorldToMap(next_node.x, next_node.y,App->map->data)) {
+				if (pathfinding_index < pathfinding_size - 1)
+					pathfinding_index++;
+			}
+			if (App->map->WorldToMap(position.x, position.y,App->map->data) == current_path[pathfinding_size - 1])
+				ret = false;
+		}
+
+		else
+		{
+			iPoint next_node = App->map->MapToWorld(current_path[pathfinding_index].x, current_path[pathfinding_index].y, App->map->data2);
+			UpdateMovement(dt);
+
+			if (App->map->WorldToMap(position.x, position.y, App->map->data2) == App->map->WorldToMap(next_node.x, next_node.y, App->map->data2)) {
+				if (pathfinding_index < pathfinding_size - 1)
+					pathfinding_index++;
+			}
+			if (App->map->WorldToMap(position.x, position.y, App->map->data2) == current_path[pathfinding_size - 1])
+				ret = false;
+		}
+	}
+	else
+		ret = false;
+
+	return ret;
+}
+
+void j1Bat::UpdateMovement(float dt)
+{
+	BatInfo.Velocity.x = current_path[pathfinding_index].x - App->map->WorldToMap(position.x, position.y,App->map->data).x;
+	BatInfo.Velocity.y = current_path[pathfinding_index].y - App->map->WorldToMap(position.x, position.y, App->map->data).y;
+
+	BatInfo.Velocity.x = BatInfo.Velocity.x*50.0f * dt;
+	BatInfo.Velocity.y = BatInfo.Velocity.y*50.0f * dt;
+	position.x += BatInfo.Velocity.x;
+	position.y += BatInfo.Velocity.y;
+}
 
 bool j1Bat::Load(pugi::xml_node &config)
 {
@@ -289,6 +347,8 @@ bool j1Bat::Save(pugi::xml_node &config) const
 
 bool j1Bat::CleanUp()
 {
+	delete path_info;
+
 	bool ret = true;
 	App->tex->UnLoad(spritesheet);
 

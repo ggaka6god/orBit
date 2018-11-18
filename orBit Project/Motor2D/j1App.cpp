@@ -225,7 +225,7 @@ void j1App::FinishUpdate()
 		j1PerfTimer t;
 		if(cap_on)
 		SDL_Delay(capped_ms - last_frame_ms);
-		LOG("We waited for %d milliseconds and got back in %f", capped_ms - last_frame_ms, t.ReadMs());
+		//LOG("We waited for %d milliseconds and got back in %f", capped_ms - last_frame_ms, t.ReadMs());
 	}
 }
 

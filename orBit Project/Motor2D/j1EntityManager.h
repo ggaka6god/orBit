@@ -12,6 +12,20 @@
 #include "j1Slime.h"
 #include "j1Bat.h"
 
+struct PathInfo
+{
+	iPoint start_pos = { 0,0 };
+	iPoint end_pos = { 0,0 };
+	iPoint* path = nullptr;
+	int path_size = 0;
+
+	PathInfo();
+	PathInfo(const PathInfo& i);
+	~PathInfo() {
+		RELEASE_ARRAY(path);
+	}
+};
+
 //#define DEFAULT_LOGIC_PER_SECOND 60
 
 class j1Entity;
@@ -65,7 +79,6 @@ public:
 	float				accumulated_time = 0;
 
 	int					entityID = 0;
-
 
 private:
 	// --- Player ---
