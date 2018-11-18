@@ -83,7 +83,7 @@ Licensed under the [MIT License](LICENSE.txt)
 
 - Camera: Only tiles inside the camera are printed 
 
--Colliders: Only colliders that are in camera are checked in module collisions Update
+- Colliders: Only colliders that are in camera are checked in module collisions Update
 
 ## Innovation Second Assignment
 
