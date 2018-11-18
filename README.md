@@ -68,9 +68,8 @@ https://www.bfxr.net/
 
 Licensed under the [MIT License](LICENSE.txt)
 
-## Innovation
 
-## First Assignment
+## Innovation First Assignment
 
 ### Additional fetures added
 
@@ -86,7 +85,7 @@ Licensed under the [MIT License](LICENSE.txt)
 
 -Colliders: Only colliders that are in camera are checked in module collisions Update
 
-## Second Assignment
+## Innovation Second Assignment
 
 ### Additional fetures added
 
