@@ -371,9 +371,8 @@ bool j1Scene::Update(float dt)
 			App->map->data.tile_width, App->map->data.tile_height,
 			App->map->data.tilesets.count(),
 			map_coordinates.x, map_coordinates.y);
-		
-		//Debug Purpose
-		//App->win->SetTitle(title.GetString());
+
+		App->win->SetTitle(title.GetString());
 	}
 	else
 	{
@@ -387,8 +386,7 @@ bool j1Scene::Update(float dt)
 			App->map->data.tilesets.count(),
 			map_coordinates.x, map_coordinates.y);
 
-		//Debug Purpose
-		//App->win->SetTitle(title.GetString());
+		App->win->SetTitle(title.GetString());
 	}
 
 	// --- Debug Pathfinding
@@ -607,7 +605,7 @@ bool j1Scene::Load(pugi::xml_node &config)
 	bool ret = true;
 	int x = player->position.x;
 	int y = player->position.y;
-	player->dead = false;
+
 	
 
 	DestinationStage1 = config.child("firstStage").attribute("value").as_bool();

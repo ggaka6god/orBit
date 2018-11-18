@@ -67,97 +67,96 @@ bool j1Player::Update(float dt)
 {
 	//Player Update
 
-	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
-	{
-		if (god_mode == false)
+		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 		{
-			god_mode = true;
-			entitystate = JUMPING;
-			playercolliding = false;
-		}
-		else
-			god_mode = false;
+			if (god_mode == false)
+			{
+				god_mode = true;
+				entitystate = JUMPING;
+				playercolliding = false;
+			}
+			else
+				god_mode = false;
 
-	}
-
-	if (initialmoment)
-	{
-		entitystate = FALLING;
-	}
-
-	if (wasRight == true)
-		CurrentAnimation = playerinfo.idleRight;
-	else if (wasRight == false)
-		CurrentAnimation = playerinfo.idleLeft;
-
-	//Check if player is Falling or jumping
-
-	if (Velocity.y < 0.0f && entitystate == JUMPING)
-	{
-		entitystate = FALLING;
-	}
-
-	if (playercolliding == false && entitystate == IDLE)
-	{
-		entitystate = FALLING;
-	}
-
-	//Horizontal Movement 
-
-
-	if (CurrentAnimation != playerinfo.deathRight && CurrentAnimation != playerinfo.deathLeft)
-	{
-		if (dead == true)
-		{
-			//dead = false;
-			playerinfo.deathLeft->Reset();
-			playerinfo.deathRight->Reset();
 		}
 
-		if (!dead)
+		if (initialmoment)
 		{
-				if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			entitystate = FALLING;
+		}
+
+		if (wasRight == true)
+			CurrentAnimation = playerinfo.idleRight;
+		else if (wasRight == false)
+			CurrentAnimation = playerinfo.idleLeft;
+
+		//Check if player is Falling or jumping
+
+		if (Velocity.y < 0.0f && entitystate == JUMPING)
+		{
+			entitystate = FALLING;
+		}
+
+		if (playercolliding == false && entitystate == IDLE)
+		{
+			entitystate = FALLING;
+		}
+
+		//Horizontal Movement 
+
+
+		if (CurrentAnimation != playerinfo.deathRight && CurrentAnimation != playerinfo.deathLeft)
+		{
+			if (dead == true)
+			{
+				dead = false;
+				playerinfo.deathLeft->Reset();
+				playerinfo.deathRight->Reset();
+			}
+
+
+			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			{
+				if (first_move == false)
 				{
-					if (first_move == false)
-					{
-						first_move = true;
-					}
-
-					float auxpos = position.x;
-
-					position.x -= playerinfo.initialVx*dt;
-
-					if (-(position.x - auxpos) > dt/10.0f )
-					{
-						if (entitystate != JUMPING && entitystate != FALLING && !must_fall)
-						position.x += 0.4f;
-					}
-
-					going_left = true;
-					going_right = false;
-					CurrentAnimation = playerinfo.runLeft;
-					wasRight = false;
+					first_move = true;
 				}
 
-				if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+				float auxpos = position.x;
+
+				position.x -= playerinfo.initialVx*dt;
+
+				if (-(position.x - auxpos) > dt/10.0f )
 				{
+					if (entitystate != JUMPING && entitystate != FALLING && !must_fall)
+					position.x += 0.4f;
+				}
 
-					if (first_move == false)
-					{
-						first_move = true;
-					}
+				going_left = true;
+				going_right = false;
+				CurrentAnimation = playerinfo.runLeft;
+				wasRight = false;
+			}
 
-					float auxpos = position.x;
+			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			{
 
-					/*Velocity.x = playerinfo.initialVx;
-					position.x = position.x + ceil((Velocity.x)*dt);*/
+				if (first_move == false)
+				{
+					first_move = true;
+				}
 
-					position.x += ceil(playerinfo.initialVx*dt);
+				float auxpos = position.x;
+
+				/*Velocity.x = playerinfo.initialVx;
+				position.x = position.x + ceil((Velocity.x)*dt);*/
+
+				position.x += ceil(playerinfo.initialVx*dt);
 
 				if ((position.x - auxpos) > (dt * 200.0f))
 				{
 					//if (entitystate != JUMPING && entitystate != FALLING && !must_fall)
-					position.x -= 0.1f;
+						position.x -= 0.1f;
 				}
 
 				going_right = true;
@@ -186,8 +185,8 @@ bool j1Player::Update(float dt)
 			{
 				Velocity.x = playerinfo.initialVx;
 				position.y += Velocity.x*dt;
-	}
-}
+			}
+
 
 			//Vertical Movement
 
