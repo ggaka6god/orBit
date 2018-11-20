@@ -5,7 +5,7 @@
 #include "SDL/include/SDL_rect.h"
 #include "p2List.h"
 
-enum COLLIDER_TYPE
+enum class COLLIDER_TYPE
 {
 	COLLIDER_NONE = -1,
 	COLLIDER_FLOOR,
@@ -17,7 +17,6 @@ enum COLLIDER_TYPE
 	COLLIDER_ENEMY_SLIME,
 	COLLIDER_ENEMY_BAT,
 	COLLIDER_MAX
-
 };
 
 struct Collider
@@ -58,12 +57,13 @@ public:
 	void DebugDraw();
 
 	p2List<Collider*> colliders;
-	bool debug = false;
+	bool debug = true;
 
 	void QueryCollisions(Collider &to_check) const;
 
 private:
-	bool matrix[COLLIDER_MAX][COLLIDER_MAX];
+
+	bool matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_MAX)][static_cast<int>(COLLIDER_TYPE::COLLIDER_MAX)];
 };
 
 #endif // __j1Collision_H__

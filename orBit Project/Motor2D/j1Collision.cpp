@@ -13,77 +13,79 @@ j1Collision::j1Collision()
 {
 	name.create("collision");
 
-	matrix[COLLIDER_FLOOR][COLLIDER_PLAYER] = false;
-	matrix[COLLIDER_FLOOR][COLLIDER_FLOOR] = false;
-	matrix[COLLIDER_FLOOR][COLLIDER_SPIKES] = false;
-	matrix[COLLIDER_FLOOR][COLLIDER_PLATFORM] = false;
-	matrix[COLLIDER_FLOOR][COLLIDER_ROOF] = false;
-	matrix[COLLIDER_FLOOR][CHECKPOINT] = false;
-	matrix[COLLIDER_FLOOR][COLLIDER_ENEMY_BAT] = false;
-	matrix[COLLIDER_FLOOR][COLLIDER_ENEMY_SLIME] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_FLOOR)][static_cast<int>(COLLIDER_TYPE::COLLIDER_PLAYER)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_FLOOR)][static_cast<int>(COLLIDER_TYPE::COLLIDER_FLOOR)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_FLOOR)][static_cast<int>(COLLIDER_TYPE::COLLIDER_SPIKES)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_FLOOR)][static_cast<int>(COLLIDER_TYPE::COLLIDER_PLATFORM)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_FLOOR)][static_cast<int>(COLLIDER_TYPE::COLLIDER_ROOF)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_FLOOR)][static_cast<int>(COLLIDER_TYPE::CHECKPOINT)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_FLOOR)][static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_BAT)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_FLOOR)][static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_SLIME)] = false;
 
-	matrix[COLLIDER_PLATFORM][COLLIDER_PLAYER] = false;
-	matrix[COLLIDER_PLATFORM][COLLIDER_FLOOR] = false;
-	matrix[COLLIDER_PLATFORM][COLLIDER_SPIKES] = false;
-	matrix[COLLIDER_PLATFORM][COLLIDER_PLATFORM] = false;
-	matrix[COLLIDER_PLATFORM][COLLIDER_ROOF] = false;
-	matrix[COLLIDER_PLATFORM][CHECKPOINT] = false;
-	matrix[COLLIDER_PLATFORM][COLLIDER_ENEMY_BAT] = false;
-	matrix[COLLIDER_PLATFORM][COLLIDER_ENEMY_SLIME] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_PLATFORM)][static_cast<int>(COLLIDER_TYPE::COLLIDER_PLAYER)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_PLATFORM)][static_cast<int>(COLLIDER_TYPE::COLLIDER_FLOOR)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_PLATFORM)][static_cast<int>(COLLIDER_TYPE::COLLIDER_SPIKES)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_PLATFORM)][static_cast<int>(COLLIDER_TYPE::COLLIDER_PLATFORM)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_PLATFORM)][static_cast<int>(COLLIDER_TYPE::COLLIDER_ROOF)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_PLATFORM)][static_cast<int>(COLLIDER_TYPE::CHECKPOINT)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_PLATFORM)][static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_BAT)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_PLATFORM)][static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_SLIME)] = false;
 
-	matrix[COLLIDER_ROOF][COLLIDER_PLAYER] = false;
-	matrix[COLLIDER_ROOF][COLLIDER_FLOOR] = false;
-	matrix[COLLIDER_ROOF][COLLIDER_SPIKES] = false;
-	matrix[COLLIDER_ROOF][COLLIDER_PLATFORM] = false;
-	matrix[COLLIDER_ROOF][COLLIDER_ROOF] = false;
-	matrix[COLLIDER_ROOF][CHECKPOINT] = false;
-	matrix[COLLIDER_ROOF][COLLIDER_ENEMY_BAT] = false;
-	matrix[COLLIDER_ROOF][COLLIDER_ENEMY_SLIME] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_ROOF)][static_cast<int>(COLLIDER_TYPE::COLLIDER_PLAYER)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_ROOF)][static_cast<int>(COLLIDER_TYPE::COLLIDER_FLOOR)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_ROOF)][static_cast<int>(COLLIDER_TYPE::COLLIDER_SPIKES)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_ROOF)][static_cast<int>(COLLIDER_TYPE::COLLIDER_PLATFORM)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_ROOF)][static_cast<int>(COLLIDER_TYPE::COLLIDER_ROOF)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_ROOF)][static_cast<int>(COLLIDER_TYPE::CHECKPOINT)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_ROOF)][static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_BAT)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_ROOF)][static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_SLIME)] = false;
 
-	matrix[CHECKPOINT][COLLIDER_PLAYER] = false;
-	matrix[CHECKPOINT][COLLIDER_FLOOR] = false;
-	matrix[CHECKPOINT][COLLIDER_SPIKES] = false;
-	matrix[CHECKPOINT][COLLIDER_PLATFORM] = false;
-	matrix[CHECKPOINT][COLLIDER_ROOF] = false;
-	matrix[CHECKPOINT][CHECKPOINT] = false;
-	matrix[CHECKPOINT][COLLIDER_ENEMY_BAT] = false;
-	matrix[CHECKPOINT][COLLIDER_ENEMY_SLIME] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::CHECKPOINT)][static_cast<int>(COLLIDER_TYPE::COLLIDER_PLAYER)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::CHECKPOINT)][static_cast<int>(COLLIDER_TYPE::COLLIDER_FLOOR)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::CHECKPOINT)][static_cast<int>(COLLIDER_TYPE::COLLIDER_SPIKES)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::CHECKPOINT)][static_cast<int>(COLLIDER_TYPE::COLLIDER_PLATFORM)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::CHECKPOINT)][static_cast<int>(COLLIDER_TYPE::COLLIDER_ROOF)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::CHECKPOINT)][static_cast<int>(COLLIDER_TYPE::CHECKPOINT)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::CHECKPOINT)][static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_BAT)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::CHECKPOINT)][static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_SLIME)] = false;
 
-	matrix[COLLIDER_SPIKES][COLLIDER_PLAYER] = false;
-	matrix[COLLIDER_SPIKES][COLLIDER_FLOOR] = false;
-	matrix[COLLIDER_SPIKES][COLLIDER_SPIKES] = false;
-	matrix[COLLIDER_SPIKES][COLLIDER_PLATFORM] = false;
-	matrix[COLLIDER_SPIKES][COLLIDER_ROOF] = false;
-	matrix[COLLIDER_SPIKES][CHECKPOINT] = false;
-	matrix[COLLIDER_SPIKES][COLLIDER_ENEMY_BAT] = false;
-	matrix[COLLIDER_SPIKES][COLLIDER_ENEMY_SLIME] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_SPIKES)][static_cast<int>(COLLIDER_TYPE::COLLIDER_PLAYER)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_SPIKES)][static_cast<int>(COLLIDER_TYPE::COLLIDER_FLOOR)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_SPIKES)][static_cast<int>(COLLIDER_TYPE::COLLIDER_SPIKES)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_SPIKES)][static_cast<int>(COLLIDER_TYPE::COLLIDER_PLATFORM)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_SPIKES)][static_cast<int>(COLLIDER_TYPE::COLLIDER_ROOF)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_SPIKES)][static_cast<int>(COLLIDER_TYPE::CHECKPOINT)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_SPIKES)][static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_BAT)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_SPIKES)][static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_SLIME)] = false;
 
-	matrix[COLLIDER_PLAYER][COLLIDER_FLOOR] = true;
-	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER] = false;
-	matrix[COLLIDER_PLAYER][COLLIDER_SPIKES] = true;
-	matrix[COLLIDER_PLAYER][COLLIDER_PLATFORM] = true;
-	matrix[COLLIDER_PLAYER][COLLIDER_ROOF] = true;
-	matrix[COLLIDER_PLAYER][CHECKPOINT] = true;
-    matrix[COLLIDER_PLAYER][COLLIDER_ENEMY_SLIME] = true;
-	matrix[COLLIDER_PLAYER][COLLIDER_ENEMY_BAT] = true;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_PLAYER)][static_cast<int>(COLLIDER_TYPE::COLLIDER_FLOOR)] = true;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_PLAYER)][static_cast<int>(COLLIDER_TYPE::COLLIDER_PLAYER)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_PLAYER)][static_cast<int>(COLLIDER_TYPE::COLLIDER_SPIKES)] = true;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_PLAYER)][static_cast<int>(COLLIDER_TYPE::COLLIDER_PLATFORM)] = true;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_PLAYER)][static_cast<int>(COLLIDER_TYPE::COLLIDER_ROOF)] = true;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_PLAYER)][static_cast<int>(COLLIDER_TYPE::CHECKPOINT)] = true;
+    matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_PLAYER)][static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_SLIME)] = true;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_PLAYER)][static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_BAT)] = true;
 
-	matrix[COLLIDER_ENEMY_SLIME][COLLIDER_FLOOR] = true;
-	matrix[COLLIDER_ENEMY_SLIME][COLLIDER_PLATFORM] = true;
-	matrix[COLLIDER_ENEMY_SLIME][CHECKPOINT] = false;
-	matrix[COLLIDER_ENEMY_SLIME][COLLIDER_SPIKES] = false;
-	matrix[COLLIDER_ENEMY_SLIME][COLLIDER_ROOF] = false;
-	matrix[COLLIDER_ENEMY_SLIME][COLLIDER_ENEMY_BAT] = false;
-	matrix[COLLIDER_ENEMY_SLIME][COLLIDER_PLAYER] = false;
-	matrix[COLLIDER_ENEMY_SLIME][COLLIDER_ENEMY_SLIME] = false;
 
-	matrix[COLLIDER_ENEMY_BAT][COLLIDER_FLOOR] = true;
-	matrix[COLLIDER_ENEMY_BAT][COLLIDER_SPIKES] = true;
-	matrix[COLLIDER_ENEMY_BAT][COLLIDER_PLATFORM] = true;
-	matrix[COLLIDER_ENEMY_BAT][COLLIDER_ROOF] = true;
-	matrix[COLLIDER_ENEMY_BAT][CHECKPOINT] = false;
-	matrix[COLLIDER_ENEMY_BAT][COLLIDER_ENEMY_BAT] = false;
-	matrix[COLLIDER_ENEMY_BAT][COLLIDER_ENEMY_SLIME] = false;
-	matrix[COLLIDER_ENEMY_BAT][COLLIDER_PLAYER] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_SLIME)][static_cast<int>(COLLIDER_TYPE::COLLIDER_FLOOR)] = true;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_SLIME)][static_cast<int>(COLLIDER_TYPE::COLLIDER_PLATFORM)] = true;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_SLIME)][static_cast<int>(COLLIDER_TYPE::CHECKPOINT)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_SLIME)][static_cast<int>(COLLIDER_TYPE::COLLIDER_SPIKES)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_SLIME)][static_cast<int>(COLLIDER_TYPE::COLLIDER_ROOF)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_SLIME)][static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_BAT)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_SLIME)][static_cast<int>(COLLIDER_TYPE::COLLIDER_PLAYER)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_SLIME)][static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_SLIME)] = false;
+
+
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_BAT)][static_cast<int>(COLLIDER_TYPE::COLLIDER_FLOOR)] = true;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_BAT)][static_cast<int>(COLLIDER_TYPE::COLLIDER_SPIKES)] = true;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_BAT)][static_cast<int>(COLLIDER_TYPE::COLLIDER_PLATFORM)] = true;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_BAT)][static_cast<int>(COLLIDER_TYPE::COLLIDER_ROOF)] = true;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_BAT)][static_cast<int>(COLLIDER_TYPE::CHECKPOINT)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_BAT)][static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_BAT)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_BAT)][static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_SLIME)] = false;
+	matrix[static_cast<int>(COLLIDER_TYPE::COLLIDER_ENEMY_BAT)][static_cast<int>(COLLIDER_TYPE::COLLIDER_PLAYER)] = false;
 
 }
 
@@ -120,87 +122,87 @@ bool j1Collision::Update(float dt)
 
 	bool ret = true;
 
-	//playertouched = 0;
+	////playertouched = 0;
 
-	bool skipcolliders = true; //skip colliders that are not entities
+	//bool skipcolliders = true; //skip colliders that are not entities
 
-	// Calculate collisions
+	//// Calculate collisions
 
-	p2List_item <Collider*> *collider1;
-	p2List_item <Collider*> *collider2;
+	//p2List_item <Collider*> *collider1;
+	//p2List_item <Collider*> *collider2;
 
-	collider2 = collider1 = colliders.start;
-	
-	if(collider1->next!=NULL)
-	collider2 = collider1->next;
+	//collider2 = collider1 = colliders.start;
+	//
+	//if(collider1->next!=NULL)
+	//collider2 = collider1->next;
 
-	
+	//
 
-	while(collider1!=NULL && collider2!=NULL && collider1!=collider2)
-	{
-		skipcolliders = true;
-
-		//check for entities in colliders
-		if (collider1->data->type == COLLIDER_PLAYER	  || collider2->data->type == COLLIDER_PLAYER      ||
-			collider1->data->type == COLLIDER_ENEMY_SLIME || collider2->data->type == COLLIDER_ENEMY_SLIME ||
-			collider1->data->type == COLLIDER_ENEMY_BAT   || collider2->data->type == COLLIDER_ENEMY_BAT)
-		{
-			skipcolliders = false;
-		}
-		
-
-		while (collider2 != NULL && skipcolliders==false)
-		{
-			//We skip colliders that are not in camera
-			skipcolliders = true;
-			
-			//only check area near entity
-			if ( // Target Collision    ------------------------------   Set Area surrounding Entity
-				(collider2->data->rect.x							  <= collider1->data->rect.x + App->scene->areaofcollision &&
-				 collider2->data->rect.x + collider2->data->rect.w    >= collider1->data->rect.x - App->scene->areaofcollision &&
-				 collider2->data->rect.y							  <= collider1->data->rect.y + App->scene->areaofcollision &&
-				 collider2->data->rect.y + collider2->data->rect.h    >= collider1->data->rect.y - App->scene->areaofcollision)
-															||
-				(collider1->data->rect.x							  <= collider2->data->rect.x + App->scene->areaofcollision &&
-				 collider1->data->rect.x + collider1->data->rect.w	  >= collider2->data->rect.x - App->scene->areaofcollision &&
-				 collider1->data->rect.y							  <= collider2->data->rect.y + App->scene->areaofcollision &&
-				 collider1->data->rect.y + collider1->data->rect.h	  >= collider2->data->rect.y - App->scene->areaofcollision)
-				)
-			{
-				skipcolliders = false;
-			}
-			
-			if (skipcolliders == false && collider1->data->CheckCollision(collider2->data->rect) == true)
-			{
-				/*	if (collider1->data->type == COLLIDER_PLAYER || collider2->data->type == COLLIDER_PLAYER)
-					{
-						playertouched++;
-					}*/
-
-					if (matrix[collider1->data->type][collider2->data->type] && collider1->data->callback)
-					{
-						collider1->data->callback->OnCollision(collider1->data, collider2->data);
-					}
-
-					if (matrix[collider2->data->type][collider1->data->type] && collider2->data->callback)
-					{
-						collider2->data->callback->OnCollision(collider2->data, collider1->data);
-					}
-			}
-			
-			collider2 = collider2->next;
-			skipcolliders = false;
-		}
-
-		collider1 = collider1->next;
-		collider2 = collider1->next;
-	}
-	
-
-	//if (App->scene->player->entitystate!=JUMPING && App->scene->player->entitystate!=FALLING && playertouched == 0) 
+	//while(collider1!=NULL && collider2!=NULL && collider1!=collider2)
 	//{
-	//	//App->scene->player->must_fall = true;
+	//	skipcolliders = true;
+
+	//	//check for entities in colliders
+	//	if (collider1->data->type == COLLIDER_TYPE::COLLIDER_PLAYER	  || collider2->data->type == COLLIDER_TYPE::COLLIDER_PLAYER      ||
+	//		collider1->data->type == COLLIDER_TYPE::COLLIDER_ENEMY_SLIME || collider2->data->type == COLLIDER_TYPE::COLLIDER_ENEMY_SLIME ||
+	//		collider1->data->type == COLLIDER_TYPE::COLLIDER_ENEMY_BAT   || collider2->data->type == COLLIDER_TYPE::COLLIDER_ENEMY_BAT)
+	//	{
+	//		skipcolliders = false;
+	//	}
+	//	
+
+	//	while (collider2 != NULL && skipcolliders==false)
+	//	{
+	//		//We skip colliders that are not in camera
+	//		skipcolliders = true;
+	//		
+	//		//only check area near entity
+	//		if ( // Target Collision    ------------------------------   Set Area surrounding Entity
+	//			(collider2->data->rect.x							  <= collider1->data->rect.x + App->scene->areaofcollision &&
+	//			 collider2->data->rect.x + collider2->data->rect.w    >= collider1->data->rect.x - App->scene->areaofcollision &&
+	//			 collider2->data->rect.y							  <= collider1->data->rect.y + App->scene->areaofcollision &&
+	//			 collider2->data->rect.y + collider2->data->rect.h    >= collider1->data->rect.y - App->scene->areaofcollision)
+	//														||
+	//			(collider1->data->rect.x							  <= collider2->data->rect.x + App->scene->areaofcollision &&
+	//			 collider1->data->rect.x + collider1->data->rect.w	  >= collider2->data->rect.x - App->scene->areaofcollision &&
+	//			 collider1->data->rect.y							  <= collider2->data->rect.y + App->scene->areaofcollision &&
+	//			 collider1->data->rect.y + collider1->data->rect.h	  >= collider2->data->rect.y - App->scene->areaofcollision)
+	//			)
+	//		{
+	//			skipcolliders = false;
+	//		}
+	//		
+	//		if (skipcolliders == false && collider1->data->CheckCollision(collider2->data->rect) == true)
+	//		{
+	//			/*	if (collider1->data->type == COLLIDER_PLAYER || collider2->data->type == COLLIDER_PLAYER)
+	//				{
+	//					playertouched++;
+	//				}*/
+
+	//				if (matrix[collider1->data->type][collider2->data->type] && collider1->data->callback)
+	//				{
+	//					collider1->data->callback->OnCollision(collider1->data, collider2->data);
+	//				}
+
+	//				if (matrix[collider2->data->type][collider1->data->type] && collider2->data->callback)
+	//				{
+	//					collider2->data->callback->OnCollision(collider2->data, collider1->data);
+	//				}
+	//		}
+	//		
+	//		collider2 = collider2->next;
+	//		skipcolliders = false;
+	//	}
+
+	//	collider1 = collider1->next;
+	//	collider2 = collider1->next;
 	//}
+	//
+
+	////if (App->scene->player->entitystate!=JUMPING && App->scene->player->entitystate!=FALLING && playertouched == 0) 
+	////{
+	////	//App->scene->player->must_fall = true;
+	////}
 
 	return ret;
 }
@@ -262,35 +264,33 @@ void j1Collision::DebugDraw()
 
 		switch (item->data->type)
 		{
-		case COLLIDER_NONE: // white
+		case COLLIDER_TYPE::COLLIDER_NONE: // white
 			App->render->DrawQuad(item->data->rect, 255, 255, 255, alpha);
 			break;
-		case COLLIDER_FLOOR: // red
+		case COLLIDER_TYPE::COLLIDER_FLOOR: // red
 			App->render->DrawQuad(item->data->rect, 255, 0, 0, alpha);
 			break;
-		case COLLIDER_PLAYER: // green
+		case COLLIDER_TYPE::COLLIDER_PLAYER: // green
 			App->render->DrawQuad(item->data->rect, 0, 255, 0, alpha);
 			break;
-		case COLLIDER_SPIKES: // yellow
+		case COLLIDER_TYPE::COLLIDER_SPIKES: // yellow
 			App->render->DrawQuad(item->data->rect, 255, 255, 0, alpha);
 			break;
-		case COLLIDER_PLATFORM: // magenta
+		case COLLIDER_TYPE::COLLIDER_PLATFORM: // magenta
 			App->render->DrawQuad(item->data->rect, 255, 0, 255, alpha);
 			break;
-		case COLLIDER_ROOF: // rose
+		case COLLIDER_TYPE::COLLIDER_ROOF: // rose
 			App->render->DrawQuad(item->data->rect, 255, 0, 128, alpha);
 			break;
-		case CHECKPOINT: // blue
+		case COLLIDER_TYPE::CHECKPOINT: // blue
 			App->render->DrawQuad(item->data->rect, 0 , 0, 128, alpha);
 			break;
-		case COLLIDER_ENEMY_SLIME: // brown
+		case COLLIDER_TYPE::COLLIDER_ENEMY_SLIME: // brown
 			App->render->DrawQuad(item->data->rect, 153, 76, 0, alpha);
 			break;
-		case COLLIDER_ENEMY_BAT: // dark red
+		case COLLIDER_TYPE::COLLIDER_ENEMY_BAT: // dark red
 			App->render->DrawQuad(item->data->rect, 153, 0, 76, alpha);
 			break;
-			
-
 		}
 		item = item->next;
 	}
@@ -315,12 +315,12 @@ void j1Collision::QueryCollisions(Collider & to_check) const
 
 			if (to_check.CheckCollision(collider_node->data->rect) == true)
 			{
-				if (to_check.callback && matrix[to_check.type][collider_node->data->type])
+				if (to_check.callback && matrix[static_cast<int>(to_check.type)][static_cast<int>(collider_node->data->type)])
 				{
 					to_check.callback->OnCollision(&to_check, collider_node->data);
 				}
 
-				if (collider_node->data->callback && matrix[collider_node->data->type][to_check.type])
+				if (collider_node->data->callback && matrix[static_cast<int>(collider_node->data->type)][static_cast<int>(to_check.type)])
 				{
 					collider_node->data->callback->OnCollision(collider_node->data, &to_check);
 				}
@@ -335,10 +335,12 @@ void j1Collision::QueryCollisions(Collider & to_check) const
 
 bool Collider::CheckCollision(const SDL_Rect & r) const
 {
-	return (rect.x <= r.x + r.w &&
-		rect.x + rect.w >= r.x &&
-		rect.y <= r.y + r.h &&
-		rect.h + rect.y >= r.y);
+	/*return (rect.x < r.x + r.w &&
+		rect.x + rect.w > r.x &&
+		rect.y < r.y + r.h &&
+		rect.h + rect.y > r.y);*/
+
+	return SDL_HasIntersection(&rect, &r);
 
 	// between argument "r" and property "rect"
 }

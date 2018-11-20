@@ -34,7 +34,7 @@ bool j1Bat::Start()
 
 	entitycollrect = BatInfo.BatRect;
 	colliding_offset = BatInfo.colliding_offset;
-	entitycoll = App->coll->AddCollider(entitycollrect, COLLIDER_ENEMY_BAT, (j1Module*)manager);
+	entitycoll = App->coll->AddCollider(entitycollrect, COLLIDER_TYPE::COLLIDER_ENEMY_BAT, (j1Module*)manager);
 
 	CurrentAnimation = BatInfo.flyRight;
 	BatInfo.flyLeft->speed = BatInfo.animationspeed;
@@ -180,7 +180,7 @@ void j1Bat::OnCollision(Collider * c1, Collider * c2)
 
 
 
-	if (c2->type == COLLIDER_FLOOR || c2->type == COLLIDER_PLATFORM || c2->type == COLLIDER_ROOF || c2->type == COLLIDER_SPIKES && dead == false && !lateralcollision)
+	if (c2->type == COLLIDER_TYPE::COLLIDER_FLOOR || c2->type == COLLIDER_TYPE::COLLIDER_PLATFORM || c2->type == COLLIDER_TYPE::COLLIDER_ROOF || c2->type == COLLIDER_TYPE::COLLIDER_SPIKES && dead == false && !lateralcollision)
 	{
 		if (/*going_up &&*/ c2->rect.y + c2->rect.h == c1->rect.y)
 		{

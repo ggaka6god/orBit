@@ -529,19 +529,19 @@ bool j1Map::ColliderDrawer(MapData& data)
 							iPoint pos = MapToWorld(x, y, data);
 
 							if (tile_id == redCollision || tile_id== redCollision2)
-								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_FLOOR,this);
+								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_TYPE::COLLIDER_FLOOR,this);
 
 							else if (tile_id == yellowCollision || tile_id == yellowCollision2)
-								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_SPIKES,this);
+								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_TYPE::COLLIDER_SPIKES,this);
 
 							else if (tile_id == magentaCollision || tile_id == magentaCollision2)
-								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_PLATFORM,this);
+								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_TYPE::COLLIDER_PLATFORM,this);
 
 							else if (tile_id == greenCollison || tile_id == greenCollison2)
-								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_ROOF, this);
+								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_TYPE::COLLIDER_ROOF, this);
 
 							else if (tile_id == checkpoint || tile_id == checkpoint2)
-								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, CHECKPOINT, this);
+								App->coll->AddCollider({ pos.x,pos.y,data.tile_width,data.tile_height }, COLLIDER_TYPE::CHECKPOINT, this);
 
 						}
 					}

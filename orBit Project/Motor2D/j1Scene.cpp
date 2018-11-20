@@ -66,11 +66,11 @@ bool j1Scene::Start()
 	// --- Creating entity  ---
 	player = (j1Player*)App->entities->CreateEntity("player", entity_type::PLAYER);
 	
-	bat = (j1Bat*)App->entities->CreateEntity("bat", entity_type::BAT);
-	bat2 = (j1Bat*)App->entities->CreateEntity("bat", entity_type::BAT);
+	//bat = (j1Bat*)App->entities->CreateEntity("bat", entity_type::BAT);
+	//bat2 = (j1Bat*)App->entities->CreateEntity("bat", entity_type::BAT);
 
-	slime = (j1Slime*)App->entities->CreateEntity("slime", entity_type::SLIME);
-	slime2 = (j1Slime*)App->entities->CreateEntity("slime", entity_type::SLIME);
+	//slime = (j1Slime*)App->entities->CreateEntity("slime", entity_type::SLIME);
+	//slime2 = (j1Slime*)App->entities->CreateEntity("slime", entity_type::SLIME);
 
 	//Loading both maps
 
@@ -108,7 +108,7 @@ bool j1Scene::Start()
 		player->position.x = App->map->data.initpos.x;
 		player->position.y = App->map->data.initpos.y;
 		
-		slime->position.x = App->map->data.slime1.x;
+		/*slime->position.x = App->map->data.slime1.x;
 		slime->position.y = App->map->data.slime1.y;
 
 		slime2->position.x = App->map->data.slime2.x;
@@ -118,7 +118,7 @@ bool j1Scene::Start()
 		bat->position.y = App->map->data.bat1.y;
 
 		bat2->position.x = App->map->data.bat2.x;
-		bat2->position.y = App->map->data.bat2.y;
+		bat2->position.y = App->map->data.bat2.y;*/
 
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());
@@ -167,7 +167,7 @@ bool j1Scene::Start()
 	}
 
 	// --- Initial position for enemies ---
-	xSlime = slime->position.x;
+	/*xSlime = slime->position.x;
 	ySlime = slime->position.y;
 
 	xSlime2 = slime2->position.x;
@@ -177,7 +177,7 @@ bool j1Scene::Start()
 	yBat = bat->position.y;
 
 	xBat2 = bat2->position.x;
-	yBat2 = bat2->position.y;
+	yBat2 = bat2->position.y;*/
 
 
 	App->map->ColliderDrawer(App->map->data);
@@ -501,14 +501,14 @@ bool j1Scene::change_scene(const char* map_name) {
 	App->entities->DestroyEntity(slime2);
 	
 
-	player->entitycoll= App->coll->AddCollider(player->entitycollrect, COLLIDER_PLAYER, App->entities);
+	player->entitycoll= App->coll->AddCollider(player->entitycollrect,COLLIDER_TYPE::COLLIDER_PLAYER, App->entities);
 
-	bat = (j1Bat*)App->entities->CreateEntity("bat", entity_type::BAT);
+	/*bat = (j1Bat*)App->entities->CreateEntity("bat", entity_type::BAT);
 	bat2 = (j1Bat*)App->entities->CreateEntity("bat", entity_type::BAT);
 
 	slime = (j1Slime*)App->entities->CreateEntity("slime", entity_type::SLIME);
 	slime2 = (j1Slime*)App->entities->CreateEntity("slime", entity_type::SLIME);
-
+*/
 
 	if (FirstStage == map_name)
 	{	

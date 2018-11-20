@@ -62,10 +62,22 @@ public:
 
 	void UpdateEntityMovement(float dt);
 
-	void OnCollision(Collider* c1, Collider* c2);
-
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
+
+
+
+	// --- Collisions Handling ---
+
+	void OnCollision(Collider* c1, Collider* c2);
+
+	void Right_Collision(Collider* entitycollider, const Collider* to_check);
+
+	void Left_Collision(Collider* entitycollider, const Collider* to_check);
+
+	void Up_Collision(Collider* entitycollider, const Collider* to_check);
+
+	void Down_Collision(Collider* entitycollider ,const Collider* to_check);
 
 public:
 
@@ -76,8 +88,9 @@ public:
 
 	// --- NEW APPROACH VARIABLES ---
 
-	iPoint Current_position = { 0,0 };
-	iPoint Future_position= { 0,0 };
+	fPoint Current_position = { 0,0 };
+	fPoint Future_position= { 0,0 };
+
 
 	MOVEMENT EntityMovement = MOVEMENT::STATIC;
 

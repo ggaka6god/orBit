@@ -30,7 +30,7 @@ bool j1Slime::Start()
 
 	entitycollrect = Slimeinfo.SlimeRect;
 	colliding_offset = Slimeinfo.colliding_offset;
-	entitycoll = App->coll->AddCollider(entitycollrect, COLLIDER_ENEMY_SLIME, (j1Module*)manager);
+	entitycoll = App->coll->AddCollider(entitycollrect, COLLIDER_TYPE::COLLIDER_ENEMY_SLIME, (j1Module*)manager);
 
 	CurrentAnimation = Slimeinfo.runRight;
 	Slimeinfo.runLeft->speed = Slimeinfo.animationspeed;
@@ -177,7 +177,7 @@ void j1Slime::OnCollision(Collider * c1, Collider * c2)
 		lateralcollision = false;
 	}
 
-	if (c2->type == COLLIDER_FLOOR || c2->type == COLLIDER_PLATFORM && dead == false && !lateralcollision)
+	if (c2->type == COLLIDER_TYPE::COLLIDER_FLOOR || c2->type == COLLIDER_TYPE::COLLIDER_PLATFORM && dead == false && !lateralcollision)
 	{
 		if (c1->rect.y + c1->rect.h > c2->rect.y && c1->rect.y + c1->rect.h<c2->rect.y + colliding_offset)
 		{
