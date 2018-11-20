@@ -233,55 +233,55 @@ bool j1Scene::PreUpdate()
 		secondStage = false;
 	}
 
-	//Controlling camera 
+	////Controlling camera 
 
-	//Camera In X
-	App->render->camera.x = (-player->position.x*App->win->GetScale() - player->entitycoll->rect.w / 2 + App->render->camera.w / 2);
-	
+	////Camera In X
+	//App->render->camera.x = (-player->position.x*App->win->GetScale() - player->entitycoll->rect.w / 2 + App->render->camera.w / 2);
+	//
 
-	if (-App->render->camera.x <= 2)
-	{
-		App->render->camera.x = -2;
-	}
+	//if (-App->render->camera.x <= 2)
+	//{
+	//	App->render->camera.x = -2;
+	//}
 
-	if (-App->render->camera.x + App->render->camera.w >= App->map->data.width*App->map->data.tile_width*App->win->GetScale())
-	{
-		App->render->camera.x = -App->map->data.width*App->map->data.tile_width*App->win->GetScale() + App->render->camera.w;
-	}
+	//if (-App->render->camera.x + App->render->camera.w >= App->map->data.width*App->map->data.tile_width*App->win->GetScale())
+	//{
+	//	App->render->camera.x = -App->map->data.width*App->map->data.tile_width*App->win->GetScale() + App->render->camera.w;
+	//}
 
-	//Camera In Y
-
-
-	//Camera down
-
-	if (player->position.y*App->win->GetScale() + player->entitycoll->rect.h >= -App->render->camera.y + App->render->camera.h - App->render->camera.h / 6)
-	{
-		if (!player->must_fall)
-			App->render->camera.y = -(player->position.y * App->win->GetScale() + player->entitycoll->rect.h - App->render->camera.h + App->render->camera.h / 6);
-		else
-			App->render->camera.y -= 4;
-	}
+	////Camera In Y
 
 
-	if (player->position.y*App->win->GetScale() > -App->render->camera.y + App->render->camera.h - App->render->camera.h / 6)
-	{
-		App->render->camera.y -= 10;
-	}
+	////Camera down
+
+	//if (player->position.y*App->win->GetScale() + player->entitycoll->rect.h >= -App->render->camera.y + App->render->camera.h - App->render->camera.h / 6)
+	//{
+	//	if (!player->must_fall)
+	//		App->render->camera.y = -(player->position.y * App->win->GetScale() + player->entitycoll->rect.h - App->render->camera.h + App->render->camera.h / 6);
+	//	else
+	//		App->render->camera.y -= 4;
+	//}
 
 
-	if (-App->render->camera.y + App->render->camera.h > App->map->data.height*App->map->data.tile_height*App->win->GetScale())
-	{
-		App->render->camera.y = (-App->map->data.height*App->map->data.tile_height*App->win->GetScale() + App->render->camera.h);
-	}
+	//if (player->position.y*App->win->GetScale() > -App->render->camera.y + App->render->camera.h - App->render->camera.h / 6)
+	//{
+	//	App->render->camera.y -= 10;
+	//}
 
 
-	//Camera up
+	//if (-App->render->camera.y + App->render->camera.h > App->map->data.height*App->map->data.tile_height*App->win->GetScale())
+	//{
+	//	App->render->camera.y = (-App->map->data.height*App->map->data.tile_height*App->win->GetScale() + App->render->camera.h);
+	//}
 
-	if (player->position.y*App->win->GetScale() <= -App->render->camera.y + App->render->camera.h / 6)
-	{
-		if (App->render->camera.y + 8 < 0)
-			App->render->camera.y = -(player->position.y * App->win->GetScale() - App->render->camera.h / 6);
-	}
+
+	////Camera up
+
+	//if (player->position.y*App->win->GetScale() <= -App->render->camera.y + App->render->camera.h / 6)
+	//{
+	//	if (App->render->camera.y + 8 < 0)
+	//		App->render->camera.y = -(player->position.y * App->win->GetScale() - App->render->camera.h / 6);
+	//}
 
 
 	//-------------------
@@ -364,11 +364,17 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
 		App->cap_on = !App->cap_on;
 
-	//if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-	//	App->render->camera.y += 2;
+	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+		App->render->camera.y += 2;
 
-	//if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-	//	App->render->camera.y -= 2;
+	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+		App->render->camera.y -= 2;
+
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		App->render->camera.x -= 2;
+
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+		App->render->camera.x += 2;
 
 	int x, y;
 	App->input->GetMousePosition(x, y);
@@ -484,8 +490,8 @@ bool j1Scene::change_scene(const char* map_name) {
 	player->parallaxflow = 0;
 	player->previousflow = 0;
 
-	player->initialmoment = true;
-	player->first_move = false;
+	//player->initialmoment = true;
+	//player->first_move = false;
 
 	App->coll->CleanUp();
 

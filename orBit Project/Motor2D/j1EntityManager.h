@@ -12,6 +12,8 @@
 #include "j1Slime.h"
 #include "j1Bat.h"
 
+class j1Entity;
+
 struct PathInfo
 {
 	iPoint start_pos = { 0,0 };
@@ -28,33 +30,30 @@ struct PathInfo
 
 //#define DEFAULT_LOGIC_PER_SECOND 60
 
-class j1Entity;
-
 class j1EntityManager : public j1Module
 {
 public:
 
 	j1EntityManager();
 
-	// Destructor
 	virtual ~j1EntityManager();
 
-	// Called before render is available
-	bool Awake(pugi::xml_node&); // spritesheets and animations
+	// --- Called before render is available ---
+	bool Awake(pugi::xml_node&);
 
-	// Called before the first frame
-	bool Start(); // textures
+	// --- Called before the first frame ---
+	bool Start();
 
-	// Called each loop iteration
+	// --- Called each loop iteration ---
 	bool PreUpdate();
 	bool Update(float dt);
 	void UpdateEntity(float dt);
 	bool PostUpdate(float dt);
 
-	// Called before quitting
+	// --- Called before quitting ---
 	bool CleanUp();
 
-	// Entities management
+	// --- Entities management ---
 	j1Entity * const CreateEntity(const char* entname , entity_type entitytype);
 	void DestroyEntity(j1Entity* entity);
 	void OnCollision(Collider* c1, Collider* c2);

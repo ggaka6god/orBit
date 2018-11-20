@@ -58,8 +58,9 @@ public:
 	void DebugDraw();
 
 	p2List<Collider*> colliders;
-	int playertouched = NULL;
 	bool debug = false;
+
+	void QueryCollisions(Collider &to_check) const;
 
 private:
 	bool matrix[COLLIDER_MAX][COLLIDER_MAX];

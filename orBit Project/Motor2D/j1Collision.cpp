@@ -120,7 +120,7 @@ bool j1Collision::Update(float dt)
 
 	bool ret = true;
 
-	playertouched = 0;
+	//playertouched = 0;
 
 	bool skipcolliders = true; //skip colliders that are not entities
 
@@ -170,12 +170,12 @@ bool j1Collision::Update(float dt)
 				skipcolliders = false;
 			}
 			
-			if (collider1->data->CheckCollision(collider2->data->rect) == true && skipcolliders == false)
+			if (skipcolliders == false && collider1->data->CheckCollision(collider2->data->rect) == true)
 			{
-					if (collider1->data->type == COLLIDER_PLAYER || collider2->data->type == COLLIDER_PLAYER)
+				/*	if (collider1->data->type == COLLIDER_PLAYER || collider2->data->type == COLLIDER_PLAYER)
 					{
 						playertouched++;
-					}
+					}*/
 
 					if (matrix[collider1->data->type][collider2->data->type] && collider1->data->callback)
 					{
@@ -197,10 +197,10 @@ bool j1Collision::Update(float dt)
 	}
 	
 
-	if (App->scene->player->entitystate!=JUMPING && App->scene->player->entitystate!=FALLING && playertouched == 0) 
-	{
-		App->scene->player->must_fall = true;
-	}
+	//if (App->scene->player->entitystate!=JUMPING && App->scene->player->entitystate!=FALLING && playertouched == 0) 
+	//{
+	//	//App->scene->player->must_fall = true;
+	//}
 
 	return ret;
 }
@@ -293,6 +293,41 @@ void j1Collision::DebugDraw()
 
 		}
 		item = item->next;
+	}
+
+}
+
+void j1Collision::QueryCollisions(Collider & to_check) const
+{				   
+	p2List_item <Collider*> *collider_node = colliders.start;
+
+	while (collider_node)
+	{
+		//--- Only check area near entity ---
+
+			// Target Collision    ------------------------------   Set Area surrounding Entity
+		if (    &to_check != collider_node->data &&
+			    collider_node->data->rect.x <= to_check.rect.x + App->scene->areaofcollision &&
+				collider_node->data->rect.x + collider_node->data->rect.w >= to_check.rect.x - App->scene->areaofcollision &&
+				collider_node->data->rect.y <= to_check.rect.y + to_check.rect.h + App->scene->areaofcollision &&
+				collider_node->data->rect.y + collider_node->data->rect.h >= to_check.rect.y - App->scene->areaofcollision)
+		{
+
+			if (to_check.CheckCollision(collider_node->data->rect) == true)
+			{
+				if (to_check.callback && matrix[to_check.type][collider_node->data->type])
+				{
+					to_check.callback->OnCollision(&to_check, collider_node->data);
+				}
+
+				if (collider_node->data->callback && matrix[collider_node->data->type][to_check.type])
+				{
+					collider_node->data->callback->OnCollision(collider_node->data, &to_check);
+				}
+			}
+
+		}
+		collider_node = collider_node->next;
 	}
 
 }

@@ -71,8 +71,8 @@ bool j1Slime::PostUpdate(float dt)
 {
 	bool ret = true;
 
-	if (!App->scene->player->dead)
-	{
+	//if (!App->scene->player->dead)
+	//{
 
 		if ((position.x)*App->win->GetScale() >= -App->render->camera.x && (position.x)*App->win->GetScale() <= -App->render->camera.x + App->render->camera.w)
 		{
@@ -158,7 +158,7 @@ bool j1Slime::PostUpdate(float dt)
 				entitystate = FALLING;
 			}
 		}
-	}
+	//}
 
 	//Blitting slime
 	App->render->Blit(spritesheet, position.x - Slimeinfo.printingoffset.x, position.y + Slimeinfo.printingoffset.y, &CurrentAnimation->GetCurrentFrame(dt));
