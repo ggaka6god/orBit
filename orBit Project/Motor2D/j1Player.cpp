@@ -60,7 +60,7 @@ bool j1Player::Start()
 	Velocity.x = 35.0f;
 	Velocity.y = 0.0f;
 
-	playerinfo.jump_force = 300.0f;
+	playerinfo.jump_force = 350.0f;
 
 	Accumulative_pos_Right =  0;
 
@@ -84,14 +84,23 @@ void j1Player::UpdateEntityMovement(float dt)
 		case MOVEMENT::LEFTWARDS:
 			Accumulative_pos_Left += (Velocity.x)*dt;
 
-			if (Accumulative_pos_Left > 1.0f)
+			if (on_air)
 			{
-				Future_position.x -= Accumulative_pos_Left;
-				if(on_air)
-				Future_position.x -= Accumulative_pos_Left;
+				if (Accumulative_pos_Left > 1.0f)
+				{
+					Future_position.x -= Accumulative_pos_Left;
+					Future_position.x -= Accumulative_pos_Left;
 
-				Accumulative_pos_Left -= Accumulative_pos_Left;
+					Accumulative_pos_Left -= Accumulative_pos_Left;
+				}
 			}
+			else
+				if (Accumulative_pos_Left > 1.3f)
+				{
+					Future_position.x -= Accumulative_pos_Left;
+
+					Accumulative_pos_Left -= Accumulative_pos_Left;
+				}
 			break;
 		case MOVEMENT::UPWARDS:
 			if (Accumulative_pos_Up < 0.0f)
@@ -106,7 +115,11 @@ void j1Player::UpdateEntityMovement(float dt)
 			}
 			break;
 		case MOVEMENT::FREEFALL:
-			Accumulative_pos_Down += 9.8f*5.0f * dt;
+
+			Accumulative_pos_Down += 9.8f*3.0f * dt;
+
+			if(on_air)
+			Accumulative_pos_Down += 9.8f*3.0f * dt;
 
 			if (Accumulative_pos_Down > 1.0f)
 			{
@@ -209,12 +222,12 @@ bool j1Player::PostUpdate(float dt)
 	// ---------------------- //
 
 	//Blitting player
-	//if(going_right)
-	//App->render->Blit(spritesheet, position.x - 3, position.y, &CurrentAnimation->GetCurrentFrame(dt));
-	//else if (going_left)
-	//App->render->Blit(spritesheet, position.x - 6, position.y, &CurrentAnimation->GetCurrentFrame(dt));
-	//else
-	//App->render->Blit(spritesheet, position.x - 3, position.y, &CurrentAnimation->GetCurrentFrame(dt));
+	/*if(going_right)
+	App->render->Blit(spritesheet, position.x - 3, position.y, &CurrentAnimation->GetCurrentFrame(dt));
+	else if (going_left)
+	App->render->Blit(spritesheet, position.x - 6, position.y, &CurrentAnimation->GetCurrentFrame(dt));
+	else*/
+	App->render->Blit(spritesheet, Future_position.x - 3, Future_position.y, &CurrentAnimation->GetCurrentFrame(dt));
 
 	return ret;
 }
@@ -339,6 +352,13 @@ void j1Player::FixedUpdate(float dt)
 void j1Player::LogicUpdate(float dt)
 {
 	// --- Update we may not do every frame ---
+
+	if (!App->cap_on)
+	{
+		playerinfo.jump_force = 360.0f;
+	}
+	else
+		playerinfo.jump_force = 350.0f;
 
 	EntityMovement = MOVEMENT::STATIC;
 
