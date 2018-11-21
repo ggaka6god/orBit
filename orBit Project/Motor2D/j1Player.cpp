@@ -160,6 +160,7 @@ bool j1Player::Update(float dt)
 		App->input->GetKey(SDL_SCANCODE_A) != KEY_REPEAT)
 	{
 		EntityMovement = MOVEMENT::RIGHTWARDS;
+		CurrentAnimation = playerinfo.runRight;
 	}
 
 	if(EntityMovement != MOVEMENT::STATIC && EntityMovement!=MOVEMENT::FREEFALL)
@@ -170,6 +171,7 @@ bool j1Player::Update(float dt)
 		App->input->GetKey(SDL_SCANCODE_D) != KEY_REPEAT)
 	{
 		EntityMovement = MOVEMENT::LEFTWARDS;
+		CurrentAnimation = playerinfo.runLeft;
 	}
 
 	if (EntityMovement != MOVEMENT::STATIC && EntityMovement != MOVEMENT::FREEFALL)
@@ -194,6 +196,16 @@ bool j1Player::Update(float dt)
 
 	//-------------------------------
 
+	// --- Handling animations ---
+
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP && CurrentAnimation == playerinfo.runRight)
+	{
+		CurrentAnimation = playerinfo.idleRight;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP && CurrentAnimation == playerinfo.runLeft)
+	{
+		CurrentAnimation = playerinfo.idleLeft;
+	}
 
 	return true;
 }
