@@ -40,8 +40,8 @@ bool j1Player::Start()
 
 	entitycoll->SetPos(position.x, position.y);
 
-	Current_position.x = Future_position.x = position.x;
-	Current_position.y = Future_position.y = position.y;
+	Future_position.x = position.x;
+	Future_position.y = position.y;
 
 	// --- Parallax Movement variables ---
 	parallaxflow = 0;
@@ -56,6 +56,13 @@ bool j1Player::Start()
 
 	// --- Entity ID for save purposes ---
 	entityID = App->entities->entityID;
+	
+	Velocity.x = 35.0f;
+	Velocity.y = 0.0f;
+
+	playerinfo.jump_force = 300.0f;
+
+	Accumulative_pos_Right =  0;
 
 	return true;
 }
@@ -66,19 +73,48 @@ void j1Player::UpdateEntityMovement(float dt)
 	switch (EntityMovement)
 	{
 		case MOVEMENT::RIGHTWARDS:
-			Future_position.x += 25.0f*3 * dt;
-			Future_position.x -= 12.5f * dt;
+			Accumulative_pos_Right += Velocity.x*dt;
+
+			if (Accumulative_pos_Right > 1.0f)
+			{
+				Future_position.x += Accumulative_pos_Right;
+				Accumulative_pos_Right -= Accumulative_pos_Right;
+			}
 			break;
 		case MOVEMENT::LEFTWARDS:
-			Future_position.x -= 25.0f*3 * dt;
-			Future_position.x += 12.5f  * dt;
+			Accumulative_pos_Left += (Velocity.x)*dt;
+
+			if (Accumulative_pos_Left > 1.0f)
+			{
+				Future_position.x -= Accumulative_pos_Left;
+				if(on_air)
+				Future_position.x -= Accumulative_pos_Left;
+
+				Accumulative_pos_Left -= Accumulative_pos_Left;
+			}
 			break;
 		case MOVEMENT::UPWARDS:
-			Future_position.y -= 750.0f*3 * dt;
+			if (Accumulative_pos_Up < 0.0f)
+				Accumulative_pos_Up = 0.0f;
+
+			Accumulative_pos_Up += Velocity.y*dt;
+
+			if (Accumulative_pos_Up > 1.0f)
+			{
+				Future_position.y -= Accumulative_pos_Up;
+				Accumulative_pos_Up -= Accumulative_pos_Up;
+			}
 			break;
 		case MOVEMENT::FREEFALL:
-			Future_position.y += 50.0f*3 * dt;
-			Future_position.y -= 25.0* dt;
+			Accumulative_pos_Down += 9.8f*5.0f * dt;
+
+			if (Accumulative_pos_Down > 1.0f)
+			{
+				Velocity.y -= Accumulative_pos_Down;
+				Future_position.y += Accumulative_pos_Down;
+				Accumulative_pos_Down -= Accumulative_pos_Down;
+			}
+			
 			break;
 	}
 
@@ -86,8 +122,12 @@ void j1Player::UpdateEntityMovement(float dt)
 
 	App->coll->QueryCollisions(*entitycoll);
 
-
 	MOVEMENT EntityMovement = MOVEMENT::STATIC;
+}
+
+inline void j1Player::Apply_Vertical_Impulse(float dt)
+{
+	Velocity.y += playerinfo.jump_force;
 }
 
 bool j1Player::Update(float dt)
@@ -95,42 +135,52 @@ bool j1Player::Update(float dt)
 	// --- LOGIC --------------------
 
 	// --- FREE FALL ---
-	EntityMovement = MOVEMENT::FREEFALL;
+	for (unsigned short i = 0; i < 4; ++i)
+	{
+		EntityMovement = MOVEMENT::FREEFALL;
 
-	UpdateEntityMovement(dt);
+		UpdateEntityMovement(dt);
+	}
 
-	// --- RIGHT ---
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	// --- RIGHT --
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT &&
+		App->input->GetKey(SDL_SCANCODE_A) != KEY_REPEAT)
 	{
 		EntityMovement = MOVEMENT::RIGHTWARDS;
 	}
 
-	if(EntityMovement != MOVEMENT::STATIC)
+	if(EntityMovement != MOVEMENT::STATIC && EntityMovement!=MOVEMENT::FREEFALL)
 	UpdateEntityMovement(dt);
 
 	// --- LEFT ---
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT &&
+		App->input->GetKey(SDL_SCANCODE_D) != KEY_REPEAT)
 	{
 		EntityMovement = MOVEMENT::LEFTWARDS;
 	}
 
-	if (EntityMovement != MOVEMENT::STATIC)
+	if (EntityMovement != MOVEMENT::STATIC && EntityMovement != MOVEMENT::FREEFALL)
 	UpdateEntityMovement(dt);
 
 
-	// --- UP ---
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
+	// --- IMPULSE ---
+	if (!on_air && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
-		EntityMovement = MOVEMENT::UPWARDS;
+		Apply_Vertical_Impulse(dt);
+		on_air = true;
 	}
 
-	if (EntityMovement != MOVEMENT::STATIC)
+	// --- UP ---
+	if (on_air && Velocity.y>0.0f)
+	{
+ 		EntityMovement = MOVEMENT::UPWARDS;
+	}
+
+	if (EntityMovement != MOVEMENT::STATIC && EntityMovement != MOVEMENT::FREEFALL)
 	UpdateEntityMovement(dt);
 
 	//-------------------------------
 
-
-	Current_position = Future_position;
 
 	return true;
 }
@@ -203,6 +253,7 @@ void j1Player::Right_Collision(Collider * entitycollider, const Collider * to_ch
 			entitycollider->rect.x -= Intersection.w;
 			break;
 	}
+
 }
 
 void j1Player::Left_Collision(Collider * entitycollider, const Collider * to_check)
@@ -245,6 +296,9 @@ void j1Player::Down_Collision(Collider * entitycollider, const Collider * to_che
 			entitycollider->rect.y -= Intersection.h;
 			break;
 	}
+
+	Velocity.y =  0.0f;
+	on_air = false;
 }
 
 
@@ -277,6 +331,7 @@ bool j1Player::CleanUp()
 void j1Player::FixedUpdate(float dt)
 {
 	// --- Update we do every frame ---
+
 	PostUpdate(dt);
 
 }
@@ -288,6 +343,5 @@ void j1Player::LogicUpdate(float dt)
 	EntityMovement = MOVEMENT::STATIC;
 
 	Update(dt);
-
 }
 

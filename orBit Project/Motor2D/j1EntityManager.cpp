@@ -57,10 +57,10 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 
 	//playerinfo.Velocity.x = playernode.child("Velocity").attribute("x").as_float();
 	//playerinfo.Velocity.y = playernode.child("Velocity").attribute("y").as_float();
-	//playerinfo.max_speed_y = playernode.child("Velocity").attribute("max_speed_y").as_float();
-	//playerinfo.initialVx = playernode.child("Velocity").attribute("initalVx").as_float();
+	playerinfo.max_speed_y = playernode.child("Velocity").attribute("max_speed_y").as_float();
+	playerinfo.initialVx = playernode.child("Velocity").attribute("initalVx").as_float();
 	//playerinfo.gravity = playernode.child("gravity").attribute("value").as_float();
-	//playerinfo.jump_force = playernode.child("Velocity").attribute("jump_force").as_float();
+	playerinfo.jump_force = playernode.child("Velocity").attribute("jump_force").as_float();
 	//playerinfo.colliding_offset = playernode.child("colliding_offset").attribute("value").as_float();
 
 	playerinfo.idleRight->speed = 10.0f;
