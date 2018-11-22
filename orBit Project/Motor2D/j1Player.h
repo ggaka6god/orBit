@@ -66,6 +66,8 @@ public:
 
 	inline void Apply_Vertical_Impulse(float dt);
 
+	void Handle_Animations();
+
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
@@ -97,6 +99,7 @@ public:
 	float Accumulative_pos_Up =     0;
 	float Accumulative_pos_Down =   0;
 	fPoint Future_position= { 0,0 };
+	float last_pos_y = 0.0f;
 
 	bool on_air = false;
 	MOVEMENT EntityMovement = MOVEMENT::STATIC;

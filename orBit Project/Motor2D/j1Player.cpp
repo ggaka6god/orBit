@@ -32,7 +32,7 @@ bool j1Player::Start()
 	entitycoll = App->coll->AddCollider(entitycollrect,COLLIDER_TYPE::COLLIDER_PLAYER, (j1Module*) manager);
 
 	// --- Default gravity ---
-	gravity = -1.0f;
+	gravity = 29.4f;
 
 	// --- Current Player Position ---
 	position.x = 550;
@@ -103,8 +103,6 @@ void j1Player::UpdateEntityMovement(float dt)
 				}
 			break;
 		case MOVEMENT::UPWARDS:
-			if (Accumulative_pos_Up < 0.0f)
-				Accumulative_pos_Up = 0.0f;
 
 			Accumulative_pos_Up += Velocity.y*dt;
 
@@ -116,10 +114,10 @@ void j1Player::UpdateEntityMovement(float dt)
 			break;
 		case MOVEMENT::FREEFALL:
 
-			Accumulative_pos_Down += 9.8f*3.0f * dt;
+			Accumulative_pos_Down += gravity* dt;
 
 			if(on_air)
-			Accumulative_pos_Down += 9.8f*3.0f * dt;
+			Accumulative_pos_Down += gravity * dt;
 
 			if (Accumulative_pos_Down > 1.0f)
 			{
@@ -143,6 +141,87 @@ inline void j1Player::Apply_Vertical_Impulse(float dt)
 	Velocity.y += playerinfo.jump_force;
 }
 
+void j1Player::Handle_Animations()
+{
+	// --- Handling Ground Animations ---
+
+	if (!on_air)
+	{
+		//--- TO RUN ---
+
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		{
+			if (CurrentAnimation == playerinfo.runRight)
+				CurrentAnimation = playerinfo.idleRight;
+			else if (CurrentAnimation == playerinfo.runLeft)
+				CurrentAnimation = playerinfo.idleLeft;
+		}
+		else
+		{
+
+			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT &&
+				CurrentAnimation != playerinfo.jumpingRight      &&
+				CurrentAnimation != playerinfo.fallingRight)
+			{
+				CurrentAnimation = playerinfo.runRight;
+			}
+
+			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT &&
+				CurrentAnimation != playerinfo.jumpingLeft       &&
+				CurrentAnimation != playerinfo.fallingLeft)
+			{
+				CurrentAnimation = playerinfo.runLeft;
+			}
+		}
+
+		//--- TO IDLE ---
+
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP && CurrentAnimation == playerinfo.runRight)
+			CurrentAnimation = playerinfo.idleRight;
+
+		if (CurrentAnimation == playerinfo.fallingRight)
+			CurrentAnimation = playerinfo.idleRight;
+
+		else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP && CurrentAnimation == playerinfo.runLeft)
+			CurrentAnimation = playerinfo.idleLeft;
+		
+		if (CurrentAnimation == playerinfo.fallingLeft)
+			CurrentAnimation = playerinfo.idleLeft;
+
+	}
+    //--------------    ---------------
+
+
+	// --- Handling Aerial Animations ---
+
+	else if (on_air)
+	{
+		//--- TO JUMP ---
+
+		if (last_pos_y > Future_position.y)
+		{
+			if (CurrentAnimation == playerinfo.runRight || CurrentAnimation == playerinfo.idleRight)
+				CurrentAnimation = playerinfo.jumpingRight;
+
+			else if (CurrentAnimation == playerinfo.runLeft || CurrentAnimation == playerinfo.idleLeft)
+				CurrentAnimation = playerinfo.jumpingLeft;
+		}
+
+		//--- TO FALL ---
+
+		if (last_pos_y < Future_position.y)
+		{
+			if (CurrentAnimation == playerinfo.jumpingRight)
+				CurrentAnimation = playerinfo.fallingRight;
+			else if (CurrentAnimation == playerinfo.jumpingLeft)
+				CurrentAnimation = playerinfo.fallingLeft;
+		}
+	}
+
+	//------------ --------------
+
+}
+
 bool j1Player::Update(float dt)
 {
 	// --- LOGIC --------------------
@@ -152,7 +231,6 @@ bool j1Player::Update(float dt)
 		App->input->GetKey(SDL_SCANCODE_A) != KEY_REPEAT)
 	{
 		EntityMovement = MOVEMENT::RIGHTWARDS;
-		CurrentAnimation = playerinfo.runRight;
 	}
 
 	if (EntityMovement != MOVEMENT::STATIC && EntityMovement != MOVEMENT::FREEFALL)
@@ -163,7 +241,6 @@ bool j1Player::Update(float dt)
 		App->input->GetKey(SDL_SCANCODE_D) != KEY_REPEAT)
 	{
 		EntityMovement = MOVEMENT::LEFTWARDS;
-		CurrentAnimation = playerinfo.runLeft;
 	}
 
 	if (EntityMovement != MOVEMENT::STATIC && EntityMovement != MOVEMENT::FREEFALL)
@@ -198,14 +275,7 @@ bool j1Player::Update(float dt)
 
 	// --- Handling animations ---
 
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP && CurrentAnimation == playerinfo.runRight)
-	{
-		CurrentAnimation = playerinfo.idleRight;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP && CurrentAnimation == playerinfo.runLeft)
-	{
-		CurrentAnimation = playerinfo.idleLeft;
-	}
+	Handle_Animations();
 
 	return true;
 }
@@ -234,11 +304,13 @@ bool j1Player::PostUpdate(float dt)
 	// ---------------------- //
 
 	//Blitting player
-	/*if(going_right)
-	App->render->Blit(spritesheet, position.x - 3, position.y, &CurrentAnimation->GetCurrentFrame(dt));
-	else if (going_left)
-	App->render->Blit(spritesheet, position.x - 6, position.y, &CurrentAnimation->GetCurrentFrame(dt));
-	else*/
+	if(CurrentAnimation==playerinfo.runRight || CurrentAnimation==playerinfo.idleRight || CurrentAnimation==playerinfo.fallingRight || CurrentAnimation==playerinfo.jumpingRight)
+	App->render->Blit(spritesheet, Future_position.x - 3, Future_position.y, &CurrentAnimation->GetCurrentFrame(dt));
+
+	else if (CurrentAnimation == playerinfo.runLeft || CurrentAnimation == playerinfo.idleLeft || CurrentAnimation == playerinfo.fallingLeft || CurrentAnimation == playerinfo.jumpingLeft)
+	App->render->Blit(spritesheet, Future_position.x - 6, Future_position.y, &CurrentAnimation->GetCurrentFrame(dt));
+
+	else
 	App->render->Blit(spritesheet, Future_position.x - 3, Future_position.y, &CurrentAnimation->GetCurrentFrame(dt));
 
 	return ret;
@@ -364,6 +436,7 @@ void j1Player::FixedUpdate(float dt)
 void j1Player::LogicUpdate(float dt)
 {
 	// --- Update we may not do every frame ---
+	last_pos_y = Future_position.y;
 
 	EntityMovement = MOVEMENT::STATIC;
 
