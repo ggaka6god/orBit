@@ -95,7 +95,7 @@ void j1Player::UpdateEntityMovement(float dt)
 				}
 			}
 			else
-				if (Accumulative_pos_Left > 1.3f)
+				if (Accumulative_pos_Left > 0.75f)
 				{
 					Future_position.x -= Accumulative_pos_Left;
 
@@ -147,14 +147,6 @@ bool j1Player::Update(float dt)
 {
 	// --- LOGIC --------------------
 
-	// --- FREE FALL ---
-	for (unsigned short i = 0; i < 4; ++i)
-	{
-		EntityMovement = MOVEMENT::FREEFALL;
-
-		UpdateEntityMovement(dt);
-	}
-
 	// --- RIGHT --
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT &&
 		App->input->GetKey(SDL_SCANCODE_A) != KEY_REPEAT)
@@ -163,8 +155,8 @@ bool j1Player::Update(float dt)
 		CurrentAnimation = playerinfo.runRight;
 	}
 
-	if(EntityMovement != MOVEMENT::STATIC && EntityMovement!=MOVEMENT::FREEFALL)
-	UpdateEntityMovement(dt);
+	if (EntityMovement != MOVEMENT::STATIC && EntityMovement != MOVEMENT::FREEFALL)
+		UpdateEntityMovement(dt);
 
 	// --- LEFT ---
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT &&
@@ -175,7 +167,7 @@ bool j1Player::Update(float dt)
 	}
 
 	if (EntityMovement != MOVEMENT::STATIC && EntityMovement != MOVEMENT::FREEFALL)
-	UpdateEntityMovement(dt);
+		UpdateEntityMovement(dt);
 
 
 	// --- IMPULSE ---
@@ -193,6 +185,14 @@ bool j1Player::Update(float dt)
 
 	if (EntityMovement != MOVEMENT::STATIC && EntityMovement != MOVEMENT::FREEFALL)
 	UpdateEntityMovement(dt);
+
+	// --- FREE FALL ---
+	for (unsigned short i = 0; i < 4; ++i)
+	{
+		EntityMovement = MOVEMENT::FREEFALL;
+
+		UpdateEntityMovement(dt);
+	}
 
 	//-------------------------------
 
@@ -364,13 +364,6 @@ void j1Player::FixedUpdate(float dt)
 void j1Player::LogicUpdate(float dt)
 {
 	// --- Update we may not do every frame ---
-
-	if (!App->cap_on)
-	{
-		playerinfo.jump_force = 360.0f;
-	}
-	else
-		playerinfo.jump_force = 350.0f;
 
 	EntityMovement = MOVEMENT::STATIC;
 

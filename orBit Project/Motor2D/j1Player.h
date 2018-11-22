@@ -99,7 +99,6 @@ public:
 	fPoint Future_position= { 0,0 };
 
 	bool on_air = false;
-
 	MOVEMENT EntityMovement = MOVEMENT::STATIC;
 
 };
