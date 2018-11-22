@@ -233,7 +233,7 @@ bool j1Player::Update(float dt)
 		EntityMovement = MOVEMENT::RIGHTWARDS;
 	}
 
-	if (EntityMovement != MOVEMENT::STATIC && EntityMovement != MOVEMENT::FREEFALL)
+	if (EntityMovement != MOVEMENT::STATIC)
 		UpdateEntityMovement(dt);
 
 	// --- LEFT ---
@@ -243,7 +243,7 @@ bool j1Player::Update(float dt)
 		EntityMovement = MOVEMENT::LEFTWARDS;
 	}
 
-	if (EntityMovement != MOVEMENT::STATIC && EntityMovement != MOVEMENT::FREEFALL)
+	if (EntityMovement != MOVEMENT::STATIC)
 		UpdateEntityMovement(dt);
 
 
@@ -260,8 +260,9 @@ bool j1Player::Update(float dt)
  		EntityMovement = MOVEMENT::UPWARDS;
 	}
 
-	if (EntityMovement != MOVEMENT::STATIC && EntityMovement != MOVEMENT::FREEFALL)
+	if (EntityMovement != MOVEMENT::STATIC)
 	UpdateEntityMovement(dt);
+
 
 	// --- FREE FALL ---
 	for (unsigned short i = 0; i < 4; ++i)
@@ -270,6 +271,7 @@ bool j1Player::Update(float dt)
 
 		UpdateEntityMovement(dt);
 	}
+
 
 	//-------------------------------
 
