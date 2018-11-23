@@ -31,9 +31,6 @@ bool j1Player::Start()
 	entitycollrect = playerinfo.playerrect;
 	entitycoll = App->coll->AddCollider(entitycollrect,COLLIDER_TYPE::COLLIDER_PLAYER, (j1Module*) manager);
 
-	// --- Default gravity ---
-	gravity = 29.4f;
-
 	// --- Current Player Position ---
 	position.x = 550;
 	position.y = 150;
@@ -42,10 +39,6 @@ bool j1Player::Start()
 
 	Future_position.x = position.x;
 	Future_position.y = position.y;
-
-	// --- Parallax Movement variables ---
-	parallaxflow = 0;
-	previousflow = 0;
 
 	// --- Currently playing Animation ---
 	CurrentAnimation = playerinfo.idleRight;
@@ -57,12 +50,9 @@ bool j1Player::Start()
 	// --- Entity ID for save purposes ---
 	entityID = App->entities->entityID;
 	
-	Velocity.x = 35.0f;
-	Velocity.y = 0.0f;
-
-	playerinfo.jump_force = 350.0f;
-
-	Accumulative_pos_Right =  0;
+	// --- Entity Velocity ---
+	Velocity.x = playerinfo.Velocity.x;
+	Velocity.y = playerinfo.Velocity.y;
 
 	return true;
 }
@@ -82,8 +72,8 @@ void j1Player::UpdateEntityMovement(float dt)
 			}
 			break;
 		case MOVEMENT::LEFTWARDS:
-			Accumulative_pos_Left += (Velocity.x)*dt;
-
+			Accumulative_pos_Left += Velocity.x*dt;
+			
 			if (on_air)
 			{
 				if (Accumulative_pos_Left > 1.0f)
@@ -116,10 +106,10 @@ void j1Player::UpdateEntityMovement(float dt)
 			break;
 		case MOVEMENT::FREEFALL:
 
-			Accumulative_pos_Down += gravity* dt;
+			Accumulative_pos_Down += playerinfo.gravity* dt;
 
 			if(on_air)
-			Accumulative_pos_Down += gravity * dt;
+			Accumulative_pos_Down += playerinfo.gravity * dt;
 
 			if (Accumulative_pos_Down > 1.0f)
 			{
@@ -143,12 +133,10 @@ inline void j1Player::Apply_Vertical_Impulse(float dt)
 	Velocity.y += playerinfo.jump_force;
 }
 
-void j1Player::Handle_Animations()
+void j1Player::Handle_Ground_Animations()
 {
 	// --- Handling Ground Animations ---
 
-	if (!on_air)
-	{
 		//--- TO RUN ---
 
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
@@ -190,14 +178,15 @@ void j1Player::Handle_Animations()
 		if (CurrentAnimation == playerinfo.fallingLeft)
 			CurrentAnimation = playerinfo.idleLeft;
 
-	}
     //--------------    ---------------
+}
 
 
+void j1Player::Handle_Aerial_Animations()
+{
 	// --- Handling Aerial Animations ---
 
-	else if (on_air)
-	{
+	
 		//--- TO JUMP ---
 
 		if (Velocity.y > playerinfo.jump_force / 2.0f)
@@ -218,10 +207,9 @@ void j1Player::Handle_Animations()
 			else if (CurrentAnimation == playerinfo.jumpingLeft)
 				CurrentAnimation = playerinfo.fallingLeft;
 		}
-	}
+
 
 	//------------ --------------
-
 }
 
 bool j1Player::Update(float dt)
@@ -278,7 +266,10 @@ bool j1Player::Update(float dt)
 
 	// --- Handling animations ---
 
-	Handle_Animations();
+	if(!on_air)
+	Handle_Ground_Animations();
+	else
+	Handle_Aerial_Animations();
 
 	return true;
 }
@@ -306,7 +297,7 @@ bool j1Player::PostUpdate(float dt)
 
 	// ---------------------- //
 
-	//Blitting player
+	// --- Blitting player ---
 	if(CurrentAnimation==playerinfo.runRight || CurrentAnimation==playerinfo.idleRight || CurrentAnimation==playerinfo.fallingRight || CurrentAnimation==playerinfo.jumpingRight)
 	App->render->Blit(spritesheet, Future_position.x - 3, Future_position.y, &CurrentAnimation->GetCurrentFrame(dt));
 
@@ -315,6 +306,8 @@ bool j1Player::PostUpdate(float dt)
 
 	else
 	App->render->Blit(spritesheet, Future_position.x - 3, Future_position.y, &CurrentAnimation->GetCurrentFrame(dt));
+
+	// ---------------------- //
 
 	return ret;
 }
@@ -343,8 +336,6 @@ void j1Player::OnCollision(Collider * entitycollider, Collider * to_check)
 
 void j1Player::Right_Collision(Collider * entitycollider, const Collider * to_check)
 {
-	SDL_Rect Intersection = { 0,0,0,0 };
-
 	SDL_IntersectRect(&entitycollider->rect, &to_check->rect, &Intersection);
 
 	switch (to_check->type)
@@ -353,13 +344,10 @@ void j1Player::Right_Collision(Collider * entitycollider, const Collider * to_ch
 			entitycollider->rect.x -= Intersection.w;
 			break;
 	}
-
 }
 
 void j1Player::Left_Collision(Collider * entitycollider, const Collider * to_check)
 {
-	SDL_Rect Intersection = { 0,0,0,0 };
-
 	SDL_IntersectRect(&entitycollider->rect, &to_check->rect, &Intersection);
 
 	switch (to_check->type)
@@ -372,8 +360,6 @@ void j1Player::Left_Collision(Collider * entitycollider, const Collider * to_che
 
 void j1Player::Up_Collision(Collider * entitycollider, const Collider * to_check)
 {
-	SDL_Rect Intersection = { 0,0,0,0 };
-
 	SDL_IntersectRect(&entitycollider->rect, &to_check->rect, &Intersection);
 
 	switch (to_check->type)
@@ -386,8 +372,6 @@ void j1Player::Up_Collision(Collider * entitycollider, const Collider * to_check
 
 void j1Player::Down_Collision(Collider * entitycollider, const Collider * to_check)
 {
-	SDL_Rect Intersection = { 0,0,0,0 };
-
 	SDL_IntersectRect(&entitycollider->rect, &to_check->rect, &Intersection);
 
 	switch (to_check->type)
@@ -400,7 +384,6 @@ void j1Player::Down_Collision(Collider * entitycollider, const Collider * to_che
 	Velocity.y =  0.0f;
 	on_air = false;
 }
-
 
 bool j1Player::Load(pugi::xml_node &config)
 {
@@ -439,8 +422,6 @@ void j1Player::FixedUpdate(float dt)
 void j1Player::LogicUpdate(float dt)
 {
 	// --- Update we may not do every frame ---
-
-	last_pos_y =(int) Future_position.y;
 
 	EntityMovement = MOVEMENT::STATIC;
 

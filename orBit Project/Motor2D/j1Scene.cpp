@@ -235,19 +235,19 @@ bool j1Scene::PreUpdate()
 
 	////Controlling camera 
 
-	////Camera In X
-	//App->render->camera.x = (-player->position.x*App->win->GetScale() - player->entitycoll->rect.w / 2 + App->render->camera.w / 2);
-	//
+	//Camera In X
+	App->render->camera.x = (-player->Future_position.x*App->win->GetScale() - player->entitycoll->rect.w / 2 + App->render->camera.w / 2);
+	
 
-	//if (-App->render->camera.x <= 2)
-	//{
-	//	App->render->camera.x = -2;
-	//}
+	if (-App->render->camera.x <= 2)
+	{
+		App->render->camera.x = -2;
+	}
 
-	//if (-App->render->camera.x + App->render->camera.w >= App->map->data.width*App->map->data.tile_width*App->win->GetScale())
-	//{
-	//	App->render->camera.x = -App->map->data.width*App->map->data.tile_width*App->win->GetScale() + App->render->camera.w;
-	//}
+	if (-App->render->camera.x + App->render->camera.w >= App->map->data.width*App->map->data.tile_width*App->win->GetScale())
+	{
+		App->render->camera.x = -App->map->data.width*App->map->data.tile_width*App->win->GetScale() + App->render->camera.w;
+	}
 
 	////Camera In Y
 

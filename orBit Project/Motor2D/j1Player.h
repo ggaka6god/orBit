@@ -27,10 +27,9 @@ struct Playerdata {
 	p2SString Texture = nullptr;
 
 	SDL_Rect playerrect = { 0,0,0,0 };
-	float jump_force = 0;
-	float initialVx = 0;
-	float max_speed_y = 0;
-	float           gravity = 0;
+	fPoint Velocity = { 0.0f,0.0f };
+	float jump_force = 0.0f;
+	float gravity = 0;
 };
 
 enum class MOVEMENT 
@@ -66,7 +65,8 @@ public:
 
 	inline void Apply_Vertical_Impulse(float dt);
 
-	void Handle_Animations();
+	void Handle_Ground_Animations();
+	void Handle_Aerial_Animations();
 
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
@@ -91,6 +91,7 @@ public:
 	int previousflow = 0;
 
 	Playerdata playerinfo;
+	SDL_Rect Intersection = { 0,0,0,0 };
 
 	// --- NEW APPROACH VARIABLES ---
 
@@ -99,7 +100,6 @@ public:
 	float Accumulative_pos_Up =     0;
 	float Accumulative_pos_Down =   0;
 	fPoint Future_position= { 0,0 };
-	float last_pos_y = 0.0f;
 
 	bool on_air = false;
 	MOVEMENT EntityMovement = MOVEMENT::STATIC;
