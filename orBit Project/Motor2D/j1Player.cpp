@@ -95,12 +95,14 @@ void j1Player::UpdateEntityMovement(float dt)
 				}
 			}
 			else
+			{
 				if (Accumulative_pos_Left > 0.75f)
 				{
 					Future_position.x -= Accumulative_pos_Left;
 
 					Accumulative_pos_Left -= Accumulative_pos_Left;
 				}
+			}
 			break;
 		case MOVEMENT::UPWARDS:
 
