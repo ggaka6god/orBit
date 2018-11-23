@@ -75,7 +75,7 @@ void j1Player::UpdateEntityMovement(float dt)
 		case MOVEMENT::RIGHTWARDS:
 			Accumulative_pos_Right += Velocity.x*dt;
 
-			if (Accumulative_pos_Right > 1.0f)
+			if (Accumulative_pos_Right > 1.1f)
 			{
 				Future_position.x += Accumulative_pos_Right;
 				Accumulative_pos_Right -= Accumulative_pos_Right;
@@ -178,13 +178,13 @@ void j1Player::Handle_Animations()
 
 		//--- TO IDLE ---
 
-		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP && CurrentAnimation == playerinfo.runRight)
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP && CurrentAnimation == playerinfo.runRight || CurrentAnimation == playerinfo.jumpingRight)
 			CurrentAnimation = playerinfo.idleRight;
 
 		if (CurrentAnimation == playerinfo.fallingRight)
 			CurrentAnimation = playerinfo.idleRight;
 
-		else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP && CurrentAnimation == playerinfo.runLeft)
+		else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP && CurrentAnimation == playerinfo.runLeft || CurrentAnimation == playerinfo.jumpingLeft)
 			CurrentAnimation = playerinfo.idleLeft;
 		
 		if (CurrentAnimation == playerinfo.fallingLeft)
@@ -200,7 +200,7 @@ void j1Player::Handle_Animations()
 	{
 		//--- TO JUMP ---
 
-		if (last_pos_y > Future_position.y)
+		if (Velocity.y > playerinfo.jump_force / 2.0f)
 		{
 			if (CurrentAnimation == playerinfo.runRight || CurrentAnimation == playerinfo.idleRight)
 				CurrentAnimation = playerinfo.jumpingRight;
@@ -211,7 +211,7 @@ void j1Player::Handle_Animations()
 
 		//--- TO FALL ---
 
-		if (last_pos_y < Future_position.y)
+		else if (Velocity.y < playerinfo.jump_force / 2.0f)
 		{
 			if (CurrentAnimation == playerinfo.jumpingRight)
 				CurrentAnimation = playerinfo.fallingRight;
@@ -273,7 +273,6 @@ bool j1Player::Update(float dt)
 
 		UpdateEntityMovement(dt);
 	}
-
 
 	//-------------------------------
 
@@ -440,7 +439,8 @@ void j1Player::FixedUpdate(float dt)
 void j1Player::LogicUpdate(float dt)
 {
 	// --- Update we may not do every frame ---
-	last_pos_y = Future_position.y;
+
+	last_pos_y =(int) Future_position.y;
 
 	EntityMovement = MOVEMENT::STATIC;
 
