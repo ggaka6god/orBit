@@ -30,6 +30,8 @@ Decompress the .zip file in any directory. Open the file directoy and double cli
 - F9: view collider and pathfinding
 - F10: GodMode (allows to fly)
 - F11: Enable/Disable FPS cap to 30
+- Keypad PLUS: Volume UP
+- Keypad MINUS: Volume DOWN
 - 1: Go to 1st Stage
 - 2: Go to 2nd Stage
 

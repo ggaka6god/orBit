@@ -338,27 +338,27 @@ bool j1Scene::Update(float dt)
 			}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN) //audio down
+	if (App->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN) 
 	{
 		App->audio->ChangeVolume_music(10);
 		App->audio->ChangeVolume_fx(10);
 		LOG("volume up");
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN) //audio up
+	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
 	{
 		App->audio->ChangeVolume_music(-10);
 		App->audio->ChangeVolume_fx(-10);
 		LOG("volume down");
 	}
-	
-	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)//load
+
+	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 	{	
 
 		bool ret = App->LoadGame("save_game.xml");
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) //save
+	if(App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) 
 		App->SaveGame("save_game.xml");
 
 	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
