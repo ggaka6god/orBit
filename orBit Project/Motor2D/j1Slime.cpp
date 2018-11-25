@@ -78,7 +78,8 @@ bool j1Slime::PostUpdate(float dt)
 		{
 			//check for player nearby
 
-			if (App->scene->player->Future_position.x > position.x - Slimeinfo.areaofaction &&
+			if (!App->scene->player->god_mode &&
+				App->scene->player->Future_position.x > position.x - Slimeinfo.areaofaction &&
 				App->scene->player->Future_position.x < position.x + Slimeinfo.areaofaction &&
 				App->scene->player->Future_position.y < position.y + Slimeinfo.areaofaction &&
 				App->scene->player->Future_position.y > position.y - Slimeinfo.areaofaction)
@@ -103,6 +104,7 @@ bool j1Slime::PostUpdate(float dt)
 					going_right = false;
 				}
 
+				if (!App->scene->player->god_mode)
 				CreatePathfinding({ (int)App->scene->player->Future_position.x, (int)App->scene->player->Future_position.y });
 
 				Pathfind(dt);

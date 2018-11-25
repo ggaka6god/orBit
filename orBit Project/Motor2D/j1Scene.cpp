@@ -232,61 +232,6 @@ bool j1Scene::PreUpdate()
 		firstStage = true;
 		secondStage = false;
 	}
-
-	////Controlling camera 
-
-	//Camera In X
-	App->render->camera.x = (-player->Future_position.x*App->win->GetScale() - player->entitycoll->rect.w / 2 + App->render->camera.w / 2);
-	
-
-	if (-App->render->camera.x <= 2)
-	{
-		App->render->camera.x = -2;
-	}
-
-	if (-App->render->camera.x + App->render->camera.w >= App->map->data.width*App->map->data.tile_width*App->win->GetScale())
-	{
-		App->render->camera.x = -App->map->data.width*App->map->data.tile_width*App->win->GetScale() + App->render->camera.w;
-	}
-
-	//Camera In Y
-
-
-	////Camera down
-
-	//if (player->position.y*App->win->GetScale() + player->entitycoll->rect.h >= -App->render->camera.y + App->render->camera.h - App->render->camera.h / 6)
-	//{
-	//	if (!player->must_fall)
-	//		App->render->camera.y = -(player->position.y * App->win->GetScale() + player->entitycoll->rect.h - App->render->camera.h + App->render->camera.h / 6);
-	//	else
-	//		App->render->camera.y -= 4;
-	//}
-
-
-	//if (player->position.y*App->win->GetScale() > -App->render->camera.y + App->render->camera.h - App->render->camera.h / 6)
-	//{
-	//	App->render->camera.y -= 10;
-	//}
-
-
-	//if (-App->render->camera.y + App->render->camera.h > App->map->data.height*App->map->data.tile_height*App->win->GetScale())
-	//{
-	//	App->render->camera.y = (-App->map->data.height*App->map->data.tile_height*App->win->GetScale() + App->render->camera.h);
-	//}
-
-
-	////Camera up
-
-	//if (player->position.y*App->win->GetScale() <= -App->render->camera.y + App->render->camera.h / 6)
-	//{
-	//	if (App->render->camera.y + 8 < 0)
-	//		App->render->camera.y = -(player->position.y * App->win->GetScale() - App->render->camera.h / 6);
-	//}
-
-
-	//-------------------
-
-
 	return true;
 }
 
@@ -445,6 +390,8 @@ bool j1Scene::Update(float dt)
 		}
 	}
 
+
+
 	return true;
 }
 
@@ -457,6 +404,52 @@ bool j1Scene::PostUpdate(float dt)
 
 	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
+
+	// --- Controlling camera ---
+
+	// --- Camera In X ---
+	App->render->camera.x = (-player->Future_position.x*App->win->GetScale() - player->entitycoll->rect.w / 2 + App->render->camera.w / 2);
+
+	// --- Keeping camera on axis X bounds ---
+	if (-App->render->camera.x <= 2)
+	{
+		App->render->camera.x = -2;
+	}
+
+	if (-App->render->camera.x + App->render->camera.w >= App->map->data.width*App->map->data.tile_width*App->win->GetScale())
+	{
+		App->render->camera.x = -App->map->data.width*App->map->data.tile_width*App->win->GetScale() + App->render->camera.w;
+	}
+
+	// --- Camera In Y ---
+
+	// --- Camera down ---
+
+	if (player->Future_position.y*App->win->GetScale() + player->entitycoll->rect.h >= -App->render->camera.y + App->render->camera.h - App->render->camera.h / 6)
+	{
+		App->render->camera.y = -(player->Future_position.y* App->win->GetScale() + player->entitycoll->rect.h - App->render->camera.h +App->render->camera.h / 6);
+	}
+
+	//// --- Camera up ---
+
+	if (player->Future_position.y*App->win->GetScale() <= -App->render->camera.y + App->render->camera.h / 6)
+	{
+		App->render->camera.y = -(player->Future_position.y* App->win->GetScale() - App->render->camera.h / 6);
+	}
+
+	// --- Keeping camera on axis Y bounds ---
+
+	if (-App->render->camera.y + App->render->camera.h > App->map->data.height*App->map->data.tile_height*App->win->GetScale())
+	{
+		App->render->camera.y = (-App->map->data.height*App->map->data.tile_height*App->win->GetScale() + App->render->camera.h);
+	}
+
+	if (App->render->camera.y > 0.0)
+	{
+		App->render->camera.y = 0.0f;
+	}
+
+	//-------------------
 
 	return ret;
 }

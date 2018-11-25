@@ -131,16 +131,16 @@ void j1Player::UpdateEntityMovement(float dt)
 void j1Player::God_Movement(float dt)
 {
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-		Future_position.x += Velocity.x*2.0f*dt;
+		Future_position.x += Velocity.x*5.0f*dt;
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-		Future_position.x -= Velocity.x*2.0f*dt;
+		Future_position.x -= Velocity.x*5.0f*dt;
 
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-		Future_position.y -= Velocity.x*2.0f*dt;
+		Future_position.y -= Velocity.x*5.0f*dt;
 
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-		Future_position.y += Velocity.x*2.0f*dt;
+		Future_position.y += Velocity.x*5.0f*dt;
 
 }
 

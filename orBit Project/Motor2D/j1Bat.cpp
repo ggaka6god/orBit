@@ -83,15 +83,18 @@ bool j1Bat::PostUpdate(float dt)
 	{
 		//check for player nearby
 
-		if (App->scene->player->Future_position.x > position.x - BatInfo.areaofaction &&
+		if (!App->scene->player->god_mode &&
+			App->scene->player->Future_position.x > position.x - BatInfo.areaofaction &&
 			App->scene->player->Future_position.x < position.x + BatInfo.areaofaction &&
 			App->scene->player->Future_position.y < position.y + BatInfo.areaofaction &&
 			App->scene->player->Future_position.y > position.y - BatInfo.areaofaction)
 		{
 		
+			
 			CreatePathfinding({ (int)App->scene->player->Future_position.x, (int)App->scene->player->Future_position.y });
 
 			Pathfind(dt);
+
 		}
 
 		//Debug Purpose (moving bat around)
