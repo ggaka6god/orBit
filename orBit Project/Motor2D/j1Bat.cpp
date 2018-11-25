@@ -83,13 +83,13 @@ bool j1Bat::PostUpdate(float dt)
 	{
 		//check for player nearby
 
-		if (App->scene->player->position.x > position.x - BatInfo.areaofaction &&
-			App->scene->player->position.x < position.x + BatInfo.areaofaction &&
-			App->scene->player->position.y < position.y + BatInfo.areaofaction &&
-			App->scene->player->position.y > position.y - BatInfo.areaofaction)
+		if (App->scene->player->Future_position.x > position.x - BatInfo.areaofaction &&
+			App->scene->player->Future_position.x < position.x + BatInfo.areaofaction &&
+			App->scene->player->Future_position.y < position.y + BatInfo.areaofaction &&
+			App->scene->player->Future_position.y > position.y - BatInfo.areaofaction)
 		{
 		
-			CreatePathfinding({ (int)App->scene->player->position.x, (int)App->scene->player->position.y });
+			CreatePathfinding({ (int)App->scene->player->Future_position.x, (int)App->scene->player->Future_position.y });
 
 			Pathfind(dt);
 		}
@@ -369,8 +369,5 @@ void j1Bat::LogicUpdate(float dt)
 
 	// --- Set batpos, prevent surpassing colliders ---
 	entitycoll->SetPos(position.x, position.y);
-
-	App->coll->Update(1.0f);
-
-	entitycoll->SetPos(position.x, position.y);
+	App->coll->QueryCollisions(*entitycoll);
 }

@@ -66,11 +66,11 @@ bool j1Scene::Start()
 	// --- Creating entity  ---
 	player = (j1Player*)App->entities->CreateEntity("player", entity_type::PLAYER);
 	
-	//bat = (j1Bat*)App->entities->CreateEntity("bat", entity_type::BAT);
-	//bat2 = (j1Bat*)App->entities->CreateEntity("bat", entity_type::BAT);
+	bat = (j1Bat*)App->entities->CreateEntity("bat", entity_type::BAT);
+	bat2 = (j1Bat*)App->entities->CreateEntity("bat", entity_type::BAT);
 
-	//slime = (j1Slime*)App->entities->CreateEntity("slime", entity_type::SLIME);
-	//slime2 = (j1Slime*)App->entities->CreateEntity("slime", entity_type::SLIME);
+	slime = (j1Slime*)App->entities->CreateEntity("slime", entity_type::SLIME);
+	slime2 = (j1Slime*)App->entities->CreateEntity("slime", entity_type::SLIME);
 
 	//Loading both maps
 
@@ -108,7 +108,7 @@ bool j1Scene::Start()
 		player->position.x = App->map->data.initpos.x;
 		player->position.y = App->map->data.initpos.y;
 		
-		/*slime->position.x = App->map->data.slime1.x;
+		slime->position.x = App->map->data.slime1.x;
 		slime->position.y = App->map->data.slime1.y;
 
 		slime2->position.x = App->map->data.slime2.x;
@@ -118,7 +118,7 @@ bool j1Scene::Start()
 		bat->position.y = App->map->data.bat1.y;
 
 		bat2->position.x = App->map->data.bat2.x;
-		bat2->position.y = App->map->data.bat2.y;*/
+		bat2->position.y = App->map->data.bat2.y;
 
 		p2SString stageMusic("%s%s", App->audio->musicfolder.GetString(), App->audio->SongNamesList.start->data->GetString());
 		App->audio->PlayMusic(stageMusic.GetString());
@@ -167,7 +167,7 @@ bool j1Scene::Start()
 	}
 
 	// --- Initial position for enemies ---
-	/*xSlime = slime->position.x;
+	xSlime = slime->position.x;
 	ySlime = slime->position.y;
 
 	xSlime2 = slime2->position.x;
@@ -177,7 +177,7 @@ bool j1Scene::Start()
 	yBat = bat->position.y;
 
 	xBat2 = bat2->position.x;
-	yBat2 = bat2->position.y;*/
+	yBat2 = bat2->position.y;
 
 
 	App->map->ColliderDrawer(App->map->data);
@@ -235,21 +235,21 @@ bool j1Scene::PreUpdate()
 
 	////Controlling camera 
 
-	////Camera In X
-	//App->render->camera.x = (-player->Future_position.x*App->win->GetScale() - player->entitycoll->rect.w / 2 + App->render->camera.w / 2);
-	//
+	//Camera In X
+	App->render->camera.x = (-player->Future_position.x*App->win->GetScale() - player->entitycoll->rect.w / 2 + App->render->camera.w / 2);
+	
 
-	//if (-App->render->camera.x <= 2)
-	//{
-	//	App->render->camera.x = -2;
-	//}
+	if (-App->render->camera.x <= 2)
+	{
+		App->render->camera.x = -2;
+	}
 
-	//if (-App->render->camera.x + App->render->camera.w >= App->map->data.width*App->map->data.tile_width*App->win->GetScale())
-	//{
-	//	App->render->camera.x = -App->map->data.width*App->map->data.tile_width*App->win->GetScale() + App->render->camera.w;
-	//}
+	if (-App->render->camera.x + App->render->camera.w >= App->map->data.width*App->map->data.tile_width*App->win->GetScale())
+	{
+		App->render->camera.x = -App->map->data.width*App->map->data.tile_width*App->win->GetScale() + App->render->camera.w;
+	}
 
-	////Camera In Y
+	//Camera In Y
 
 
 	////Camera down
@@ -490,25 +490,21 @@ bool j1Scene::change_scene(const char* map_name) {
 	player->parallaxflow = 0;
 	player->previousflow = 0;
 
-	//player->initialmoment = true;
-	//player->first_move = false;
-
 	App->coll->CleanUp();
 
 	App->entities->DestroyEntity(bat);
 	App->entities->DestroyEntity(bat2);
 	App->entities->DestroyEntity(slime);
 	App->entities->DestroyEntity(slime2);
-	
 
 	player->entitycoll= App->coll->AddCollider(player->entitycollrect,COLLIDER_TYPE::COLLIDER_PLAYER, App->entities);
 
-	/*bat = (j1Bat*)App->entities->CreateEntity("bat", entity_type::BAT);
+	bat = (j1Bat*)App->entities->CreateEntity("bat", entity_type::BAT);
 	bat2 = (j1Bat*)App->entities->CreateEntity("bat", entity_type::BAT);
 
 	slime = (j1Slime*)App->entities->CreateEntity("slime", entity_type::SLIME);
 	slime2 = (j1Slime*)App->entities->CreateEntity("slime", entity_type::SLIME);
-*/
+
 
 	if (FirstStage == map_name)
 	{	
@@ -581,17 +577,17 @@ bool j1Scene::change_scene(const char* map_name) {
 
 		RELEASE_ARRAY(buffer_data);
 	}
-	//slime->entitycoll = App->coll->AddCollider(slime->entitycollrect, COLLIDER_ENEMY_SLIME, App->entities);
-	//slime->entitycoll->SetPos(slime->position.x, slime->position.y);
+	slime->entitycoll = App->coll->AddCollider(slime->entitycollrect, COLLIDER_TYPE::COLLIDER_ENEMY_SLIME, App->entities);
+	slime->entitycoll->SetPos(slime->position.x, slime->position.y);
 
-	////slime2->entitycoll = App->coll->AddCollider(slime2->entitycollrect, COLLIDER_ENEMY_SLIME, App->entities);
-	//slime2->entitycoll->SetPos(slime2->position.x, slime2->position.y);
+	slime2->entitycoll = App->coll->AddCollider(slime2->entitycollrect, COLLIDER_TYPE::COLLIDER_ENEMY_SLIME, App->entities);
+	slime2->entitycoll->SetPos(slime2->position.x, slime2->position.y);
 
-	////bat->entitycoll = App->coll->AddCollider(bat->entitycollrect, COLLIDER_ENEMY_BAT, App->entities);
-	//bat->entitycoll->SetPos(bat->position.x, bat->position.y);
+	bat->entitycoll = App->coll->AddCollider(bat->entitycollrect, COLLIDER_TYPE::COLLIDER_ENEMY_BAT, App->entities);
+	bat->entitycoll->SetPos(bat->position.x, bat->position.y);
 
-	////bat2->entitycoll = App->coll->AddCollider(bat2->entitycollrect, COLLIDER_ENEMY_BAT, App->entities);
-	//bat2->entitycoll->SetPos(bat2->position.x, bat2->position.y);
+	bat2->entitycoll = App->coll->AddCollider(bat2->entitycollrect, COLLIDER_TYPE::COLLIDER_ENEMY_BAT, App->entities);
+	bat2->entitycoll->SetPos(bat2->position.x, bat2->position.y);
 
 	return ret;
 }
@@ -688,13 +684,13 @@ bool j1Scene::Load(pugi::xml_node &config)
 	bat2->position.x = xBat2;
 	bat2->position.y = yBat2;
 
-	/*slime->entitycoll->SetPos(slime->position.x, slime->position.y);
+	slime->entitycoll->SetPos(slime->position.x, slime->position.y);
 	
 	slime2->entitycoll->SetPos(slime2->position.x, slime2->position.y);
 
 	bat->entitycoll->SetPos(bat->position.x, bat->position.y);
 
-	bat2->entitycoll->SetPos(bat2->position.x, bat2->position.y);*/
+	bat2->entitycoll->SetPos(bat2->position.x, bat2->position.y);
 
 	return ret;
 }

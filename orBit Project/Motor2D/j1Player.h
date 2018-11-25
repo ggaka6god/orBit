@@ -62,6 +62,7 @@ public:
 	void LogicUpdate(float dt);
 
 	void UpdateEntityMovement(float dt);
+	void God_Movement(float dt);
 
 	inline void Apply_Vertical_Impulse(float dt);
 
@@ -102,6 +103,7 @@ public:
 	fPoint Future_position= { 0,0 };
 
 	bool on_air = false;
+	bool god_mode = false;
 	MOVEMENT EntityMovement = MOVEMENT::STATIC;
 
 };

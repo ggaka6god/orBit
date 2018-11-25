@@ -120,91 +120,8 @@ bool j1Collision::Update(float dt)
 {
 	BROFILER_CATEGORY("Collision_Update", Profiler::Color::DarkCyan);
 
-	bool ret = true;
-
-	////playertouched = 0;
-
-	//bool skipcolliders = true; //skip colliders that are not entities
-
-	//// Calculate collisions
-
-	//p2List_item <Collider*> *collider1;
-	//p2List_item <Collider*> *collider2;
-
-	//collider2 = collider1 = colliders.start;
-	//
-	//if(collider1->next!=NULL)
-	//collider2 = collider1->next;
-
-	//
-
-	//while(collider1!=NULL && collider2!=NULL && collider1!=collider2)
-	//{
-	//	skipcolliders = true;
-
-	//	//check for entities in colliders
-	//	if (collider1->data->type == COLLIDER_TYPE::COLLIDER_PLAYER	  || collider2->data->type == COLLIDER_TYPE::COLLIDER_PLAYER      ||
-	//		collider1->data->type == COLLIDER_TYPE::COLLIDER_ENEMY_SLIME || collider2->data->type == COLLIDER_TYPE::COLLIDER_ENEMY_SLIME ||
-	//		collider1->data->type == COLLIDER_TYPE::COLLIDER_ENEMY_BAT   || collider2->data->type == COLLIDER_TYPE::COLLIDER_ENEMY_BAT)
-	//	{
-	//		skipcolliders = false;
-	//	}
-	//	
-
-	//	while (collider2 != NULL && skipcolliders==false)
-	//	{
-	//		//We skip colliders that are not in camera
-	//		skipcolliders = true;
-	//		
-	//		//only check area near entity
-	//		if ( // Target Collision    ------------------------------   Set Area surrounding Entity
-	//			(collider2->data->rect.x							  <= collider1->data->rect.x + App->scene->areaofcollision &&
-	//			 collider2->data->rect.x + collider2->data->rect.w    >= collider1->data->rect.x - App->scene->areaofcollision &&
-	//			 collider2->data->rect.y							  <= collider1->data->rect.y + App->scene->areaofcollision &&
-	//			 collider2->data->rect.y + collider2->data->rect.h    >= collider1->data->rect.y - App->scene->areaofcollision)
-	//														||
-	//			(collider1->data->rect.x							  <= collider2->data->rect.x + App->scene->areaofcollision &&
-	//			 collider1->data->rect.x + collider1->data->rect.w	  >= collider2->data->rect.x - App->scene->areaofcollision &&
-	//			 collider1->data->rect.y							  <= collider2->data->rect.y + App->scene->areaofcollision &&
-	//			 collider1->data->rect.y + collider1->data->rect.h	  >= collider2->data->rect.y - App->scene->areaofcollision)
-	//			)
-	//		{
-	//			skipcolliders = false;
-	//		}
-	//		
-	//		if (skipcolliders == false && collider1->data->CheckCollision(collider2->data->rect) == true)
-	//		{
-	//			/*	if (collider1->data->type == COLLIDER_PLAYER || collider2->data->type == COLLIDER_PLAYER)
-	//				{
-	//					playertouched++;
-	//				}*/
-
-	//				if (matrix[collider1->data->type][collider2->data->type] && collider1->data->callback)
-	//				{
-	//					collider1->data->callback->OnCollision(collider1->data, collider2->data);
-	//				}
-
-	//				if (matrix[collider2->data->type][collider1->data->type] && collider2->data->callback)
-	//				{
-	//					collider2->data->callback->OnCollision(collider2->data, collider1->data);
-	//				}
-	//		}
-	//		
-	//		collider2 = collider2->next;
-	//		skipcolliders = false;
-	//	}
-
-	//	collider1 = collider1->next;
-	//	collider2 = collider1->next;
-	//}
-	//
-
-	////if (App->scene->player->entitystate!=JUMPING && App->scene->player->entitystate!=FALLING && playertouched == 0) 
-	////{
-	////	//App->scene->player->must_fall = true;
-	////}
-
-	return ret;
+	
+	return true;
 }
 
 bool j1Collision::PostUpdate(float dt)
@@ -247,6 +164,8 @@ Collider * j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module 
 
 void j1Collision::DebugDraw()
 {
+
+	BROFILER_CATEGORY("Collision_Debug_Draw", Profiler::Color::BurlyWood);
 
 	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) //collider draw
 		debug = !debug;
@@ -298,7 +217,9 @@ void j1Collision::DebugDraw()
 }
 
 void j1Collision::QueryCollisions(Collider & to_check) const
-{				   
+{			
+	BROFILER_CATEGORY("Collision_Query", Profiler::Color::CornflowerBlue);
+
 	p2List_item <Collider*> *collider_node = colliders.start;
 
 	while (collider_node)
@@ -335,12 +256,12 @@ void j1Collision::QueryCollisions(Collider & to_check) const
 
 bool Collider::CheckCollision(const SDL_Rect & r) const
 {
-	/*return (rect.x < r.x + r.w &&
+	return (rect.x < r.x + r.w &&
 		rect.x + rect.w > r.x &&
 		rect.y < r.y + r.h &&
-		rect.h + rect.y > r.y);*/
+		rect.h + rect.y > r.y);
 
-	return SDL_HasIntersection(&rect, &r);
+   //	return SDL_HasIntersection(&rect, &r);
 
 	// between argument "r" and property "rect"
 }

@@ -128,6 +128,22 @@ void j1Player::UpdateEntityMovement(float dt)
 	MOVEMENT EntityMovement = MOVEMENT::STATIC;
 }
 
+void j1Player::God_Movement(float dt)
+{
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		Future_position.x += Velocity.x*2.0f*dt;
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		Future_position.x -= Velocity.x*2.0f*dt;
+
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+		Future_position.y -= Velocity.x*2.0f*dt;
+
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+		Future_position.y += Velocity.x*2.0f*dt;
+
+}
+
 inline void j1Player::Apply_Vertical_Impulse(float dt)
 {
 	Velocity.y += playerinfo.jump_force;
@@ -216,50 +232,64 @@ bool j1Player::Update(float dt)
 {
 	// --- LOGIC --------------------
 
-	// --- RIGHT --
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT &&
-		App->input->GetKey(SDL_SCANCODE_A) != KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
-		EntityMovement = MOVEMENT::RIGHTWARDS;
+		god_mode = !god_mode;
 	}
 
-	if (EntityMovement != MOVEMENT::STATIC)
-		UpdateEntityMovement(dt);
-
-	// --- LEFT ---
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT &&
-		App->input->GetKey(SDL_SCANCODE_D) != KEY_REPEAT)
+	if (god_mode)
 	{
-		EntityMovement = MOVEMENT::LEFTWARDS;
+		God_Movement(dt);
 	}
 
-	if (EntityMovement != MOVEMENT::STATIC)
-		UpdateEntityMovement(dt);
-
-
-	// --- IMPULSE ---
-	if (!on_air && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	else
 	{
-		Apply_Vertical_Impulse(dt);
-		on_air = true;
-	}
 
-	// --- UP ---
-	if (on_air && Velocity.y>0.0f)
-	{
- 		EntityMovement = MOVEMENT::UPWARDS;
-	}
+		// --- RIGHT --
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT &&
+			App->input->GetKey(SDL_SCANCODE_A) != KEY_REPEAT)
+		{
+			EntityMovement = MOVEMENT::RIGHTWARDS;
+		}
 
-	if (EntityMovement != MOVEMENT::STATIC)
-	UpdateEntityMovement(dt);
+		if (EntityMovement != MOVEMENT::STATIC)
+			UpdateEntityMovement(dt);
+
+		// --- LEFT ---
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT &&
+			App->input->GetKey(SDL_SCANCODE_D) != KEY_REPEAT)
+		{
+			EntityMovement = MOVEMENT::LEFTWARDS;
+		}
+
+		if (EntityMovement != MOVEMENT::STATIC)
+			UpdateEntityMovement(dt);
+
+		// --- IMPULSE ---
+		if (!on_air && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		{
+			Apply_Vertical_Impulse(dt);
+			on_air = true;
+		}
+
+		// --- UP ---
+		if (on_air && Velocity.y > 0.0f)
+		{
+			EntityMovement = MOVEMENT::UPWARDS;
+		}
+
+		if (EntityMovement != MOVEMENT::STATIC)
+			UpdateEntityMovement(dt);
 
 
-	// --- FREE FALL ---
-	for (unsigned short i = 0; i < 4; ++i)
-	{
-		EntityMovement = MOVEMENT::FREEFALL;
+		// --- FREE FALL ---
+		for (unsigned short i = 0; i < 4; ++i)
+		{
+			EntityMovement = MOVEMENT::FREEFALL;
 
-		UpdateEntityMovement(dt);
+			UpdateEntityMovement(dt);
+		}
+
 	}
 
 	//-------------------------------
@@ -314,8 +344,10 @@ bool j1Player::PostUpdate(float dt)
 
 void j1Player::OnCollision(Collider * entitycollider, Collider * to_check)
 {
-	switch (EntityMovement)
+	if (!god_mode)
 	{
+		switch (EntityMovement)
+		{
 		case MOVEMENT::RIGHTWARDS:
 			Right_Collision(entitycollider, to_check);
 			break;
@@ -328,10 +360,12 @@ void j1Player::OnCollision(Collider * entitycollider, Collider * to_check)
 		case MOVEMENT::FREEFALL:
 			Down_Collision(entitycollider, to_check);
 			break;
-	}
+		}
 
-	Future_position.x = entitycollider->rect.x;
-	Future_position.y = entitycollider->rect.y;
+		Future_position.x = entitycollider->rect.x;
+		Future_position.y = entitycollider->rect.y;
+
+	}
 }
 
 void j1Player::Right_Collision(Collider * entitycollider, const Collider * to_check)

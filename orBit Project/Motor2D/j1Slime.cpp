@@ -78,32 +78,32 @@ bool j1Slime::PostUpdate(float dt)
 		{
 			//check for player nearby
 
-			if (App->scene->player->position.x > position.x - Slimeinfo.areaofaction &&
-				App->scene->player->position.x < position.x + Slimeinfo.areaofaction &&
-				App->scene->player->position.y < position.y + Slimeinfo.areaofaction &&
-				App->scene->player->position.y > position.y - Slimeinfo.areaofaction)
+			if (App->scene->player->Future_position.x > position.x - Slimeinfo.areaofaction &&
+				App->scene->player->Future_position.x < position.x + Slimeinfo.areaofaction &&
+				App->scene->player->Future_position.y < position.y + Slimeinfo.areaofaction &&
+				App->scene->player->Future_position.y > position.y - Slimeinfo.areaofaction)
 			{
-				if (App->scene->player->position.x > position.x && entitystate != FALLING)
+				if (App->scene->player->Future_position.x > position.x && entitystate != FALLING)
 				{
 					CurrentAnimation = Slimeinfo.runRight;
 					entitystate = RIGHT;
 					going_right = true;
 				}
 
-				else if (App->scene->player->position.x < position.x && entitystate != FALLING)
+				else if (App->scene->player->Future_position.x < position.x && entitystate != FALLING)
 				{
 					CurrentAnimation = Slimeinfo.runLeft;
 					entitystate = LEFT;
 					going_right = false;
 				}
-				else if (App->scene->player->position.x == position.x && entitystate != FALLING)
+				else if (App->scene->player->Future_position.x == position.x && entitystate != FALLING)
 				{
 					CurrentAnimation = Slimeinfo.runRight;
 					entitystate = IDLE;
 					going_right = false;
 				}
 
-				CreatePathfinding({ (int)App->scene->player->position.x, (int)App->scene->player->position.y });
+				CreatePathfinding({ (int)App->scene->player->Future_position.x, (int)App->scene->player->Future_position.y });
 
 				Pathfind(dt);
 
@@ -384,8 +384,5 @@ void j1Slime::LogicUpdate(float dt)
 
 	// --- Set slime pos, prevent surpassing colliders ---
 	entitycoll->SetPos(position.x, position.y);
-
-	App->coll->Update(1.0f);
-
-	entitycoll->SetPos(position.x, position.y);
+	App->coll->QueryCollisions(*entitycoll);
 }
