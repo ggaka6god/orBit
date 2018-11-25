@@ -405,15 +405,14 @@ bool j1Scene::PostUpdate(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
-	// --- Controlling camera ---
+	// --- Controlling camera Bounds---
 
 	// --- Camera In X ---
-	App->render->camera.x = (-player->Future_position.x*App->win->GetScale() - player->entitycoll->rect.w / 2 + App->render->camera.w / 2);
 
 	// --- Keeping camera on axis X bounds ---
-	if (-App->render->camera.x <= 2)
+	if (-App->render->camera.x <= 2.0f)
 	{
-		App->render->camera.x = -2;
+		App->render->camera.x = -2.0f;
 	}
 
 	if (-App->render->camera.x + App->render->camera.w >= App->map->data.width*App->map->data.tile_width*App->win->GetScale())

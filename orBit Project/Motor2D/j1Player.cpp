@@ -68,6 +68,10 @@ void j1Player::UpdateEntityMovement(float dt)
 			if (Accumulative_pos_Right > 1.1f)
 			{
 				Future_position.x += Accumulative_pos_Right;
+
+				if(!on_air)
+				App->render->camera.x -= Accumulative_pos_Right*2.0f;
+
 				Accumulative_pos_Right -= Accumulative_pos_Right;
 			}
 			break;
@@ -89,7 +93,7 @@ void j1Player::UpdateEntityMovement(float dt)
 				if (Accumulative_pos_Left > 0.75f)
 				{
 					Future_position.x -= Accumulative_pos_Left;
-
+					App->render->camera.x += Accumulative_pos_Left*2.0f;
 					Accumulative_pos_Left -= Accumulative_pos_Left;
 				}
 			}
@@ -124,6 +128,11 @@ void j1Player::UpdateEntityMovement(float dt)
 	entitycoll->SetPos(Future_position.x, Future_position.y);
 
 	App->coll->QueryCollisions(*entitycoll);
+
+	if (on_air)
+	{
+		App->render->camera.x = -(Future_position.x*App->win->GetScale() + entitycoll->rect.w/2 - App->render->camera.w/2);
+	}
 
 	MOVEMENT EntityMovement = MOVEMENT::STATIC;
 }
@@ -364,7 +373,6 @@ void j1Player::OnCollision(Collider * entitycollider, Collider * to_check)
 
 		Future_position.x = entitycollider->rect.x;
 		Future_position.y = entitycollider->rect.y;
-
 	}
 }
 
@@ -376,6 +384,7 @@ void j1Player::Right_Collision(Collider * entitycollider, const Collider * to_ch
 	{
 		case COLLIDER_TYPE::COLLIDER_FLOOR:
 			entitycollider->rect.x -= Intersection.w;
+			App->render->camera.x = camera_pos_backup.x;
 			break;
 	}
 }
@@ -388,6 +397,7 @@ void j1Player::Left_Collision(Collider * entitycollider, const Collider * to_che
 	{
 		case COLLIDER_TYPE::COLLIDER_FLOOR:
 			entitycollider->rect.x += Intersection.w;
+			App->render->camera.x = camera_pos_backup.x;
 			break;
 	}
 }
@@ -400,6 +410,7 @@ void j1Player::Up_Collision(Collider * entitycollider, const Collider * to_check
 	{
 		case COLLIDER_TYPE::COLLIDER_FLOOR:
 			entitycollider->rect.y += Intersection.h;
+			//App->render->camera.y = camera_pos_backup.y;
 			break;
 	}
 }
@@ -456,6 +467,9 @@ void j1Player::FixedUpdate(float dt)
 void j1Player::LogicUpdate(float dt)
 {
 	// --- Update we may not do every frame ---
+
+	camera_pos_backup.x = App->render->camera.x;
+	camera_pos_backup.y = App->render->camera.y;
 
 	EntityMovement = MOVEMENT::STATIC;
 

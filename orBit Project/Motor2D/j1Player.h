@@ -101,6 +101,7 @@ public:
 	float Accumulative_pos_Up =     0;
 	float Accumulative_pos_Down =   0;
 	fPoint Future_position= { 0,0 };
+	iPoint camera_pos_backup = { 0,0 };
 
 	bool on_air = false;
 	bool god_mode = false;
