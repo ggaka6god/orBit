@@ -1,8 +1,8 @@
 # orBit
 
-orBit is a singleplayer platfomer game made by Andres Saladrigas and Aitor Simona, two students od second year of Video Game Design and Development degree in UPC Barcelona, Spain.
-The gmae includes two levels, with usual mechanics. player can move right, left, jump and double jump
-The game has been made using C++, using SDL and pugi libraries. The maps have been made using Tiled portable V0.17.
+orBit is a singleplayer platfomer game developed by Andres Saladrigas and Aitor Simona, two students at second year of Video Game Design and Development degree in UPC Barcelona, Spain.
+The game includes two levels, with usual mechanics. player can move right, left and jump 
+The game has been made using C++, using SDL and pugi libraries. The maps have been made using Tiled portable v_0.17.
 
 ## Installation
 Decompress the .zip file in any directory. Open the file directoy and double click on the executable.
@@ -16,19 +16,17 @@ Decompress the .zip file in any directory. Open the file directoy and double cli
 
 - W: while in GodMode going up
 
-- D: while in GodMode going down
+- S: while in GodMode going down
 
 - SPACE: jump
-
-- SPACE in mid air: doble jump
 
 ### Debug keys:
 - F1: start from the very first level
 - F2: start from th beginning of current level
 - F5: save current state
 - F6: Load the previous state
-- F9: view collider and pathfinding
-- F10: GodMode (allows to fly)
+- F9: view colliders and pathfinding
+- F10: GodMode (allows to fly around)
 - F11: Enable/Disable FPS cap to 30
 - Keypad PLUS: Volume UP
 - Keypad MINUS: Volume DOWN
@@ -117,15 +115,15 @@ Licensed under the [MIT License](LICENSE.txt)
 - Player to entity 	    (Aitor)
 - Save enemies states     (Andres)
 - Load enemies states     (Andres)
-- Pathfinding enemies     (Aitor)
-- Pathfinding module      (Aitor)
-- Entity UML 		    (Andres)
+- Pathfinding enemies    (Aitor)
+- Pathfinding module     (Aitor)
+- Entity UML                   (Andres)
 - Framerate Control 	    (Aitor)
-- Debug key FPS 		    (Aitor)
-- Brofiler                (Aitor)
+- Debug key FPS 	    (Aitor)
+- Brofiler                           (Aitor)
 - Debug GodMode           (Aitor)
 - README                  (Andres)
-- Title Window            (Andres)
+- Window Title            (Andres)
 
 
 
