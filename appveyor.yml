@@ -8,7 +8,7 @@ build:
 before_package:
 - ps: Copy-Item C:\projects\orBit\orBit-Project\$env:CONFIGURATION\orBit.exe C:\projects\orBit\Game\.
 artifacts:
-- path: orBit\orBit-Project\Game
+- path: orBit-Project\Game
   name: orBit
   type: WebDeployPackage
 deploy:
