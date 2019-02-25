@@ -1,0 +1,18 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+configuration:
+- Debug
+- Release
+build:
+  verbosity: minimal
+before_package:
+- ps: Copy-Item C:\projects\orBit\orBit-Project\$env:CONFIGURATION\orBit.exe C:\projects\orBit\Game\.
+artifacts:
+- path: orBit\orBit-Project\Game
+  name: orBit
+  type: WebDeployPackage
+deploy:
+- provider: GitHub
+  description: Auto-Generated Release
+  auth_token:
+    secure: 3vxSzwxOLb2cBJ3N/QDbpbtKQNsQSwrJgxT6GIH1MSaueV1ot1erfq8x7RWgLVJEgaEiwH7y5tj7HMqJfUZ43IUX+AoYMCelGisavcwe51U=
