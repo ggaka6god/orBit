@@ -6,7 +6,7 @@ configuration:
 build:
   verbosity: minimal
 before_package:
-- ps: Copy-Item C:\projects\orBit\orBit-Project\$env:CONFIGURATION\orBit.exe C:\projects\orBit\Game\.
+- ps: Copy-Item C:\projects\orBit\orBit-Project\$env:CONFIGURATION\orBit.exe C:\projects\orBit\.
 artifacts:
 - path: orBit-Project\Game
   name: orBit
