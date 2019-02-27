@@ -174,16 +174,16 @@ bool j1Bat::PostUpdate(float dt)
 
 void j1Bat::OnCollision(Collider * c1, Collider * c2)
 {
-	bool lateralcollision = true;
+	bool lateralcollisionn = true;
 
 	if (c1->rect.y + c1->rect.h == c2->rect.y || c1->rect.y == c2->rect.y+ c2->rect.h)
 	{
-		lateralcollision = false;
+		lateralcollisionn = false;
 	}
 
 
 
-	if (c2->type == COLLIDER_TYPE::COLLIDER_FLOOR || c2->type == COLLIDER_TYPE::COLLIDER_PLATFORM || c2->type == COLLIDER_TYPE::COLLIDER_ROOF || c2->type == COLLIDER_TYPE::COLLIDER_SPIKES && dead == false && !lateralcollision)
+	if (c2->type == COLLIDER_TYPE::COLLIDER_FLOOR || c2->type == COLLIDER_TYPE::COLLIDER_PLATFORM || c2->type == COLLIDER_TYPE::COLLIDER_ROOF || c2->type == COLLIDER_TYPE::COLLIDER_SPIKES && dead == false && !lateralcollisionn)
 	{
 		if (/*going_up &&*/ c2->rect.y + c2->rect.h == c1->rect.y)
 		{
@@ -200,7 +200,7 @@ void j1Bat::OnCollision(Collider * c1, Collider * c2)
 		batcolliding = true;
 	}
 
-	if (lateralcollision)
+	if (lateralcollisionn)
 	{
 		if (going_right)
 		{
